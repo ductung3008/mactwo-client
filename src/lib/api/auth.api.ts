@@ -3,7 +3,6 @@ import { LoginFormData, RegisterFormData } from '@/schemas';
 import { User } from '@/stores/auth-store';
 import { ApiResponse } from '@/types';
 
-// Auth API
 export const authApi = {
   async login(
     credentials: LoginFormData
@@ -31,6 +30,32 @@ export const authApi = {
 
   async getProfile(): Promise<ApiResponse<User>> {
     const response = await api.get('/auth/profile');
+    return response.data;
+  },
+
+  async updateProfile(userData: Partial<User>): Promise<ApiResponse<User>> {
+    const response = await api.put('/auth/profile', userData);
+    return response.data;
+  },
+
+  async changePassword(passwords: {
+    currentPassword: string;
+    newPassword: string;
+  }): Promise<ApiResponse<null>> {
+    const response = await api.put('/auth/change-password', passwords);
+    return response.data;
+  },
+
+  async forgotPassword(email: string): Promise<ApiResponse<null>> {
+    const response = await api.post('/auth/forgot-password', { email });
+    return response.data;
+  },
+
+  async resetPassword(data: {
+    token: string;
+    newPassword: string;
+  }): Promise<ApiResponse<null>> {
+    const response = await api.post('/auth/reset-password', data);
     return response.data;
   },
 };

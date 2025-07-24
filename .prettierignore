@@ -60,6 +60,9 @@ Thumbs.db
 # Documentation
 CHANGELOG.md
 
+# GitHub Actions
+.github
+
 # Public assets (optional - uncomment if you don't want to format these)
 # public/
 

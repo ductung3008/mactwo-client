@@ -1,5 +1,6 @@
 'use client';
 
+import { LanguageSwitcher } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/stores/auth-store';
 import Link from 'next/link';
@@ -48,6 +49,7 @@ export function Header() {
           </div>
 
           <div className='flex items-center space-x-4'>
+            <LanguageSwitcher />
             {isAuthenticated ? (
               <>
                 <span className='text-gray-700'>Hello, {user?.name}</span>

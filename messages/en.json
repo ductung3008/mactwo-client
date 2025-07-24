@@ -1,0 +1,167 @@
+{
+  "navigation": {
+    "home": "Home",
+    "laptops": "Laptops",
+    "categories": "Categories",
+    "deals": "Deals",
+    "about": "About",
+    "contact": "Contact",
+    "cart": "Cart",
+    "profile": "Profile",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "subtitle": "Sign in to your account to continue",
+      "welcomeBack": "Welcome back!",
+      "welcomeMessage": "Sign in to experience great laptop shopping",
+      "email": "Email",
+      "password": "Password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "signIn": "Sign In",
+      "signingIn": "Signing in...",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create account now",
+      "orContinueWith": "Or continue with",
+      "google": "Google",
+      "facebook": "Facebook",
+      "success": "Login successful!",
+      "successMessage": "Welcome back to LaptopStore.",
+      "failed": "Login failed",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "passwordMaxLength": "Password cannot exceed 100 characters",
+      "emailNotFound": "Email does not exist",
+      "passwordIncorrect": "Incorrect password",
+      "errorMessage": "An error occurred, please try again."
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Create a new account to start shopping",
+      "name": "Full Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "agreeToTerms": "I agree to the Terms of Service and Privacy Policy",
+      "createAccount": "Create Account",
+      "creatingAccount": "Creating account...",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in here",
+      "success": "Account created successfully!",
+      "successMessage": "Welcome to LaptopStore.",
+      "failed": "Registration failed",
+      "nameRequired": "Name is required",
+      "nameMinLength": "Name must be at least 2 characters",
+      "passwordMismatch": "Passwords do not match",
+      "termsRequired": "You must agree to the terms"
+    },
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "subtitle": "Enter your email to reset your password",
+      "sendReset": "Send Reset Link",
+      "backToLogin": "Back to Login",
+      "success": "Reset link sent!",
+      "successMessage": "Check your email for password reset instructions."
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Find Your Perfect Laptop",
+      "subtitle": "Discover the best deals on high-quality laptops from top brands",
+      "shopNow": "Shop Now",
+      "viewDeals": "View Deals"
+    },
+    "features": {
+      "title": "Why Choose LaptopStore?",
+      "subtitle": "We provide the best laptop shopping experience with quality guarantees",
+      "quality": {
+        "title": "Quality Guaranteed",
+        "description": "All our laptops are tested and certified for quality assurance"
+      },
+      "price": {
+        "title": "Best Prices",
+        "description": "Competitive pricing with regular deals and discounts"
+      },
+      "delivery": {
+        "title": "Fast Delivery",
+        "description": "Quick and secure shipping to your doorstep"
+      }
+    },
+    "cta": {
+      "title": "Ready to Find Your Perfect Laptop?",
+      "subtitle": "Browse our extensive collection of laptops from top brands",
+      "startShopping": "Start Shopping",
+      "viewComponents": "View Components"
+    }
+  },
+  "product": {
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy Now",
+    "outOfStock": "Out of Stock",
+    "inStock": "In Stock",
+    "specifications": "Specifications",
+    "reviews": "Reviews",
+    "description": "Description",
+    "features": "Features",
+    "warranty": "Warranty",
+    "price": "Price",
+    "originalPrice": "Original Price",
+    "discount": "Discount",
+    "rating": "Rating",
+    "reviewCount": "{count} reviews"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "continueShopping": "Continue Shopping",
+    "removeItem": "Remove Item",
+    "updateQuantity": "Update Quantity",
+    "subtotal": "Subtotal",
+    "tax": "Tax",
+    "shipping": "Shipping",
+    "total": "Total",
+    "checkout": "Proceed to Checkout"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "next": "Next",
+    "previous": "Previous",
+    "page": "Page",
+    "of": "of",
+    "showing": "Showing",
+    "results": "results",
+    "noResults": "No results found",
+    "tryAgain": "Try again",
+    "required": "Required"
+  },
+  "footer": {
+    "description": "Your trusted partner for high-quality laptops at the best prices.",
+    "quickLinks": "Quick Links",
+    "support": "Support",
+    "connect": "Connect",
+    "faq": "FAQ",
+    "shipping": "Shipping Info",
+    "returns": "Returns",
+    "contact": "Contact Us",
+    "facebook": "Facebook",
+    "twitter": "Twitter",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn"
+  }
+}

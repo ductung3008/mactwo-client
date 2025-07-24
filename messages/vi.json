@@ -1,0 +1,167 @@
+{
+  "navigation": {
+    "home": "Trang chủ",
+    "laptops": "Laptop",
+    "categories": "Danh mục",
+    "deals": "Khuyến mãi",
+    "about": "Giới thiệu",
+    "contact": "Liên hệ",
+    "cart": "Giỏ hàng",
+    "profile": "Hồ sơ",
+    "logout": "Đăng xuất",
+    "login": "Đăng nhập",
+    "register": "Đăng ký"
+  },
+  "auth": {
+    "login": {
+      "title": "Đăng nhập",
+      "subtitle": "Đăng nhập vào tài khoản của bạn để tiếp tục",
+      "welcomeBack": "Chào mừng trở lại!",
+      "welcomeMessage": "Đăng nhập để trải nghiệm mua sắm laptop tuyệt vời",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "rememberMe": "Ghi nhớ đăng nhập",
+      "forgotPassword": "Quên mật khẩu?",
+      "signIn": "Đăng nhập",
+      "signingIn": "Đang đăng nhập...",
+      "noAccount": "Bạn chưa có tài khoản?",
+      "createAccount": "Tạo tài khoản ngay",
+      "orContinueWith": "Hoặc tiếp tục với",
+      "google": "Google",
+      "facebook": "Facebook",
+      "success": "Đăng nhập thành công!",
+      "successMessage": "Chào mừng bạn trở lại với LaptopStore.",
+      "failed": "Đăng nhập thất bại",
+      "emailRequired": "Email là bắt buộc",
+      "emailInvalid": "Email không hợp lệ",
+      "passwordRequired": "Mật khẩu là bắt buộc",
+      "passwordMinLength": "Mật khẩu phải có ít nhất 6 ký tự",
+      "passwordMaxLength": "Mật khẩu không được quá 100 ký tự",
+      "emailNotFound": "Email không tồn tại",
+      "passwordIncorrect": "Mật khẩu không đúng",
+      "errorMessage": "Có lỗi xảy ra, vui lòng thử lại."
+    },
+    "register": {
+      "title": "Tạo tài khoản",
+      "subtitle": "Tạo tài khoản mới để bắt đầu mua sắm",
+      "name": "Họ và tên",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "agreeToTerms": "Tôi đồng ý với Điều khoản dịch vụ và Chính sách bảo mật",
+      "createAccount": "Tạo tài khoản",
+      "creatingAccount": "Đang tạo tài khoản...",
+      "haveAccount": "Đã có tài khoản?",
+      "signIn": "Đăng nhập tại đây",
+      "success": "Tạo tài khoản thành công!",
+      "successMessage": "Chào mừng bạn đến với LaptopStore.",
+      "failed": "Đăng ký thất bại",
+      "nameRequired": "Tên là bắt buộc",
+      "nameMinLength": "Tên phải có ít nhất 2 ký tự",
+      "passwordMismatch": "Mật khẩu không khớp",
+      "termsRequired": "Bạn phải đồng ý với các điều khoản"
+    },
+    "forgotPassword": {
+      "title": "Quên mật khẩu",
+      "subtitle": "Nhập email của bạn để đặt lại mật khẩu",
+      "sendReset": "Gửi liên kết đặt lại",
+      "backToLogin": "Quay lại đăng nhập",
+      "success": "Đã gửi liên kết đặt lại!",
+      "successMessage": "Kiểm tra email của bạn để xem hướng dẫn đặt lại mật khẩu."
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Tìm Chiếc Laptop Hoàn Hảo",
+      "subtitle": "Khám phá những ưu đãi tốt nhất cho laptop chất lượng cao từ các thương hiệu hàng đầu",
+      "shopNow": "Mua ngay",
+      "viewDeals": "Xem khuyến mãi"
+    },
+    "features": {
+      "title": "Tại sao chọn LaptopStore?",
+      "subtitle": "Chúng tôi cung cấp trải nghiệm mua sắm laptop tốt nhất với đảm bảo chất lượng",
+      "quality": {
+        "title": "Đảm bảo chất lượng",
+        "description": "Tất cả laptop của chúng tôi đều được kiểm tra và chứng nhận chất lượng"
+      },
+      "price": {
+        "title": "Giá tốt nhất",
+        "description": "Giá cạnh tranh với các ưu đãi và giảm giá thường xuyên"
+      },
+      "delivery": {
+        "title": "Giao hàng nhanh",
+        "description": "Vận chuyển nhanh chóng và an toàn đến tận nơi"
+      }
+    },
+    "cta": {
+      "title": "Sẵn sàng tìm chiếc laptop hoàn hảo?",
+      "subtitle": "Duyệt bộ sưu tập laptop phong phú từ các thương hiệu hàng đầu",
+      "startShopping": "Bắt đầu mua sắm",
+      "viewComponents": "Xem thành phần"
+    }
+  },
+  "product": {
+    "addToCart": "Thêm vào giỏ",
+    "buyNow": "Mua ngay",
+    "outOfStock": "Hết hàng",
+    "inStock": "Còn hàng",
+    "specifications": "Thông số kỹ thuật",
+    "reviews": "Đánh giá",
+    "description": "Mô tả",
+    "features": "Tính năng",
+    "warranty": "Bảo hành",
+    "price": "Giá",
+    "originalPrice": "Giá gốc",
+    "discount": "Giảm giá",
+    "rating": "Đánh giá",
+    "reviewCount": "{count} đánh giá"
+  },
+  "cart": {
+    "title": "Giỏ hàng",
+    "empty": "Giỏ hàng của bạn đang trống",
+    "continueShopping": "Tiếp tục mua sắm",
+    "removeItem": "Xóa sản phẩm",
+    "updateQuantity": "Cập nhật số lượng",
+    "subtotal": "Tạm tính",
+    "tax": "Thuế",
+    "shipping": "Phí vận chuyển",
+    "total": "Tổng cộng",
+    "checkout": "Thanh toán"
+  },
+  "common": {
+    "loading": "Đang tải...",
+    "error": "Lỗi",
+    "success": "Thành công",
+    "cancel": "Hủy",
+    "confirm": "Xác nhận",
+    "save": "Lưu",
+    "edit": "Chỉnh sửa",
+    "delete": "Xóa",
+    "search": "Tìm kiếm",
+    "filter": "Lọc",
+    "sort": "Sắp xếp",
+    "next": "Tiếp theo",
+    "previous": "Trước",
+    "page": "Trang",
+    "of": "của",
+    "showing": "Hiển thị",
+    "results": "kết quả",
+    "noResults": "Không tìm thấy kết quả",
+    "tryAgain": "Thử lại",
+    "required": "Bắt buộc"
+  },
+  "footer": {
+    "description": "Đối tác đáng tin cậy của bạn cho laptop chất lượng cao với giá tốt nhất.",
+    "quickLinks": "Liên kết nhanh",
+    "support": "Hỗ trợ",
+    "connect": "Kết nối",
+    "faq": "Câu hỏi thường gặp",
+    "shipping": "Thông tin vận chuyển",
+    "returns": "Đổi trả",
+    "contact": "Liên hệ",
+    "facebook": "Facebook",
+    "twitter": "Twitter",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn"
+  }
+}

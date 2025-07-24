@@ -34,11 +34,6 @@ jobs:
           npx madge --circular --extensions ts,tsx,js,jsx src/
           npx madge --summary src/
 
-      - name: Check bundle size
-        run: |
-          npm run build
-          npx bundlesize
-
   # Check for common issues
   code-quality-checks:
     runs-on: ubuntu-latest

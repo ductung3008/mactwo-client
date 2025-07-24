@@ -1,0 +1,64 @@
+# Dependabot configuration for automatic dependency updates
+version: 2
+updates:
+  # Enable version updates for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "ductung3008"
+    assignees:
+      - "ductung3008"
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+      include: "scope"
+    # Group updates by type
+    groups:
+      production-dependencies:
+        patterns:
+          - "react*"
+          - "next*"
+          - "@types/*"
+          - "typescript"
+        update-types:
+          - "minor"
+          - "patch"
+      development-dependencies:
+        patterns:
+          - "eslint*"
+          - "prettier*"
+          - "@tailwindcss/*"
+          - "tailwindcss"
+        update-types:
+          - "minor"
+          - "patch"
+      security-updates:
+        update-types:
+          - "security"
+    # Allow only security updates for major versions
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    # Custom labels
+    labels:
+      - "dependencies"
+      - "auto-update"
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "github-actions"
+      - "auto-update"

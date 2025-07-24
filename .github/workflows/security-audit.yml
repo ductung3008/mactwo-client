@@ -1,0 +1,94 @@
+name: Dependency Security Check
+
+on:
+  schedule:
+    # Run every Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  push:
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+  issues: write
+
+jobs:
+  security-audit:
+    runs-on: ubuntu-latest
+    name: Security Audit
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        id: audit
+        run: |
+          npm audit --audit-level moderate --json > audit-results.json || true
+          cat audit-results.json
+
+      - name: Parse audit results
+        run: |
+          VULNERABILITIES=$(cat audit-results.json | jq -r '.vulnerabilities | length')
+          HIGH_VULNS=$(cat audit-results.json | jq -r '.vulnerabilities | map(select(.severity == "high")) | length')
+          CRITICAL_VULNS=$(cat audit-results.json | jq -r '.vulnerabilities | map(select(.severity == "critical")) | length')
+          
+          echo "TOTAL_VULNERABILITIES=$VULNERABILITIES" >> $GITHUB_ENV
+          echo "HIGH_VULNERABILITIES=$HIGH_VULNS" >> $GITHUB_ENV
+          echo "CRITICAL_VULNERABILITIES=$CRITICAL_VULNS" >> $GITHUB_ENV
+
+      - name: Create security issue
+        if: env.CRITICAL_VULNERABILITIES != '0' || env.HIGH_VULNERABILITIES != '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { TOTAL_VULNERABILITIES, HIGH_VULNERABILITIES, CRITICAL_VULNERABILITIES } = process.env;
+            
+            const issueBody = `
+            # 🚨 Security Vulnerabilities Detected
+            
+            **Summary:**
+            - Total vulnerabilities: ${TOTAL_VULNERABILITIES}
+            - Critical vulnerabilities: ${CRITICAL_VULNERABILITIES}
+            - High vulnerabilities: ${HIGH_VULNERABILITIES}
+            
+            ## Action Required
+            Please run the following commands to address these vulnerabilities:
+            
+            \`\`\`bash
+            npm audit fix
+            npm audit fix --force  # Use with caution
+            \`\`\`
+            
+            ## Audit Details
+            Run \`npm audit\` locally to see detailed information about each vulnerability.
+            
+            **Workflow:** ${{ github.workflow }}
+            **Run ID:** ${{ github.run_id }}
+            `;
+            
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Security Alert: ${CRITICAL_VULNERABILITIES} Critical, ${HIGH_VULNERABILITIES} High Vulnerabilities`,
+              body: issueBody,
+              labels: ['security', 'dependencies', 'urgent']
+            });
+
+      - name: Upload audit results
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-audit-results
+          path: audit-results.json
+          retention-days: 30

@@ -13,8 +13,10 @@ export function LanguageSwitcher() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Get current locale from URL or default to 'en'
-  const currentLocale = (params.locale as Locale) || 'vi';
+  let currentLocale: Locale = 'vi';
+  if (params.locale && locales.includes(params.locale as Locale)) {
+    currentLocale = params.locale as Locale;
+  }
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -33,11 +35,12 @@ export function LanguageSwitcher() {
 
   const switchLanguage = (locale: Locale) => {
     // Remove current locale from pathname if it exists
-    const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}/, '') || '/';
+    const pathWithoutLocale = locales.includes(pathname.split('/')[1] as Locale)
+      ? pathname.replace(/^\/[a-z]{2}/, '') || '/'
+      : pathname;
 
     // Add new locale to the path
-    const newPath =
-      locale === 'vi' ? pathWithoutLocale : `/${locale}${pathWithoutLocale}`;
+    const newPath = `/${locale}${pathWithoutLocale}`;
 
     router.push(newPath);
     setIsOpen(false);

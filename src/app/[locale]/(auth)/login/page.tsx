@@ -2,11 +2,11 @@
 
 import { Button, Input, useToastNotification } from '@/components/ui';
 import { useAuth } from '@/hooks';
+import { Link } from '@/i18n/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';

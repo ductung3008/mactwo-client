@@ -21,6 +21,7 @@ import {
   TextSkeleton,
   useToastNotification,
 } from '@/components/ui';
+import Link from 'next/link';
 import { useState } from 'react';
 
 export default function ComponentsPage() {
@@ -756,9 +757,9 @@ function MyComponent() {
                   View Source Code
                 </a>
               </Button>
-              <Button>
-                <a href='/docs'>Read Documentation</a>
-              </Button>
+              <Link href='/docs'>
+                <Button>Read Documentation</Button>
+              </Link>
             </div>
           </section>
         </div>

@@ -1,9 +1,11 @@
 import { Layout } from '@/components/layout';
 import { ToastProvider } from '@/components/ui';
+import { routing } from '@/i18n/routing';
 import type { Metadata } from 'next';
-import { NextIntlClientProvider } from 'next-intl';
+import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { Inter } from 'next/font/google';
+import { notFound } from 'next/navigation';
 import '../globals.css';
 
 const inter = Inter({
@@ -16,14 +18,18 @@ export const metadata: Metadata = {
     'Discover the best deals on high-quality laptops from top brands. Quality guaranteed with fast delivery.',
 };
 
-export default async function LocaleLayout(props: {
+export default async function LocaleLayout({
+  children,
+  params,
+}: {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
-  const { params, children } = await props;
-  const locale = await params.locale;
+  const { locale } = await params;
 
-  console.log(locale);
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
 
   const messages = await getMessages({ locale });
 

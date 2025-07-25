@@ -17,17 +17,21 @@ export interface DatePickerProps {
 }
 
 const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
-  ({
-    value,
-    onChange,
-    placeholder,
-    className,
-    disabled = false,
-    maxDate,
-    minDate,
-    error = false,
-    ...props
-  }) => {
+  (
+    {
+      value,
+      onChange,
+      placeholder,
+      className,
+      disabled = false,
+      maxDate,
+      minDate,
+      error = false,
+      ...props
+    },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    ref
+  ) => {
     const t = useTranslations('datePicker');
 
     // Get translated months and days

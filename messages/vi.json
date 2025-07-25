@@ -52,6 +52,15 @@
       "dateOfBirthInvalid": "Ngày sinh không hợp lệ",
       "phoneNumberRequired": "Số điện thoại là bắt buộc",
       "phoneNumberInvalid": "Số điện thoại không hợp lệ"
+    },
+    "forgotPassword": {
+      "title": "Quên Mật Khẩu",
+      "subtitle": "Nhập email của bạn để đặt lại mật khẩu",
+      "email": "Email",
+      "emailRequired": "Email là bắt buộc",
+      "emailInvalid": "Email không hợp lệ",
+      "resetPassword": "Đặt Lại Mật Khẩu",
+      "resettingPassword": "Đang đặt lại mật khẩu..."
     }
   },
   "datePicker": {

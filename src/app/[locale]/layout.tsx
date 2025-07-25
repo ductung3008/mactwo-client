@@ -4,13 +4,8 @@ import { routing } from '@/i18n/routing';
 import type { Metadata } from 'next';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
-import { Inter } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import '../globals.css';
-
-const inter = Inter({
-  subsets: ['latin'],
-});
 
 export const metadata: Metadata = {
   title: 'MacTwo',

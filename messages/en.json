@@ -22,5 +22,10 @@
       "passwordIncorrect": "Incorrect password",
       "errorMessage": "An error occurred, please try again."
     }
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "Sorry, the page you are looking for doesn't exist.",
+    "goBackHome": "Go Back Home"
   }
 }

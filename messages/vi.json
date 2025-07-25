@@ -95,5 +95,29 @@
     "title": "Không tìm thấy trang",
     "description": "Xin lỗi, trang bạn đang tìm kiếm không tồn tại.",
     "goBackHome": "Quay về trang chủ"
+  },
+  "layout": {
+    "footer": {
+      "description": "Năm 2025, MacTwo trở thành đại lý ủy quyền của Apple. Chúng tôi phát triển chuỗi cửa hàng tiêu chuẩn và Apple Mono Store nhằm mang đến trải nghiệm tốt nhất về sản phẩm và dịch vụ của Apple cho người dùng Việt Nam.",
+      "information": "Thông tin",
+      "newsfeed": "Tin tức",
+      "introduction": "Giới thiệu",
+      "paymentMethods": "Phương thức thanh toán",
+      "warranty": "Bảo hành",
+      "careers": "Tuyển dụng",
+      "report": "Khiếu nại",
+      "policy": "Chính sách",
+      "buyback": "Thu cũ đổi mới",
+      "shipping": "Giao hàng",
+      "shippingZalopay": "Giao hàng (Zalopay)",
+      "cancelTransaction": "Hủy giao dịch",
+      "return": "Đổi trả",
+      "informationProtection": "Bảo mật thông tin",
+      "addressAndContact": "Địa chỉ và liên hệ",
+      "myAccount": "Tài khoản của tôi",
+      "myOrders": "Đơn hàng của tôi",
+      "findStoreInGoogleMaps": "Tìm cửa hàng trên Google Maps",
+      "storeSystem": "Hệ thống cửa hàng"
+    }
   }
 }

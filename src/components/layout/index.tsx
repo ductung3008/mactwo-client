@@ -1,9 +1,13 @@
 'use client';
 
+import MacTwoLogo from '@/../public/mactwo-logo.png';
 import { LanguageSwitcher } from '@/components/ui';
 import { Button } from '@/components/ui/button';
+import { Link } from '@/i18n/navigation';
 import { useAuthStore } from '@/stores/auth-store';
-import Link from 'next/link';
+import { Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 export function Header() {
   const { user, isAuthenticated, logout } = useAuthStore();
@@ -87,112 +91,159 @@ export function Header() {
 }
 
 export function Footer() {
+  const t = useTranslations('layout.footer');
+
+  const socialLinks = [
+    {
+      name: 'Facebook',
+      href: 'https://facebook.com',
+      icon: <Facebook className='text-[#1877F2]' />,
+    },
+    {
+      name: 'Twitter',
+      href: 'https://twitter.com',
+      icon: <Twitter className='text-[#1DA1F2]' />,
+    },
+    {
+      name: 'Instagram',
+      href: 'https://instagram.com',
+      icon: <Instagram className='text-[#C13584]' />,
+    },
+    {
+      name: 'LinkedIn',
+      href: 'https://youtube.com',
+      icon: <Youtube className='text-[#CD201F]' />,
+    },
+  ];
+
+  const footerLinks = [
+    [
+      { title: t('information') },
+      {
+        title: t('newsfeed'),
+        href: '/newsfeed',
+      },
+      {
+        title: t('introduction'),
+        href: '/introduction',
+      },
+      {
+        title: t('paymentMethods'),
+        href: '/paymentMethods',
+      },
+      {
+        title: t('warranty'),
+        href: '/warranty',
+      },
+      {
+        title: t('careers'),
+        href: '/careers',
+      },
+      {
+        title: t('report'),
+        href: '/report',
+      },
+    ],
+    [
+      {
+        title: t('policy'),
+      },
+      {
+        title: t('buyback'),
+        href: '/buyback',
+      },
+      {
+        title: t('shipping'),
+        href: '/shipping',
+      },
+      {
+        title: t('shippingZalopay'),
+        href: '/shippingZalopay',
+      },
+      {
+        title: t('cancelTransaction'),
+        href: '/cancelTransaction',
+      },
+      {
+        title: t('return'),
+        href: '/return',
+      },
+      {
+        title: t('informationProtection'),
+        href: '/informationProtection',
+      },
+    ],
+    [
+      {
+        title: t('addressAndContact'),
+      },
+      {
+        title: t('myAccount'),
+        href: '/myAccount',
+      },
+      {
+        title: t('myOrders'),
+        href: '/myOrders',
+      },
+      {
+        title: t('findStoreInGoogleMaps'),
+        href: '/findStoreInGoogleMaps',
+      },
+      {
+        title: t('storeSystem'),
+        href: '/storeSystem',
+      },
+    ],
+  ];
+
   return (
     <footer className='bg-gray-900 text-white'>
-      <div className='mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8'>
-        <div className='grid grid-cols-1 gap-8 md:grid-cols-4'>
-          <div>
-            <h3 className='mb-4 text-lg font-semibold'>LaptopStore</h3>
-            <p className='text-gray-400'>
-              Your trusted partner for high-quality laptops at the best prices.
-            </p>
-          </div>
-          <div>
-            <h4 className='text-md mb-4 font-semibold'>Quick Links</h4>
-            <ul className='space-y-2'>
-              <li>
-                <Link
-                  href='/laptops'
-                  className='text-gray-400 hover:text-white'
+      <div className='divide-4 mx-auto grid max-w-7xl grid-cols-1 gap-5 divide-dashed px-4 py-12 sm:px-6 lg:grid-cols-4 lg:gap-16 lg:px-8'>
+        <div>
+          <Image
+            src={MacTwoLogo}
+            alt='MacTwo Logo'
+            height={50}
+            className='mb-4'
+          />
+          <p>{t('description')}</p>
+          <ul className='mt-4 flex space-x-4'>
+            {socialLinks.map(link => (
+              <li key={link.name} className='flex'>
+                <a
+                  href={link.href}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='rounded-full border border-gray-500 p-3 text-gray-400 transition-colors hover:bg-gray-800 hover:text-white'
                 >
-                  Laptops
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href='/categories'
-                  className='text-gray-400 hover:text-white'
-                >
-                  Categories
-                </Link>
-              </li>
-              <li>
-                <Link href='/deals' className='text-gray-400 hover:text-white'>
-                  Deals
-                </Link>
-              </li>
-              <li>
-                <Link href='/about' className='text-gray-400 hover:text-white'>
-                  About
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className='text-md mb-4 font-semibold'>Support</h4>
-            <ul className='space-y-2'>
-              <li>
-                <Link
-                  href='/contact'
-                  className='text-gray-400 hover:text-white'
-                >
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link href='/faq' className='text-gray-400 hover:text-white'>
-                  FAQ
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href='/shipping'
-                  className='text-gray-400 hover:text-white'
-                >
-                  Shipping Info
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href='/returns'
-                  className='text-gray-400 hover:text-white'
-                >
-                  Returns
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className='text-md mb-4 font-semibold'>Connect</h4>
-            <ul className='space-y-2'>
-              <li>
-                <a href='#' className='text-gray-400 hover:text-white'>
-                  Facebook
+                  {link.icon}
                 </a>
               </li>
-              <li>
-                <a href='#' className='text-gray-400 hover:text-white'>
-                  Twitter
-                </a>
-              </li>
-              <li>
-                <a href='#' className='text-gray-400 hover:text-white'>
-                  Instagram
-                </a>
-              </li>
-              <li>
-                <a href='#' className='text-gray-400 hover:text-white'>
-                  LinkedIn
-                </a>
-              </li>
-            </ul>
-          </div>
+            ))}
+          </ul>
         </div>
-        <div className='mt-8 border-t border-gray-800 pt-8 text-center'>
-          <p className='text-gray-400'>
-            © 2025 LaptopStore. All rights reserved.
-          </p>
-        </div>
+        {footerLinks.map((column, colIdx) => (
+          <div key={colIdx}>
+            {column.map((item, idx) =>
+              idx === 0 ? (
+                <h4
+                  key={idx}
+                  className='mb-4 text-lg font-semibold text-gray-300'
+                >
+                  {item.title}
+                </h4>
+              ) : (
+                <Link
+                  key={idx}
+                  href={item.href!}
+                  className='mb-2 block text-gray-500 hover:text-gray-700'
+                >
+                  {item.title}
+                </Link>
+              )
+            )}
+          </div>
+        ))}
       </div>
     </footer>
   );

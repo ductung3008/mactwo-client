@@ -34,3 +34,5 @@ export {
 
 export { ToastProvider, useToast, useToastNotification } from './toast';
 export type { Toast, ToastType } from './toast';
+
+export { LanguageSwitcher } from './language-switcher';

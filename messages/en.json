@@ -1,0 +1,26 @@
+{
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "subtitle": "Sign in to your account to continue",
+      "email": "Email",
+      "password": "Password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "signIn": "Sign In",
+      "signingIn": "Signing in...",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create account now",
+      "success": "Login successful!",
+      "successMessage": "Welcome back to MacTwo.",
+      "failed": "Login failed",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "passwordMaxLength": "Password cannot exceed 100 characters",
+      "passwordIncorrect": "Incorrect password",
+      "errorMessage": "An error occurred, please try again."
+    }
+  }
+}

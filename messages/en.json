@@ -52,6 +52,15 @@
       "dateOfBirthInvalid": "Invalid date of birth",
       "phoneNumberRequired": "Phone number is required",
       "phoneNumberInvalid": "Invalid phone number format"
+    },
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "subtitle": "Enter your email to reset your password",
+      "email": "Email",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email address",
+      "resetPassword": "Reset Password",
+      "resettingPassword": "Resetting password..."
     }
   },
   "datePicker": {

@@ -97,6 +97,15 @@
     "goBackHome": "Go Back Home"
   },
   "layout": {
+    "header": {
+      "search": "Search products...",
+      "cart": "Cart",
+      "login": "Login",
+      "logout": "Logout",
+      "profile": "Profile",
+      "orders": "My Orders",
+      "account": "Account"
+    },
     "footer": {
       "description": "In 2025, MacTwo became an authorized dealer of Apple. We develop a chain of standard stores and Apple Mono Stores to provide the best experience of Apple products and services to Vietnamese users.",
       "information": "Information",

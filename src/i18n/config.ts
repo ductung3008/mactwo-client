@@ -7,8 +7,3 @@ export const localeNames: Record<Locale, string> = {
   en: 'English',
   vi: 'Tiếng Việt',
 };
-
-export const localeFlags: Record<Locale, string> = {
-  en: '🇺🇸',
-  vi: '🇻🇳',
-};

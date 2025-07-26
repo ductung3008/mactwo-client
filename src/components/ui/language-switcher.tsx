@@ -1,8 +1,9 @@
 'use client';
 
 import { Button } from '@/components/ui';
-import { localeFlags, localeNames, locales, type Locale } from '@/i18n/config';
-import { ChevronDown, Globe } from 'lucide-react';
+import { localeNames, locales, type Locale } from '@/i18n/config';
+import { ChevronDown } from 'lucide-react';
+import Image from 'next/image';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
@@ -52,14 +53,26 @@ export function LanguageSwitcher() {
         variant='outline'
         size='sm'
         onClick={() => setIsOpen(!isOpen)}
-        className='flex min-w-[120px] items-center justify-between gap-2'
+        className='flex min-w-[120px] items-center justify-between gap-2 text-white hover:bg-white/10'
       >
         <div className='flex items-center gap-2'>
-          <Globe className='h-4 w-4' />
-          <span className='hidden sm:inline'>
-            {localeFlags[currentLocale]} {localeNames[currentLocale]}
+          <Image
+            src={`/locales/${currentLocale}.png`}
+            alt={`${currentLocale} flag`}
+            width={20}
+            height={20}
+            className='hidden sm:inline'
+          />
+          {localeNames[currentLocale]}
+          <span className='sm:hidden'>
+            <Image
+              src={`/locales/${currentLocale}.png`}
+              alt={`${currentLocale} flag`}
+              width={20}
+              height={20}
+              className='inline-block'
+            />
           </span>
-          <span className='sm:hidden'>{localeFlags[currentLocale]}</span>
         </div>
         <ChevronDown
           className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
@@ -70,21 +83,27 @@ export function LanguageSwitcher() {
         <div className='absolute top-full right-0 z-50 mt-1 min-w-[140px] rounded-md border bg-white shadow-lg'>
           <div className='py-1'>
             {locales.map(locale => (
-              <button
+              <Button
                 key={locale}
                 onClick={() => switchLanguage(locale)}
-                className={`flex w-full items-center gap-3 px-4 py-2 text-left text-sm hover:bg-gray-100 ${
+                className={`flex w-full items-center justify-start gap-3 bg-white px-4 py-2 text-left text-sm hover:bg-gray-100 ${
                   currentLocale === locale
                     ? 'bg-blue-50 text-blue-600'
                     : 'text-gray-700'
                 }`}
               >
-                <span className='text-lg'>{localeFlags[locale]}</span>
+                <Image
+                  src={`/locales/${locale}.png`}
+                  alt={`${locale} flag`}
+                  width={20}
+                  height={20}
+                  className='inline-block'
+                />
                 <span>{localeNames[locale]}</span>
                 {currentLocale === locale && (
                   <span className='ml-auto text-blue-600'>✓</span>
                 )}
-              </button>
+              </Button>
             ))}
           </div>
         </div>

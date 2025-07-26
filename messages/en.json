@@ -95,5 +95,38 @@
     "title": "Page Not Found",
     "description": "Sorry, the page you are looking for doesn't exist.",
     "goBackHome": "Go Back Home"
+  },
+  "layout": {
+    "header": {
+      "search": "Search products...",
+      "cart": "Cart",
+      "login": "Login",
+      "logout": "Logout",
+      "profile": "Profile",
+      "orders": "My Orders",
+      "account": "Account"
+    },
+    "footer": {
+      "description": "In 2025, MacTwo became an authorized dealer of Apple. We develop a chain of standard stores and Apple Mono Stores to provide the best experience of Apple products and services to Vietnamese users.",
+      "information": "Information",
+      "newsfeed": "News",
+      "introduction": "Introduction",
+      "paymentMethods": "Payment Methods",
+      "warranty": "Warranty",
+      "careers": "Careers",
+      "report": "Report",
+      "policy": "Policy",
+      "buyback": "Buyback",
+      "shipping": "Shipping",
+      "shippingZalopay": "Shipping (Zalopay)",
+      "cancelTransaction": "Cancel Transaction",
+      "return": "Return",
+      "informationProtection": "Information Protection",
+      "addressAndContact": "Address and Contact",
+      "myAccount": "My Account",
+      "myOrders": "My Orders",
+      "findStoreInGoogleMaps": "Find Store on Google Maps",
+      "storeSystem": "Store System"
+    }
   }
 }

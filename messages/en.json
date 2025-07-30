@@ -128,5 +128,11 @@
       "findStoreInGoogleMaps": "Find Store on Google Maps",
       "storeSystem": "Store System"
     }
+  },
+  "productItem": {
+    "new": "New",
+    "installment": "Installment 0%",
+    "hot": "Hot",
+    "promotion": "Save {percentage}%"
   }
 }

@@ -39,3 +39,8 @@ export { ToastProvider, useToast, useToastNotification } from './toast';
 export type { Toast, ToastType } from './toast';
 
 export { LanguageSwitcher } from './language-switcher';
+
+export { BannerSlider } from './banner-slider';
+
+export { ProductItem, ProductItemSkeleton } from './product-item';
+export type { ProductItemProps } from './product-item';

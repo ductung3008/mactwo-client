@@ -128,5 +128,11 @@
       "findStoreInGoogleMaps": "Tìm cửa hàng trên Google Maps",
       "storeSystem": "Hệ thống cửa hàng"
     }
+  },
+  "productItem": {
+    "new": "Mới",
+    "installment": "Trả góp 0%",
+    "hot": "Bán chạy",
+    "promotion": "Giảm {percentage}%"
   }
 }

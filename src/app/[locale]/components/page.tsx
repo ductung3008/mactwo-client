@@ -2,6 +2,7 @@
 
 import {
   AvatarSkeleton,
+  BannerSlider,
   Button,
   ButtonLoading,
   CardSkeleton,
@@ -21,6 +22,7 @@ import {
   TextSkeleton,
   useToastNotification,
 } from '@/components/ui';
+import { ProductItem } from '@/components/ui/product-item';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -39,6 +41,28 @@ export default function ComponentsPage() {
     setShowPageLoading(true);
     setTimeout(() => setShowPageLoading(false), 3000);
   };
+
+  // Sample banner data
+  const sampleBanners = [
+    {
+      id: '1',
+      image: '/auth/login.jpeg',
+      alt: 'MacBook Pro Special Offer',
+      href: '/products/macbook-pro',
+    },
+    {
+      id: '2',
+      image: '/auth/register.jpeg',
+      alt: 'Gaming Laptops Collection',
+      href: '/products/gaming',
+    },
+    {
+      id: '3',
+      image: '/auth/forgot-password.jpeg',
+      alt: 'Student Discounts',
+      href: '/student-deals',
+    },
+  ];
 
   return (
     <div className='min-h-screen bg-gray-50 py-8 text-gray-900'>
@@ -59,6 +83,12 @@ export default function ComponentsPage() {
 
         {/* Navigation */}
         <div className='mb-8 flex flex-wrap justify-center gap-2'>
+          <a
+            href='#banner-slider'
+            className='rounded-lg bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700 hover:bg-blue-200'
+          >
+            Banner Slider
+          </a>
           <a
             href='#buttons'
             className='rounded-lg bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700 hover:bg-blue-200'
@@ -98,6 +128,113 @@ export default function ComponentsPage() {
         </div>
 
         <div className='space-y-16'>
+          <section id='banner-slider' className='scroll-mt-8'>
+            <h2 className='mb-6 text-3xl font-bold text-gray-900'>
+              Banner Slider
+            </h2>
+            <div className='space-y-6'>
+              <div className='rounded-lg bg-white p-6 shadow-sm'>
+                <div className='mb-6'>
+                  <h4 className='mb-3 font-medium'>
+                    Default Slider (with dots, auto-play)
+                  </h4>
+                  <BannerSlider
+                    banners={sampleBanners}
+                    height={300}
+                    className='shadow-lg'
+                  />
+                </div>
+
+                <div className='mb-6'>
+                  <h4 className='mb-3 font-medium'>Without Dot Indicators</h4>
+                  <BannerSlider
+                    banners={sampleBanners}
+                    height={250}
+                    showDots={false}
+                    className='shadow-lg'
+                  />
+                </div>
+
+                <div className='mb-6'>
+                  <h4 className='mb-3 font-medium'>Manual Navigation Only</h4>
+                  <BannerSlider
+                    banners={sampleBanners}
+                    height={250}
+                    autoPlay={false}
+                    className='shadow-lg'
+                  />
+                </div>
+
+                <div className='mb-6'>
+                  <h4 className='mb-3 font-medium'>With Aspect Ratio (16:9)</h4>
+                  <BannerSlider
+                    banners={sampleBanners}
+                    aspectRatio='16/9'
+                    autoPlayInterval={3000}
+                    className='shadow-lg'
+                  />
+                </div>
+              </div>
+
+              <div className='rounded-lg border border-blue-200 bg-blue-50 p-6'>
+                <div className='mt-6 rounded-lg bg-gray-100 p-4'>
+                  <h4 className='mb-2 font-medium'>Usage:</h4>
+                  <pre className='overflow-x-auto text-sm'>
+                    {`import { BannerSlider } from '@/components/ui';
+
+const banners = [
+  {
+    id: '1',
+    image: '/banner1.jpg',
+    alt: 'Product Banner',
+    href: '/products/laptop',
+  },
+  // ... more banners
+];
+
+<BannerSlider
+  banners={banners}
+  height={400}
+  showDots={true}
+  autoPlay={true}
+  autoPlayInterval={5000}
+  className="shadow-lg"
+/>`}
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id='product-item' className='scroll-mt-8'>
+            <h2 className='mb-6 text-3xl font-bold text-gray-900'>
+              Product Item Component
+            </h2>
+            <div className='grid grid-cols-4 gap-6 rounded-lg'>
+              {Array.from({ length: 4 }).map((_, index) => (
+                <ProductItem
+                  key={index}
+                  id='1'
+                  name='MacBook Pro 16"'
+                  code='macbook-pro-16'
+                  categoryName='laptops'
+                  oldPrice={26999000}
+                  newPrice={25090000}
+                  imageUrl='/mactwo-logo-trans.png'
+                  promotionPercentage={10}
+                  tag={
+                    index % 3 === 0
+                      ? 'new'
+                      : index % 3 === 1
+                        ? 'installment'
+                        : 'hot'
+                  }
+                  className='w-full max-w-sm'
+                />
+              ))}
+            </div>
+          </section>
+
           {/* Buttons Section */}
           <section id='buttons' className='scroll-mt-8'>
             <h2 className='mb-6 text-3xl font-bold text-gray-900'>Buttons</h2>

@@ -20,8 +20,6 @@ export interface ProductItemProps {
   tag?: 'new' | 'installment' | 'hot' | string;
   className?: string;
   href?: string;
-  showOldPrice?: boolean;
-  showPromotion?: boolean;
   customTag?: ReactNode;
   imageClassName?: string;
   contentClassName?: string;
@@ -46,8 +44,6 @@ export function ProductItem({
   tag,
   className,
   href,
-  showOldPrice = true,
-  showPromotion = true,
   customTag,
   imageClassName,
   contentClassName,
@@ -175,7 +171,7 @@ export function ProductItem({
           </div>
           <div className='flex items-center justify-between'>
             <Skeleton height={18} width={80} />
-            {showOldPrice && <Skeleton height={16} width={60} />}
+            <Skeleton height={16} width={60} />
           </div>
         </div>
       );
@@ -185,9 +181,10 @@ export function ProductItem({
       <div className={cn(contentClassName)}>
         <h3
           className={cn(
-            'max-h-14 min-h-14 text-lg leading-7 font-bold',
+            'line-clamp-2 max-h-14 min-h-14 overflow-hidden text-lg leading-7 font-bold text-ellipsis',
             titleClassName
           )}
+          title={name}
         >
           {name}
         </h3>
@@ -200,7 +197,7 @@ export function ProductItem({
           <span className='mr-1 text-base font-bold text-[#0066cc]'>
             {formattedNewPrice}
           </span>
-          {showOldPrice && oldPrice && oldPrice !== newPrice && (
+          {!!oldPrice && oldPrice > 0 && oldPrice !== newPrice && (
             <span className='mx-1 text-sm text-gray-500 line-through'>
               {formattedOldPrice}
             </span>
@@ -217,7 +214,7 @@ export function ProductItem({
       </div>
 
       <div>
-        {showPromotion && promotionPercentage && (
+        {!!promotionPercentage && promotionPercentage > 0 && (
           <span className='absolute top-0 -left-1 flex h-8 w-21 justify-center bg-[url("/price-ratio.png")] bg-cover bg-no-repeat pt-1.5 text-xs font-bold text-white'>
             {loading ? '' : t('promotion', { percentage: promotionPercentage })}
           </span>
@@ -234,7 +231,7 @@ export function ProductItem({
       href={linkHref}
       data-product-id={id}
       className={cn(
-        'relative size-full rounded-xl px-5 pt-6 pb-4 shadow-lg transition-shadow duration-300 hover:shadow-2xl',
+        'relative size-full rounded-xl bg-white px-5 pt-6 pb-4 shadow-lg transition-shadow duration-300 hover:shadow-2xl',
         loading && 'pointer-events-none',
         className
       )}
@@ -244,15 +241,7 @@ export function ProductItem({
   );
 }
 
-export function ProductItemSkeleton({
-  className,
-  showOldPrice = true,
-  showPromotion = true,
-}: {
-  className?: string;
-  showOldPrice?: boolean;
-  showPromotion?: boolean;
-}) {
+export function ProductItemSkeleton({ className }: { className?: string }) {
   return (
     <div
       className={cn(
@@ -265,13 +254,11 @@ export function ProductItemSkeleton({
       </div>
 
       <div className='relative'>
-        {showPromotion && (
-          <Skeleton
-            width={60}
-            height={32}
-            className='absolute top-0 -left-1 rounded-r-lg'
-          />
-        )}
+        <Skeleton
+          width={60}
+          height={32}
+          className='absolute top-0 -left-1 rounded-r-lg'
+        />
         <Skeleton
           width={50}
           height={28}
@@ -286,7 +273,7 @@ export function ProductItemSkeleton({
         </div>
         <div className='flex items-center justify-between'>
           <Skeleton height={18} width={80} />
-          {showOldPrice && <Skeleton height={16} width={60} />}
+          <Skeleton height={16} width={60} />
         </div>
       </div>
     </div>

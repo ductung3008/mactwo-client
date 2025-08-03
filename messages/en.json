@@ -134,5 +134,8 @@
     "installment": "Installment 0%",
     "hot": "Hot",
     "promotion": "Save {percentage}%"
+  },
+  "homepage": {
+    "viewAll": "View All"
   }
 }

@@ -134,5 +134,8 @@
     "installment": "Trả góp 0%",
     "hot": "Bán chạy",
     "promotion": "Giảm {percentage}%"
+  },
+  "homepage": {
+    "viewAll": "Xem tất cả"
   }
 }

@@ -137,5 +137,17 @@
   },
   "homepage": {
     "viewAll": "Xem tất cả"
+  },
+  "categoryPage": {
+    "findSuitableProducts": {
+      "line1": "Tìm {category}",
+      "line2": "phù hợp với bạn"
+    },
+    "accessoriesSuggestion": {
+      "line1": "Phụ kiện {category}",
+      "line2": "thường mua kèm"
+    },
+    "compare": "So sánh các {category}",
+    "findAccessories": "Tìm phụ kiện"
   }
 }

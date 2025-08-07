@@ -1,0 +1,13 @@
+@import 'tailwindcss';
+
+.description {
+  h2 {
+    @apply mt-6 mb-4 text-2xl leading-tight font-bold text-gray-800;
+  }
+  ul {
+    @apply my-5 ml-10;
+  }
+  li {
+    @apply list-disc;
+  }
+}

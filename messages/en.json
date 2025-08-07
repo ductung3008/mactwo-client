@@ -137,5 +137,17 @@
   },
   "homepage": {
     "viewAll": "View All"
+  },
+  "categoryPage": {
+    "findSuitableProducts": {
+      "line1": "Find {category}",
+      "line2": "suitable for you"
+    },
+    "accessoriesSuggestion": {
+      "line1": "Accessories {category}",
+      "line2": "buy with"
+    },
+    "compare": "Compare {category}",
+    "findAccessories": "Find Accessories"
   }
 }

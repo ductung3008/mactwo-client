@@ -8,7 +8,7 @@ export default function HomePage() {
   const t = useTranslations('homepage');
 
   return (
-    <main className='min-h-screen bg-gray-50'>
+    <main className='min-h-screen'>
       <BannerSlider
         banners={mainBanners}
         aspectRatio='16 / 9'

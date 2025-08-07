@@ -14,6 +14,12 @@ export default async function RootLayout({
 }) {
   return (
     <html>
+      <head>
+        <link
+          href='https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css'
+          rel='stylesheet'
+        />
+      </head>
       <body className={`${inter.className} min-h-screen antialiased`}>
         <Suspense fallback={<PageLoading />}>{children}</Suspense>
       </body>

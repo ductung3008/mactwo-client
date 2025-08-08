@@ -23,9 +23,7 @@ export default function ProductTabs() {
       case 'specs':
         return <Specifications />;
       case 'details':
-        return (
-          <ProductDetail/>
-        );
+        return <ProductDetail />;
       case 'compare':
         return (
           <p className='text-gray-700'>
@@ -61,7 +59,7 @@ export default function ProductTabs() {
   return (
     <div className='mt-12'>
       {/* Tab Buttons */}
-      <div className='flex flex-wrap justify-center gap-3 mb-6'>
+      <div className='mb-6 flex flex-wrap justify-center gap-3'>
         {tabs.map(tab => (
           <button
             key={tab.key}

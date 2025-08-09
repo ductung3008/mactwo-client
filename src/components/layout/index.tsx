@@ -1,4 +1,5 @@
 'use client';
+// Breadcrumbs dùng chung cho mọi trang
 
 import MacTwoLogoTransWhite from '@/../public/mactwo-logo-trans-white.png';
 import MacTwoLogo from '@/../public/mactwo-logo.png';
@@ -21,6 +22,7 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { FormEvent, memo, useCallback, useMemo, useState } from 'react';
 import { Button, Input, LanguageSwitcher } from '../ui';
+import { AutoBreadcrumbs } from '../ui/breadcrumbs';
 
 const CATEGORIES = [
   { name: 'iPhone', link: '/iphone' },
@@ -501,6 +503,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className='flex min-h-screen flex-col'>
       <Header />
+      <div className='max-w-7xl px-4 pt-6 sm:px-6 lg:px-8'>
+        <AutoBreadcrumbs />
+      </div>
+
       <main className='flex-1 bg-gray-50'>{children}</main>
       <FloatingButton />
       <Footer />

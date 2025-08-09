@@ -2,7 +2,9 @@ export const products = [
   {
     id: '1',
     name: 'iPhone 16e 128GB',
+    code: 'iphone-16',
     newPrice: 15990000,
+    categoryName: 'iphone',
     oldPrice: 16999000,
     imageUrl:
       'https://shopdunk.com/images/thumbs/0034910_iphone-16e-128gb_240.png',

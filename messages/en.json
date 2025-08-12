@@ -3,7 +3,7 @@
     "login": {
       "title": "Sign In",
       "subtitle": "Sign in to your account to continue",
-      "email": "Email",
+      "emailOrPhone": "Email or Phone",
       "password": "Password",
       "rememberMe": "Remember me",
       "forgotPassword": "Forgot password?",
@@ -11,11 +11,12 @@
       "signingIn": "Signing in...",
       "noAccount": "Don't have an account?",
       "createAccount": "Create account now",
-      "success": "Login successful!",
+      "success": "Sign In successful!",
       "successMessage": "Welcome back to MacTwo.",
-      "failed": "Login failed",
-      "emailRequired": "Email is required",
-      "emailInvalid": "Invalid email address",
+      "failed": "Sign In failed",
+      "error": "Email/Phone or password is incorrect",
+      "emailOrPhoneRequired": "Email or phone number is required",
+      "emailOrPhoneInvalid": "Invalid email or phone number",
       "passwordRequired": "Password is required",
       "passwordMinLength": "Password must be at least 6 characters",
       "passwordMaxLength": "Password cannot exceed 100 characters",
@@ -51,7 +52,9 @@
       "dateOfBirthRequired": "Date of birth is required",
       "dateOfBirthInvalid": "Invalid date of birth",
       "phoneNumberRequired": "Phone number is required",
-      "phoneNumberInvalid": "Invalid phone number format"
+      "phoneNumberInvalid": "Invalid phone number format",
+      "registrationSuccess": "Registration successful! Welcome to MacTwo.",
+      "error": "An error occurred during registration, please try again."
     },
     "forgotPassword": {
       "title": "Forgot Password",
@@ -61,7 +64,17 @@
       "emailInvalid": "Invalid email address",
       "resetPassword": "Reset Password",
       "resettingPassword": "Resetting password..."
-    }
+    },
+    "verify": {
+      "title": "Verify Your Account",
+      "subtitle": "Please enter the verification code sent to your email",
+      "enterCode": "Enter verification code",
+      "verify": "Verify",
+      "verifying": "Verifying...",
+      "verificationSuccess": "Email verified successfully!",
+      "verificationFailed": "Verification failed"
+    },
+    "registrationFailed": "Registration failed"
   },
   "datePicker": {
     "placeholder": "Select date",
@@ -100,7 +113,7 @@
     "header": {
       "search": "Search products...",
       "cart": "Cart",
-      "login": "Login",
+      "login": "Sign In",
       "logout": "Logout",
       "profile": "Profile",
       "orders": "My Orders",

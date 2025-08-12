@@ -4,7 +4,7 @@
 import MacTwoLogoTransWhite from '@/../public/mactwo-logo-trans-white.png';
 import MacTwoLogo from '@/../public/mactwo-logo.png';
 import { Link } from '@/i18n/navigation';
-import { useAuthStore } from '@/stores/auth-store';
+import { useAuthStore } from '@/stores/auth.store';
 import {
   ChevronDown,
   ChevronUp,

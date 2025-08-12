@@ -116,7 +116,7 @@ const ToastItem: React.FC<ToastItemProps> = ({ toast, onRemove }) => {
       <div
         className={`relative w-full max-w-sm rounded-lg border-l-4 bg-white p-4 shadow-lg ${getBorderColor()} `}
       >
-        <div className='flex items-start'>
+        <div className='flex items-center'>
           <div className='flex-shrink-0'>{getIcon()}</div>
           <div className='ml-3 flex-1'>
             <h4 className='text-sm font-semibold text-gray-900'>

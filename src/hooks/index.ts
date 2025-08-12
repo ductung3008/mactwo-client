@@ -69,9 +69,8 @@ export function useAuth() {
         return false;
       }
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : t('verify.verificationFailed')
-      );
+      console.error('Verification error:', err);
+      setError(t('verify.verificationFailed'));
       return false;
     } finally {
       setLocalLoading(false);

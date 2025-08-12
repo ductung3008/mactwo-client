@@ -124,7 +124,9 @@ export function OtpInput({
           } ${disabled ? 'cursor-not-allowed opacity-50' : 'hover:border-gray-400'} `}
         >
           <input
-            ref={el => (inputRefs.current[index] = el)}
+            ref={el => {
+              inputRefs.current[index] = el;
+            }}
             type='text'
             inputMode='numeric'
             maxLength={1}

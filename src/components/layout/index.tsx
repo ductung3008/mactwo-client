@@ -4,7 +4,7 @@
 import MacTwoLogoTransWhite from '@/../public/mactwo-logo-trans-white.png';
 import MacTwoLogo from '@/../public/mactwo-logo.png';
 import { Link } from '@/i18n/navigation';
-import { useAuthStore } from '@/stores/auth-store';
+import { useAuthStore } from '@/stores/auth.store';
 import {
   ChevronDown,
   ChevronUp,
@@ -107,7 +107,9 @@ const MemoizedUserDropdown = memo(
     <div className='group relative'>
       <button className='flex items-center space-x-2 text-white transition-colors hover:text-white/80'>
         <User className='h-5 w-5' />
-        <span className='text-sm font-medium'>{user?.name || accountText}</span>
+        <span className='text-sm font-medium'>
+          {user?.fullName || accountText}
+        </span>
         <ChevronDown className='h-4 w-4' />
       </button>
       <div className='invisible absolute top-full right-0 mt-2 w-48 rounded-lg bg-white py-2 opacity-0 shadow-lg transition-all duration-200 group-hover:visible group-hover:opacity-100'>
@@ -356,7 +358,7 @@ export const Header = memo(() => {
                       onClick={closeMobileMenu}
                     >
                       <User className='h-5 w-5' />
-                      <span>{user?.name}</span>
+                      <span>{user?.fullName}</span>
                     </Link>
                     <button
                       onClick={handleMobileLogout}

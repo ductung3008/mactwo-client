@@ -1,5 +1,5 @@
+import { useAuthStore } from '@/stores/auth.store';
 import axios from 'axios';
-import { useAuthStore } from '@/stores/auth-store';
 
 // Create axios instance
 export const api = axios.create({
@@ -27,6 +27,9 @@ api.interceptors.request.use(
 // Response interceptor for handling errors
 api.interceptors.response.use(
   response => {
+    if (response.data.status === 'SUCCESS') {
+      response.data.success = true;
+    }
     return response;
   },
   error => {

@@ -44,3 +44,5 @@ export { BannerSlider } from './banner-slider';
 
 export { ProductItem, ProductItemSkeleton } from './product-item';
 export type { ProductItemProps } from './product-item';
+
+export { OtpInput } from './otp-input';

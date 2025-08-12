@@ -1,60 +1,36 @@
 'use client';
 
-import { Button, DatePicker, Input } from '@/components/ui';
+import {
+  Button,
+  DatePicker,
+  Input,
+  useToastNotification,
+} from '@/components/ui';
 import { Gender } from '@/constants';
-import { Link } from '@/i18n/navigation';
+import { useAuth } from '@/hooks';
+import { Link, useRouter } from '@/i18n/navigation';
+import { createRegisterSchema, RegisterFormData } from '@/schemas/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 
 export default function RegisterPage() {
   const t = useTranslations('auth.register');
-  // const toast = useToastNotification();
-  // const {
-  //   register: registerAccount,
-  //   loading,
-  //   error,
-  //   isAuthenticated,
-  // } = useAuth();
+  const toast = useToastNotification();
+  const router = useRouter();
+  const {
+    register: registerAccount,
+    loading,
+    error,
+    setError,
+    isAuthenticated,
+  } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  // Register validation schema
-  const registerSchema = z
-    .object({
-      fullName: z.string().min(1, t('fullNameRequired')),
-      email: z.string().min(1, t('emailRequired')).email(t('emailInvalid')),
-      password: z
-        .string()
-        .min(6, t('passwordMinLength'))
-        .max(100, t('passwordMaxLength')),
-      confirmPassword: z.string().min(6, t('confirmPasswordRequired')),
-      gender: z.enum(Gender, {
-        message: t('genderRequired'),
-      }),
-      dateOfBirth: z
-        .string()
-        .min(1, t('dateOfBirthRequired'))
-        .refine(value => !isNaN(Date.parse(value)), {
-          message: t('dateOfBirthInvalid'),
-          path: ['dateOfBirth'],
-        })
-        .transform(value => new Date(value).toISOString().split('T')[0]),
-      phoneNumber: z
-        .string()
-        .min(1, t('phoneNumberRequired'))
-        .regex(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, t('phoneNumberInvalid')),
-    })
-    .refine(data => data.password === data.confirmPassword, {
-      message: t('confirmPasswordMismatch'),
-      path: ['confirmPassword'],
-    });
-
-  type RegisterFormData = z.infer<typeof registerSchema>;
+  const registerSchema = createRegisterSchema(t);
 
   const {
     register,
@@ -75,16 +51,37 @@ export default function RegisterPage() {
     },
   });
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/');
+    }
+  }, [isAuthenticated, router]);
+
   const onSubmit = async (data: RegisterFormData) => {
-    console.log('Registering user:', data);
+    try {
+      const result = await registerAccount(data);
+
+      if (result.success) {
+        toast.success(t('registrationSuccess'));
+        router.push(`/verify?email=${encodeURIComponent(data.email)}`);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t('registrationFailed'));
+    }
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(t('error'));
+      setError(null);
+    }
+  }, [error, toast, setError, t]);
 
   return (
     <div className='flex min-h-fit items-center justify-center px-4 py-12 sm:px-6 lg:px-8'>
       <div className='w-full max-w-6xl'>
         <div className='overflow-hidden rounded-lg'>
           <div className='flex flex-col items-center lg:flex-row lg:*:w-1/2'>
-            {/* Left side - Image */}
             <div>
               <Image
                 src='/auth/register.jpeg'
@@ -96,7 +93,6 @@ export default function RegisterPage() {
               />
             </div>
 
-            {/* Right side - Form */}
             <div className='flex flex-1 flex-col justify-center px-6 py-12 lg:w-1/2 lg:px-12'>
               <div className='mx-auto w-full max-w-md'>
                 <div className='mb-8'>
@@ -107,7 +103,6 @@ export default function RegisterPage() {
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
-                  {/* Full Name Field */}
                   <div>
                     <label
                       htmlFor='fullName'
@@ -133,7 +128,6 @@ export default function RegisterPage() {
                     )}
                   </div>
 
-                  {/* Email Field */}
                   <div>
                     <label
                       htmlFor='email'
@@ -159,7 +153,6 @@ export default function RegisterPage() {
                     )}
                   </div>
 
-                  {/* Gender Field */}
                   <div>
                     <label
                       htmlFor='gender'
@@ -221,7 +214,6 @@ export default function RegisterPage() {
                     )}
                   </div>
 
-                  {/* Date of Birth Field */}
                   <div>
                     <label
                       htmlFor='dateOfBirth'
@@ -261,7 +253,6 @@ export default function RegisterPage() {
                     )}
                   </div>
 
-                  {/* Phone Number Field */}
                   <div>
                     <label
                       htmlFor='phoneNumber'
@@ -287,7 +278,6 @@ export default function RegisterPage() {
                     )}
                   </div>
 
-                  {/* Password Field */}
                   <div>
                     <label
                       htmlFor='password'
@@ -327,7 +317,6 @@ export default function RegisterPage() {
                     )}
                   </div>
 
-                  {/* Confirm Password Field */}
                   <div>
                     <label
                       htmlFor='confirmPassword'
@@ -368,14 +357,13 @@ export default function RegisterPage() {
                     )}
                   </div>
 
-                  {/* Submit Button */}
                   <Button
                     type='submit'
                     className='w-full'
                     size='lg'
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || loading}
                   >
-                    {isSubmitting ? (
+                    {isSubmitting || loading ? (
                       <div className='flex items-center gap-2'>
                         <div className='h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent' />
                         {t('signingUp')}
@@ -385,7 +373,6 @@ export default function RegisterPage() {
                     )}
                   </Button>
 
-                  {/* Sign in link */}
                   <div className='text-center'>
                     <p className='text-sm text-gray-600'>
                       {t('hasAccount')}{' '}

@@ -3,6 +3,7 @@
 import { Button, Input, useToastNotification } from '@/components/ui';
 import { useAuth } from '@/hooks';
 import { Link } from '@/i18n/navigation';
+import { createLoginSchema } from '@/schemas/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -17,36 +18,25 @@ export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const toast = useToastNotification();
-  const { login, loading, error, isAuthenticated } = useAuth();
+  const { login, loading, error, setError, isAuthenticated } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
-  // Create dynamic validation schema with translations
-  const loginSchema = z.object({
-    email: z.string().min(1, t('emailRequired')).email(t('emailInvalid')),
-    password: z
-      .string()
-      .min(6, t('passwordMinLength'))
-      .max(100, t('passwordMaxLength')),
-    rememberMe: z.boolean().optional(),
-  });
-
+  const loginSchema = createLoginSchema(t);
   type LoginFormData = z.infer<typeof loginSchema>;
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    setError,
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: '',
+      emailOrPhone: '',
       password: '',
       rememberMe: false,
     },
   });
 
-  // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
       const returnUrl = searchParams.get('returnUrl') || '/';
@@ -54,11 +44,10 @@ export default function LoginPage() {
     }
   }, [isAuthenticated, router, searchParams]);
 
-  // Handle form submission
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const { email, password } = data;
-      const success = await login({ email, password });
+      const { emailOrPhone, password } = data;
+      const success = await login({ emailOrPhone, password });
 
       if (success) {
         toast.success(t('success'), t('successMessage'));
@@ -67,30 +56,22 @@ export default function LoginPage() {
         router.push(returnUrl);
       }
     } catch (err) {
-      // Handle specific error cases
-      if (err instanceof Error) {
-        if (err.message) {
-          setError('password', { message: t('passwordIncorrect') });
-        } else {
-          toast.error(t('failed'), err.message || t('errorMessage'));
-        }
-      }
+      setError(err instanceof Error ? err.message : t('failed'));
     }
   };
 
-  // Show global error from auth hook
   useEffect(() => {
     if (error) {
-      toast.error(t('failed'), error);
+      toast.error(t('failed'), t('error'));
+      setError(null);
     }
-  }, [error, toast, t]);
+  }, [error, toast, setError, t]);
 
   return (
     <div className='flex min-h-fit items-center justify-center px-4 py-12 sm:px-6 lg:px-8'>
       <div className='w-full max-w-6xl'>
         <div className='overflow-hidden rounded-lg'>
           <div className='flex flex-col items-center lg:flex-row lg:*:w-1/2'>
-            {/* Left side - Image */}
             <div>
               <Image
                 src='/auth/login.jpeg'
@@ -102,7 +83,6 @@ export default function LoginPage() {
               />
             </div>
 
-            {/* Right side - Form */}
             <div className='flex flex-1 flex-col justify-center px-6 py-12 lg:w-1/2 lg:px-12'>
               <div className='mx-auto w-full max-w-md'>
                 <div className='mb-8'>
@@ -113,34 +93,32 @@ export default function LoginPage() {
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
-                  {/* Email Field */}
                   <div>
                     <label
-                      htmlFor='email'
+                      htmlFor='emailOrPhone'
                       className='mb-2 block text-sm font-medium text-gray-700'
                     >
-                      {t('email')}
+                      {t('emailOrPhone')}
                     </label>
                     <Input
-                      id='email'
-                      type='email'
+                      id='emailOrPhone'
+                      type='text'
                       autoComplete='email'
-                      placeholder={t('email')}
-                      {...register('email')}
+                      placeholder={t('emailOrPhone')}
+                      {...register('emailOrPhone')}
                       className={
-                        errors.email
+                        errors.emailOrPhone
                           ? 'border-red-500 focus:border-red-500'
                           : ''
                       }
                     />
-                    {errors.email && (
+                    {errors.emailOrPhone && (
                       <p className='mt-1 text-sm text-red-600'>
-                        {errors.email.message}
+                        {errors.emailOrPhone.message}
                       </p>
                     )}
                   </div>
 
-                  {/* Password Field */}
                   <div>
                     <label
                       htmlFor='password'
@@ -180,7 +158,6 @@ export default function LoginPage() {
                     )}
                   </div>
 
-                  {/* Remember me & Forgot password */}
                   <div className='flex items-center justify-between'>
                     <div className='flex items-center'>
                       <input
@@ -204,7 +181,6 @@ export default function LoginPage() {
                     </Link>
                   </div>
 
-                  {/* Submit Button */}
                   <Button
                     type='submit'
                     className='w-full'
@@ -221,7 +197,6 @@ export default function LoginPage() {
                     )}
                   </Button>
 
-                  {/* Sign up link */}
                   <div className='text-center'>
                     <p className='text-sm text-gray-600'>
                       {t('noAccount')}{' '}

@@ -3,6 +3,7 @@
 
 import MacTwoLogoTransWhite from '@/../public/mactwo-logo-trans-white.png';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -26,12 +27,13 @@ export default function AdminLayout({
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { logout } = useAuth();
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
   const closeSidebar = () => setSidebarOpen(false);
 
   const handleLogout = () => {
-    localStorage.removeItem('adminToken');
+    logout();
     router.push('/admin/login');
   };
 

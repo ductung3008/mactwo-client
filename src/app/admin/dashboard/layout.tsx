@@ -10,9 +10,12 @@ import { useState } from 'react';
 
 const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: '🏠' },
-  { name: 'Products', href: '/admin/products', icon: '💻' },
-  { name: 'Orders', href: '/admin/orders', icon: '🧾' },
-  { name: 'Reports', href: '/admin/reports', icon: '📊' },
+  { name: 'Products', href: '/admin/dashboard/products', icon: '💻' },
+  { name: 'Categories', href: '/admin/dashboard/categories', icon: '🗂️' },
+  { name: 'Orders', href: '/admin/dashboard/orders', icon: '🧾' },
+  { name: 'Promotions', href: '/admin/dashboard/promotions', icon: '🎁' },
+  { name: 'Users', href: '/admin/dashboard/users', icon: '👤' },
+  { name: 'Reports', href: '/admin/dashboard/reports', icon: '📊' },
 ];
 
 export default function AdminLayout({

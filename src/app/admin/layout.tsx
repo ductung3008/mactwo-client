@@ -1,9 +1,7 @@
 'use client';
 
-import { Role } from '@/constants';
 import { useAuth } from '@/hooks';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 export default function AdminLayout({
   children,
@@ -14,17 +12,17 @@ export default function AdminLayout({
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    if (!loading) {
-      if (!isAuthenticated || user?.role !== Role.Admin) {
-        router.push('/admin/login');
-      }
-    }
+  // useEffect(() => {
+  //   if (!loading) {
+  //     if (!isAuthenticated || user?.role !== Role.Admin) {
+  //       router.push('/admin/dashboard');
+  //     }
+  //   }
 
-    if (!loading && isAuthenticated && user?.role === Role.Admin) {
-      router.push('/admin/dashboard');
-    }
-  }, [loading, isAuthenticated, user, pathname, router]);
+  //   if (!loading && isAuthenticated && user?.role === Role.Admin) {
+  //     router.push('/admin/dashboard');
+  //   }
+  // }, [loading, isAuthenticated, user, pathname, router]);
 
   return <>{children}</>;
 }

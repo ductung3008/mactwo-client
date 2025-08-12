@@ -77,6 +77,28 @@ export function useAuth() {
     }
   };
 
+  const handleGetProfile = async () => {
+    try {
+      setLocalLoading(true);
+      setError(null);
+      const response = await authApi.getProfile();
+
+      if (response.success) {
+        login(response.data, useAuthStore.getState().token || '');
+        return response.data;
+      } else {
+        setError(response.message || t('profileFetchFailed'));
+        return null;
+      }
+    } catch (err) {
+      console.error('Profile fetch error:', err);
+      setError(err instanceof Error ? err.message : t('profileFetchFailed'));
+      return null;
+    } finally {
+      setLocalLoading(false);
+    }
+  };
+
   const handleLogout = () => {
     logout();
     setError(null);
@@ -91,6 +113,7 @@ export function useAuth() {
     login: handleLogin,
     register: handleRegister,
     verifyOtp: handleVerifyOtp,
+    getProfile: handleGetProfile,
     logout: handleLogout,
   };
 }

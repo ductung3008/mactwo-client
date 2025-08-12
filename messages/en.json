@@ -74,7 +74,8 @@
       "verificationSuccess": "Email verified successfully!",
       "verificationFailed": "Verification failed"
     },
-    "registrationFailed": "Registration failed"
+    "registrationFailed": "Registration failed",
+    "profileFetchFailed": "Failed to fetch profile information"
   },
   "datePicker": {
     "placeholder": "Select date",

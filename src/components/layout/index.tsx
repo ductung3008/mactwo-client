@@ -3,6 +3,7 @@
 
 import MacTwoLogoTransWhite from '@/../public/mactwo-logo-trans-white.png';
 import MacTwoLogo from '@/../public/mactwo-logo.png';
+import { useAuth } from '@/hooks';
 import { Link } from '@/i18n/navigation';
 import { useAuthStore } from '@/stores/auth.store';
 import {
@@ -20,7 +21,14 @@ import {
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { FormEvent, memo, useCallback, useMemo, useState } from 'react';
+import {
+  FormEvent,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { Button, Input, LanguageSwitcher } from '../ui';
 import { AutoBreadcrumbs } from '../ui/breadcrumbs';
 
@@ -155,9 +163,17 @@ MemoizedNavigation.displayName = 'MemoizedNavigation';
 export const Header = memo(() => {
   const t = useTranslations('layout.header');
   const { user, isAuthenticated, logout } = useAuthStore();
+  const { getProfile } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      getProfile();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated]);
 
   const translations = useMemo(
     () => ({

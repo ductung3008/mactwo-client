@@ -74,7 +74,8 @@
       "verificationSuccess": "Xác thực thành công!",
       "verificationFailed": "Xác thực thất bại"
     },
-    "registrationFailed": "Đăng ký không thành công"
+    "registrationFailed": "Đăng ký không thành công",
+    "profileFetchFailed": "Không thể tải thông tin hồ sơ"
   },
   "datePicker": {
     "placeholder": "Chọn ngày",

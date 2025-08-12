@@ -28,6 +28,11 @@ export const authApi = {
     return response.data;
   },
 
+  async getProfile(): Promise<ApiResponse<User>> {
+    const response = await api.get('/user/me');
+    return response.data;
+  },
+
   async forgotPassword(email: string): Promise<ApiResponse<null>> {
     const response = await api.post('/auth/forgot-password', { email });
     return response.data;

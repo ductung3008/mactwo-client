@@ -63,14 +63,15 @@ export function useAuth() {
       const response = await authApi.verifyRegister(email, token);
 
       if (response.success) {
-        login(response.data.user, response.data.token);
         return true;
       } else {
         setError(response.message || t('verify.verificationFailed'));
         return false;
       }
     } catch (err) {
-      setError(t('verify.verificationFailed'));
+      setError(
+        err instanceof Error ? err.message : t('verify.verificationFailed')
+      );
       return false;
     } finally {
       setLocalLoading(false);

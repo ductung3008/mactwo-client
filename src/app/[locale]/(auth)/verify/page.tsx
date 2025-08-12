@@ -33,7 +33,7 @@ export default function VerifyPage() {
 
       if (success) {
         toast.success(t('verificationSuccess'));
-        router.push('/?verified=true');
+        router.push('/login');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : t('verificationFailed'));

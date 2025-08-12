@@ -3,7 +3,7 @@
     "login": {
       "title": "Đăng nhập",
       "subtitle": "Đăng nhập vào tài khoản của bạn để tiếp tục",
-      "email": "Email",
+      "emailOrPhone": "Email hoặc Số điện thoại",
       "password": "Mật khẩu",
       "rememberMe": "Ghi nhớ đăng nhập",
       "forgotPassword": "Quên mật khẩu?",
@@ -14,8 +14,9 @@
       "success": "Đăng nhập thành công!",
       "successMessage": "Chào mừng bạn trở lại với MacTwo.",
       "failed": "Đăng nhập thất bại",
-      "emailRequired": "Email là bắt buộc",
-      "emailInvalid": "Email không hợp lệ",
+      "error": "Email/Số điện thoại hoặc mật khẩu không đúng",
+      "emailOrPhoneRequired": "Email hoặc Số điện thoại là bắt buộc",
+      "emailOrPhoneInvalid": "Số điện thoại hoặc email không hợp lệ",
       "passwordRequired": "Mật khẩu là bắt buộc",
       "passwordMinLength": "Mật khẩu phải có ít nhất 6 ký tự",
       "passwordMaxLength": "Mật khẩu không được quá 100 ký tự",
@@ -51,7 +52,9 @@
       "dateOfBirthRequired": "Ngày sinh là bắt buộc",
       "dateOfBirthInvalid": "Ngày sinh không hợp lệ",
       "phoneNumberRequired": "Số điện thoại là bắt buộc",
-      "phoneNumberInvalid": "Số điện thoại không hợp lệ"
+      "phoneNumberInvalid": "Số điện thoại không hợp lệ",
+      "registrationSuccess": "Đăng ký thành công! Chào mừng bạn đến với MacTwo.",
+      "error": "Đã xảy ra lỗi trong quá trình đăng ký, vui lòng thử lại."
     },
     "forgotPassword": {
       "title": "Quên Mật Khẩu",
@@ -61,7 +64,17 @@
       "emailInvalid": "Email không hợp lệ",
       "resetPassword": "Đặt Lại Mật Khẩu",
       "resettingPassword": "Đang đặt lại mật khẩu..."
-    }
+    },
+    "verify": {
+      "title": "Xác Thực Tài Khoản",
+      "subtitle": "Vui lòng nhập mã xác thực được gửi đến email của bạn",
+      "enterCode": "Nhập mã xác thực",
+      "verify": "Xác thực",
+      "verifying": "Đang xác thực...",
+      "verificationSuccess": "Xác thực thành công!",
+      "verificationFailed": "Xác thực thất bại"
+    },
+    "registrationFailed": "Đăng ký không thành công"
   },
   "datePicker": {
     "placeholder": "Chọn ngày",

@@ -8,7 +8,8 @@ export interface User {
   fullName: string;
   phoneNumber: string;
   dateOfBirth: string;
-  role: Role;
+  roleName: Role;
+  addresses?: string[];
 }
 
 interface AuthState {

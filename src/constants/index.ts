@@ -5,9 +5,9 @@ export const Gender = {
 } as const;
 
 export const Role = {
-  Admin: 'admin',
-  User: 'user',
-  Guest: 'guest',
+  Admin: 'ROLE_ADMIN',
+  User: 'ROLE_USER',
+  Guest: 'ROLE_GUEST',
 } as const;
 
 export type Gender = (typeof Gender)[keyof typeof Gender];

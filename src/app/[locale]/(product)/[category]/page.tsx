@@ -4,18 +4,36 @@ import { BannerSlider, ProductItem } from '@/components/ui';
 import { mainBanners } from '@/data/banners';
 import { products } from '@/data/products';
 import { Link } from '@/i18n/navigation';
+import { Category, categoryApi } from '@/lib/api/categories.api';
 import DOMPurify from 'dompurify';
 import { ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import './style.css';
 
 export default function CategoryPage() {
   const t = useTranslations('categoryPage');
-
+  const [categories, setCategories] = useState<Category | null>(null);
   const params = useParams<{ category: string }>();
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
 
+  const fetchCategories = async () => {
+    try {
+      const response = await categoryApi.getCategoryById(id || '');
+      setCategories(response.data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+  useEffect(() => {
+    if (id) {
+      fetchCategories();
+    }
+  }, [id]);
+  console.log('ádasd', categories);
   const mockCategories = [
     {
       id: '1',
@@ -67,13 +85,13 @@ export default function CategoryPage() {
       />
 
       <div className='flex flex-row gap-4'>
-        {mockCategories.map(category => (
+        {categories?.children?.map(category => (
           <Link
             key={category.id}
             className='rounded-xl bg-white px-4 py-2 shadow-md hover:bg-gray-100'
-            href={category.code}
+            href={category.categoryName}
           >
-            <span className='text-sm text-black'>{category.name}</span>
+            <span className='text-sm text-black'>{category.categoryName}</span>
           </Link>
         ))}
       </div>

@@ -163,5 +163,15 @@
     },
     "compare": "Compare {category}",
     "findAccessories": "Find Accessories"
+  },
+  "productDetail": {
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy Now",
+    "productDescription": "Product Description",
+    "productSpecifications": "Product Specifications",
+    "customerReviews": "Customer Reviews",
+    "productComparison": "Comparison",
+    "productQA": "Q&A",
+    "relatedProducts": "Related Products"
   }
 }

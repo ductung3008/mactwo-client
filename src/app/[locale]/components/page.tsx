@@ -67,7 +67,7 @@ export default function ComponentsPage() {
   return (
     <div className='min-h-screen bg-gray-50 py-8 text-gray-900'>
       {/* Page Loading */}
-      {showPageLoading && <PageLoading text='Loading components...' />}
+      {showPageLoading && <PageLoading />}
 
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         {/* Header */}

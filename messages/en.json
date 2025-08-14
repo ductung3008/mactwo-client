@@ -1,4 +1,10 @@
 {
+  "Metadata": {
+    "profile": {
+      "title": "Profile",
+      "description": "User profile page"
+    }
+  },
   "auth": {
     "login": {
       "title": "Sign In",
@@ -75,7 +81,9 @@
       "verificationFailed": "Verification failed"
     },
     "registrationFailed": "Registration failed",
-    "profileFetchFailed": "Failed to fetch profile information"
+    "profileFetchFailed": "Failed to fetch profile information",
+    "changePasswordFailed": "Change password failed",
+    "updateProfileFailed": "Update profile failed"
   },
   "datePicker": {
     "placeholder": "Select date",
@@ -163,5 +171,50 @@
     },
     "compare": "Compare {category}",
     "findAccessories": "Find Accessories"
+  },
+  "profile": {
+    "error": "Error",
+    "profile": "My Information",
+    "addresses": "Shipping Addresses",
+    "orders": "My Orders",
+    "fullName": "Full Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "other": "Other",
+    "dateOfBirth": "Date of Birth",
+    "phoneNumber": "Phone Number",
+    "fullNameRequired": "Full name is required",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Invalid email address",
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 6 characters",
+    "passwordMaxLength": "Password cannot exceed 100 characters",
+    "confirmPasswordRequired": "Please confirm your password",
+    "confirmPasswordMismatch": "Passwords do not match",
+    "genderRequired": "Please select your gender",
+    "dateOfBirthRequired": "Date of birth is required",
+    "dateOfBirthInvalid": "Invalid date of birth",
+    "phoneNumberRequired": "Phone number is required",
+    "phoneNumberInvalid": "Invalid phone number format",
+    "updateProfile": "Update Profile",
+    "updatingProfile": "Updating profile...",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "updatePassword": "Update Password",
+    "updatingPassword": "Updating password...",
+    "currentPasswordRequired": "Current password is required",
+    "newPasswordRequired": "New password is required",
+    "confirmNewPasswordRequired": "Confirm new password is required",
+    "passwordsMustMatch": "New password and confirm new password must match",
+    "changePasswordSuccess": "Change password successful",
+    "changePasswordFailed": "Change password failed",
+    "updateProfileSuccess": "Update profile successful",
+    "updateProfileFailed": "Update profile failed"
   }
 }

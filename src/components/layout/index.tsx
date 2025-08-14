@@ -29,7 +29,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { Button, Input, LanguageSwitcher } from '../ui';
+import { Button, Input, LanguageSwitcher, PageLoading } from '../ui';
 import { AutoBreadcrumbs } from '../ui/breadcrumbs';
 
 const CATEGORIES = [
@@ -162,8 +162,8 @@ MemoizedNavigation.displayName = 'MemoizedNavigation';
 
 export const Header = memo(() => {
   const t = useTranslations('layout.header');
-  const { user, isAuthenticated, logout } = useAuthStore();
-  const { getProfile } = useAuth();
+  const { user, isAuthenticated, logout, isLoading } = useAuthStore();
+  const { getProfile, loading } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -232,6 +232,10 @@ export const Header = memo(() => {
     handleLogout();
     closeMobileMenu();
   }, [handleLogout, closeMobileMenu]);
+
+  if (isLoading || loading) {
+    return <PageLoading />;
+  }
 
   return (
     <header className='sticky top-0 z-50 bg-[#515154] shadow-md'>

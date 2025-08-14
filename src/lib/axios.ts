@@ -37,7 +37,7 @@ api.interceptors.response.use(
       // Token is invalid or expired
       useAuthStore.getState().logout();
       // Redirect to login page if needed
-      window.location.href = '/auth/login';
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }

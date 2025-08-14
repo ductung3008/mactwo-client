@@ -197,8 +197,8 @@ const Loading = React.forwardRef<HTMLDivElement, LoadingProps>(
 Loading.displayName = 'Loading';
 
 // Additional utility components for common use cases
-export const PageLoading = ({ text = 'Loading...' }: { text?: string }) => (
-  <Loading variant='spinner' size='lg' text={text} fullScreen />
+export const PageLoading = () => (
+  <Loading variant='spinner' size='lg' fullScreen />
 );
 
 export const ButtonLoading = ({ size = 'sm' }: { size?: 'sm' | 'md' }) => (

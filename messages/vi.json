@@ -1,4 +1,10 @@
 {
+  "Metadata": {
+    "profile": {
+      "title": "Trang cá nhân",
+      "description": "Trang cá nhân của người dùng"
+    }
+  },
   "auth": {
     "login": {
       "title": "Đăng nhập",
@@ -75,7 +81,9 @@
       "verificationFailed": "Xác thực thất bại"
     },
     "registrationFailed": "Đăng ký không thành công",
-    "profileFetchFailed": "Không thể tải thông tin hồ sơ"
+    "profileFetchFailed": "Không thể tải thông tin cá nhân",
+    "changePasswordFailed": "Đổi mật khẩu thất bại",
+    "updateProfileFailed": "Cập nhật thông tin cá nhân không thành công"
   },
   "datePicker": {
     "placeholder": "Chọn ngày",
@@ -163,5 +171,50 @@
     },
     "compare": "So sánh các {category}",
     "findAccessories": "Tìm phụ kiện"
+  },
+  "profile": {
+    "error": "Lỗi",
+    "profile": "Thông tin cá nhân",
+    "addresses": "Địa chỉ nhận hàng",
+    "orders": "Đơn đặt hàng",
+    "fullName": "Họ và tên",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "gender": "Giới tính",
+    "male": "Nam",
+    "female": "Nữ",
+    "other": "Khác",
+    "dateOfBirth": "Ngày sinh",
+    "phoneNumber": "Số điện thoại",
+    "fullNameRequired": "Họ và tên là bắt buộc",
+    "emailRequired": "Email là bắt buộc",
+    "emailInvalid": "Email không hợp lệ",
+    "passwordRequired": "Mật khẩu là bắt buộc",
+    "passwordMinLength": "Mật khẩu phải có ít nhất 6 ký tự",
+    "passwordMaxLength": "Mật khẩu không được quá 100 ký tự",
+    "confirmPasswordRequired": "Xác nhận mật khẩu là bắt buộc",
+    "confirmPasswordMismatch": "Xác nhận mật khẩu không khớp",
+    "genderRequired": "Giới tính là bắt buộc",
+    "dateOfBirthRequired": "Ngày sinh là bắt buộc",
+    "dateOfBirthInvalid": "Ngày sinh không hợp lệ",
+    "phoneNumberRequired": "Số điện thoại là bắt buộc",
+    "phoneNumberInvalid": "Số điện thoại không hợp lệ",
+    "updateProfile": "Lưu lại",
+    "updatingProfile": "Đang lưu thông tin...",
+    "changePassword": "Đổi mật khẩu",
+    "currentPassword": "Mật khẩu cũ",
+    "newPassword": "Mật khẩu mới",
+    "updatePassword": "Cập nhật mật khẩu",
+    "updatingPassword": "Đang cập nhật mật khẩu...",
+    "confirmNewPassword": "Xác nhận mật khẩu mới",
+    "currentPasswordRequired": "Mật khẩu cũ là bắt buộc",
+    "newPasswordRequired": "Mật khẩu mới là bắt buộc",
+    "confirmNewPasswordRequired": "Xác nhận mật khẩu mới là bắt buộc",
+    "passwordsMustMatch": "Mật khẩu mới và xác nhận mật khẩu mới phải khớp",
+    "changePasswordSuccess": "Đổi mật khẩu thành công",
+    "changePasswordFailed": "Đổi mật khẩu thất bại",
+    "updateProfileSuccess": "Cập nhật thông tin cá nhân thành công",
+    "updateProfileFailed": "Cập nhật thông tin cá nhân thất bại"
   }
 }

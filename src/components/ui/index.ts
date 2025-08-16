@@ -46,3 +46,6 @@ export { ProductItem, ProductItemSkeleton } from './product-item';
 export type { ProductItemProps } from './product-item';
 
 export { OtpInput } from './otp-input';
+
+export { ConfirmationModal, Modal } from './modal';
+export type { ConfirmationModalProps, ModalProps } from './modal';

@@ -1,6 +1,11 @@
 'use client';
 
-import { Button, Input, useToastNotification } from '@/components/ui';
+import {
+  Button,
+  Input,
+  PageLoading,
+  useToastNotification,
+} from '@/components/ui';
 import { useAuth } from '@/hooks';
 import { Link } from '@/i18n/navigation';
 import { createLoginSchema } from '@/schemas/auth.schema';
@@ -66,6 +71,10 @@ export default function LoginPage() {
       setError(null);
     }
   }, [error, toast, setError, t]);
+
+  if (loading) {
+    return <PageLoading />;
+  }
 
   return (
     <div className='flex min-h-fit items-center justify-center px-4 py-12 sm:px-6 lg:px-8'>

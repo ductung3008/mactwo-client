@@ -49,10 +49,7 @@ export const createLoginSchema = (t: (key: string) => string) =>
           /^(84|0[3|5|7|8|9])+([0-9]{8})\b/g.test(value)
         );
       }, t('emailOrPhoneInvalid')),
-    password: z
-      .string()
-      .min(3, t('passwordMinLength'))
-      .max(100, t('passwordMaxLength')),
+    password: z.string().min(1, t('passwordRequired')),
     rememberMe: z.boolean().optional(),
   });
 

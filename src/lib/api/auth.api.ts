@@ -1,6 +1,7 @@
 import api from '@/lib/axios';
 import { LoginFormData, RegisterFormData } from '@/schemas/auth.schema';
-import { User } from '@/stores/auth.store';
+import { ChangePasswordFormData } from '@/schemas/profile.schema';
+import { useAuthStore, User } from '@/stores/auth.store';
 import { ApiResponse } from '@/types';
 
 export const authApi = {
@@ -25,6 +26,29 @@ export const authApi = {
     const response = await api.post(
       `/auth/signup/verify?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`
     );
+    return response.data;
+  },
+
+  async getProfile(): Promise<ApiResponse<User>> {
+    const response = await api.get('/users/me');
+    return response.data;
+  },
+
+  async updateProfile(
+    profileData: Partial<User>
+  ): Promise<ApiResponse<{ status: string; message: string }>> {
+    const id = useAuthStore.getState().user?.id;
+    const response = await api.post(`/users/update-profile/${id}`, profileData);
+    return response.data;
+  },
+
+  async changePassword(
+    changePasswordData: ChangePasswordFormData
+  ): Promise<ApiResponse<{ status: string; message: string }>> {
+    const response = await api.patch('/users/change-password', {
+      oldPassword: changePasswordData.currentPassword,
+      newPassword: changePasswordData.newPassword,
+    });
     return response.data;
   },
 

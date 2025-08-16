@@ -1,4 +1,10 @@
 {
+  "Metadata": {
+    "profile": {
+      "title": "Trang cá nhân",
+      "description": "Trang cá nhân của người dùng"
+    }
+  },
   "auth": {
     "login": {
       "title": "Đăng nhập",
@@ -74,7 +80,10 @@
       "verificationSuccess": "Xác thực thành công!",
       "verificationFailed": "Xác thực thất bại"
     },
-    "registrationFailed": "Đăng ký không thành công"
+    "registrationFailed": "Đăng ký không thành công",
+    "profileFetchFailed": "Không thể tải thông tin cá nhân",
+    "changePasswordFailed": "Đổi mật khẩu thất bại",
+    "updateProfileFailed": "Cập nhật thông tin cá nhân không thành công"
   },
   "datePicker": {
     "placeholder": "Chọn ngày",
@@ -163,6 +172,7 @@
     "compare": "So sánh các {category}",
     "findAccessories": "Tìm phụ kiện"
   },
+<<<<<<< HEAD
   "admin": {
     "products": {
       "title": "Quản lý sản phẩm",
@@ -176,5 +186,78 @@
       "variants": "Phiên bản",
       "actions": "Thao tác"
     }
+=======
+  "profile": {
+    "error": "Lỗi",
+    "success": "Thành công",
+    "profile": "Thông tin cá nhân",
+    "addresses": "Địa chỉ nhận hàng",
+    "orders": "Đơn đặt hàng",
+    "fullName": "Họ và tên",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "gender": "Giới tính",
+    "male": "Nam",
+    "female": "Nữ",
+    "other": "Khác",
+    "dateOfBirth": "Ngày sinh",
+    "phoneNumber": "Số điện thoại",
+    "fullNameRequired": "Họ và tên là bắt buộc",
+    "emailRequired": "Email là bắt buộc",
+    "emailInvalid": "Email không hợp lệ",
+    "passwordRequired": "Mật khẩu là bắt buộc",
+    "passwordMinLength": "Mật khẩu phải có ít nhất 6 ký tự",
+    "passwordMaxLength": "Mật khẩu không được quá 100 ký tự",
+    "confirmPasswordRequired": "Xác nhận mật khẩu là bắt buộc",
+    "confirmPasswordMismatch": "Xác nhận mật khẩu không khớp",
+    "genderRequired": "Giới tính là bắt buộc",
+    "dateOfBirthRequired": "Ngày sinh là bắt buộc",
+    "dateOfBirthInvalid": "Ngày sinh không hợp lệ",
+    "phoneNumberRequired": "Số điện thoại là bắt buộc",
+    "phoneNumberInvalid": "Số điện thoại không hợp lệ",
+    "updateProfile": "Lưu lại",
+    "updatingProfile": "Đang lưu thông tin...",
+    "changePassword": "Đổi mật khẩu",
+    "currentPassword": "Mật khẩu cũ",
+    "newPassword": "Mật khẩu mới",
+    "updatePassword": "Cập nhật mật khẩu",
+    "updatingPassword": "Đang cập nhật mật khẩu...",
+    "confirmNewPassword": "Xác nhận mật khẩu mới",
+    "currentPasswordRequired": "Mật khẩu cũ là bắt buộc",
+    "newPasswordRequired": "Mật khẩu mới là bắt buộc",
+    "confirmNewPasswordRequired": "Xác nhận mật khẩu mới là bắt buộc",
+    "passwordsMustMatch": "Mật khẩu mới và xác nhận mật khẩu mới phải khớp",
+    "changePasswordSuccess": "Đổi mật khẩu thành công",
+    "changePasswordFailed": "Đổi mật khẩu thất bại",
+    "updateProfileSuccess": "Cập nhật thông tin cá nhân thành công",
+    "updateProfileFailed": "Cập nhật thông tin cá nhân thất bại",
+    "shippingAddressRequired": "Địa chỉ nhận hàng là bắt buộc",
+    "shippingAddress": "Địa chỉ nhận hàng",
+    "addNewAddress": "Thêm địa chỉ mới",
+    "setAsDefaultAddress": "Đặt làm địa chỉ mặc định",
+    "cancel": "Hủy",
+    "noAddresses": "Không tìm thấy địa chỉ",
+    "addNewAddressToGetStarted": "Thêm địa chỉ nhận hàng đầu tiên để bắt đầu.",
+    "defaultAddress": "Địa chỉ mặc định",
+    "edit": "Chỉnh sửa",
+    "delete": "Xóa",
+    "shippingAddressPlaceholder": "Nhập địa chỉ nhận hàng đầy đủ của bạn",
+    "updatingAddress": "Đang cập nhật địa chỉ...",
+    "creatingAddress": "Đang tạo địa chỉ...",
+    "updateAddress": "Cập nhật địa chỉ",
+    "createAddress": "Tạo địa chỉ",
+    "failedToLoadAddresses": "Không thể tải địa chỉ nhận hàng",
+    "failedToUpdateAddress": "Không thể cập nhật địa chỉ",
+    "failedToCreateAddress": "Không thể tạo địa chỉ",
+    "addressUpdatedSuccessfully": "Cập nhật địa chỉ thành công",
+    "addressCreatedSuccessfully": "Địa chỉ đã được tạo thành công",
+    "addressDeletedSuccessfully": "Địa chỉ đã được xóa thành công",
+    "confirmDelete": "Xác nhận xóa",
+    "confirmDeleteMessage": "Bạn có chắc chắn muốn xóa địa chỉ này không?"
+  },
+  "modal": {
+    "processing": "Đang xử lý..."
+>>>>>>> main
   }
 }

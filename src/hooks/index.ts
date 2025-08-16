@@ -1,7 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import { authApi } from '@/lib/api';
 import { RegisterFormData } from '@/schemas/auth.schema';
+import {
+  ChangePasswordFormData,
+  UpdateProfileFormData,
+} from '@/schemas/profile.schema';
 import { useAuthStore } from '@/stores/auth.store';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -50,7 +55,7 @@ export function useAuth() {
         return { success: false };
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('registrationFailed'));
+      setError(t('registrationFailed'));
       return { success: false };
     } finally {
       setLocalLoading(false);
@@ -70,9 +75,29 @@ export function useAuth() {
         return false;
       }
     } catch (err) {
-      console.error('Verification error:', err);
       setError(t('verify.verificationFailed'));
       return false;
+    } finally {
+      setLocalLoading(false);
+    }
+  };
+
+  const handleGetProfile = async () => {
+    try {
+      setLocalLoading(true);
+      setError(null);
+      const response = await authApi.getProfile();
+
+      if (response.success) {
+        login(response.data, useAuthStore.getState().token || '');
+        return response.data;
+      } else {
+        setError(t('profileFetchFailed'));
+        return null;
+      }
+    } catch (err) {
+      setError(t('profileFetchFailed'));
+      return null;
     } finally {
       setLocalLoading(false);
     }
@@ -81,6 +106,48 @@ export function useAuth() {
   const handleLogout = () => {
     logout();
     setError(null);
+  };
+
+  const handleUpdateProfile = async (data: UpdateProfileFormData) => {
+    try {
+      setLocalLoading(true);
+      setError(null);
+      const response = await authApi.updateProfile(data);
+
+      if (response.success) {
+        return { success: true };
+      } else {
+        setError(t('updateProfileFailed'));
+        return { success: false };
+      }
+    } catch (err) {
+      setError(t('updateProfileFailed'));
+      return { success: false };
+    } finally {
+      setLocalLoading(false);
+    }
+  };
+
+  const handleChangePassword = async (
+    changePasswordData: ChangePasswordFormData
+  ) => {
+    try {
+      setLocalLoading(true);
+      setError(null);
+      const response = await authApi.changePassword(changePasswordData);
+
+      if (response.success) {
+        return { success: true };
+      } else {
+        setError(t('changePasswordFailed'));
+        return { success: false };
+      }
+    } catch (err) {
+      setError(t('changePasswordFailed'));
+      return { success: false };
+    } finally {
+      setLocalLoading(false);
+    }
   };
 
   return {
@@ -92,6 +159,9 @@ export function useAuth() {
     login: handleLogin,
     register: handleRegister,
     verifyOtp: handleVerifyOtp,
+    getProfile: handleGetProfile,
     logout: handleLogout,
+    changePassword: handleChangePassword,
+    updateProfile: handleUpdateProfile,
   };
 }

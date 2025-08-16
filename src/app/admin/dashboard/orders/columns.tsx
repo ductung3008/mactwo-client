@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import DeleteDialog from '@/components/ui/delete-dialog';
 import { Order } from '@/types/order';
 import { ColumnDef } from '@tanstack/react-table';
 
@@ -37,10 +38,17 @@ export const columns: ColumnDef<Order>[] = [
     accessorKey: 'action',
     header: 'Action',
     cell: ({ row }) => {
+      const order = row.original;
       return (
         <div className='flex items-center gap-2'>
           <Button variant='outline'>Edit</Button>
-          <Button variant='destructive'>Delete</Button>
+          <DeleteDialog
+            title='Xóa đơn hàng'
+            description={`Bạn có chắc muốn xóa đơn hàng "${order.orderId}"? Hành động này không thể hoàn tác.`}
+            onDelete={() => {
+              console.log('Delete order', order.orderId);
+            }}
+          />
         </div>
       );
     },

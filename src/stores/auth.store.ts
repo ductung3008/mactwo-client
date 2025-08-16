@@ -1,4 +1,5 @@
 import { Role } from '@/constants';
+import { Address } from '@/types/address';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
@@ -8,7 +9,8 @@ export interface User {
   fullName: string;
   phoneNumber: string;
   dateOfBirth: string;
-  role: Role;
+  roleName: Role;
+  addresses: Address[];
 }
 
 interface AuthState {

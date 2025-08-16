@@ -40,4 +40,9 @@ export const authApi = {
     const response = await api.post('/auth/reset-password', data);
     return response.data;
   },
+
+  async getUserInfo(): Promise<ApiResponse<User>> {
+    const response = await api.get('/users/me');
+    return response.data;
+  },
 };

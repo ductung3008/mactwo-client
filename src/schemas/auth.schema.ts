@@ -51,7 +51,7 @@ export const createLoginSchema = (t: (key: string) => string) =>
       }, t('emailOrPhoneInvalid')),
     password: z
       .string()
-      .min(6, t('passwordMinLength'))
+      .min(3, t('passwordMinLength'))
       .max(100, t('passwordMaxLength')),
     rememberMe: z.boolean().optional(),
   });

@@ -44,22 +44,22 @@ export default function AdminLayout({
 
 function AdminLayoutContent({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, user, loading } = useAuth();
+
   const router = useRouter();
   const pathname = usePathname();
 
-  // useEffect(() => {
-  //   if (!loading) {
-  //     // if (!isAuthenticated || user?.role !== Role.Admin) {
-  //     if (!isAuthenticated) {
-  //       router.push('/admin/login');
-  //     }
-  //   }
+  useEffect(() => {
+    if (!loading) {
+      // if (!isAuthenticated || user?.role !== Role.Admin) {
+      if (!isAuthenticated) {
+        router.push('/admin/login');
+      }
+    }
 
-  //   // if (!loading && isAuthenticated && user?.role === Role.Admin) {
-  //   if (!loading && isAuthenticated) {
-  //     router.push('/admin/dashboard');
-  //   }
-  // }, [loading, isAuthenticated, user, pathname, router]);
-
+    // if (!loading && isAuthenticated && user?.role === Role.Admin) {
+    // if (!loading && isAuthenticated) {
+    //   router.push('/admin/dashboard');
+    // }
+  }, [loading, isAuthenticated, user, pathname, router]);
   return <ToastProvider>{children}</ToastProvider>;
 }

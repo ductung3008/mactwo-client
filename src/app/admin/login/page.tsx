@@ -30,7 +30,7 @@ export default function AdminLogin() {
       }, 'Email hoặc Số điện thoại không hợp lệ'),
     password: z
       .string()
-      .min(6, 'Mật khẩu phải có ít nhất 6 ký tự')
+      .min(3, 'Mật khẩu phải có ít nhất 3 ký tự')
       .max(100, 'Mật khẩu không được vượt quá 100 ký tự'),
   });
   type LoginFormData = z.infer<typeof loginSchema>;

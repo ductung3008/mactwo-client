@@ -46,3 +46,33 @@ export { ProductItem, ProductItemSkeleton } from './product-item';
 export type { ProductItemProps } from './product-item';
 
 export { OtpInput } from './otp-input';
+
+export {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  AlertDialogPortal,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from './alert-dialog';
+
+export {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
+} from './dialog';
+
+export { CategoryModal } from './category-modal';
+export { ProductModal } from './product-modal';

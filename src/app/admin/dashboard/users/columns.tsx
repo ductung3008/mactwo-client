@@ -1,38 +1,55 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Category } from '@/types/category';
+
+import { User } from '@/types/user';
 import { ColumnDef } from '@tanstack/react-table';
 
-export const columns: ColumnDef<Category>[] = [
+export const columns: ColumnDef<User>[] = [
   {
-    accessorKey: 'category_id',
+    accessorKey: 'id',
     header: 'ID',
   },
   {
-    accessorKey: 'category_name',
+    accessorKey: 'fullName',
     header: 'Name',
   },
   {
-    accessorKey: 'parent_id',
-    header: 'Parent ID',
+    accessorKey: 'email',
+    header: 'Email',
   },
   {
-    accessorKey: 'createdAt',
-    header: 'Created At',
+    accessorKey: 'gender',
+    header: 'Gender',
   },
   {
-    accessorKey: 'updatedAt',
-    header: 'Updated At',
+    accessorKey: 'dateOfBirth',
+    header: 'Date of Birth',
   },
+  {
+    accessorKey: 'active',
+    header: 'Active',
+  },
+  {
+    accessorKey: 'roleName',
+    header: 'Role',
+  },
+  // {
+  //   accessorKey: 'createdDate',
+  //   header: 'Created Date',
+  // },
+  // {
+  //   accessorKey: 'lastModifiedDate',
+  //   header: 'Last Modified Date',
+  // },
   {
     accessorKey: 'action',
     header: 'Action',
     cell: ({ row }) => {
+      const customer = row.original;
       return (
         <div className='flex items-center gap-2'>
-          <Button variant='outline'>Edit</Button>
-          <Button variant='destructive'>Delete</Button>
+          <Button>View</Button>
         </div>
       );
     },

@@ -162,5 +162,19 @@
     },
     "compare": "So sánh các {category}",
     "findAccessories": "Tìm phụ kiện"
+  },
+  "admin": {
+    "products": {
+      "title": "Quản lý sản phẩm",
+      "addProduct": "Thêm sản phẩm",
+      "editProduct": "Chỉnh sửa sản phẩm",
+      "deleteProduct": "Xóa sản phẩm",
+      "productName": "Tên sản phẩm",
+      "category": "Danh mục",
+      "description": "Mô tả",
+      "image": "Hình ảnh",
+      "variants": "Phiên bản",
+      "actions": "Thao tác"
+    }
   }
 }

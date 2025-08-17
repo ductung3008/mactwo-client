@@ -5,6 +5,7 @@ import MacTwoLogoTransWhite from '@/../public/mactwo-logo-trans-white.png';
 import MacTwoLogo from '@/../public/mactwo-logo.png';
 import { useAuth } from '@/hooks';
 import { Link } from '@/i18n/navigation';
+import { Category, categoryApi } from '@/lib/api/categories.api';
 import { useAuthStore } from '@/stores/auth.store';
 import {
   ChevronDown,
@@ -141,16 +142,19 @@ const MemoizedUserDropdown = memo(
 MemoizedUserDropdown.displayName = 'MemoizedUserDropdown';
 
 const MemoizedNavigation = memo(
-  ({ categories }: { categories: typeof CATEGORIES }) => (
+  ({ categories }: { categories: Category[] }) => (
     <nav className='hidden lg:block'>
       <div className='flex items-center justify-center gap-8'>
         {categories.map(category => (
           <Link
-            key={category.name}
-            href={category.link}
+            key={category.id}
+            href={{
+              pathname: category.link, // vẫn là link
+              query: { id: category.id }, // thêm param id
+            }}
             className='py-3 text-center text-sm font-medium text-white/80 transition-all duration-200 hover:text-white hover:underline lg:min-w-20'
           >
-            {category.name}
+            {category.categoryName}
           </Link>
         ))}
       </div>
@@ -167,10 +171,44 @@ export const Header = memo(() => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [categories, setCategories] = useState<Category[]>([]);
+  const fetchCategories = async () => {
+    try {
+      const res = await categoryApi.getAllCategory(); // API
 
+      // const mapped: Category[] = res.data.map(
+      //   (catApi: Omit<Category, 'link'>) => {
+      //     const matched = CATEGORIES.find(
+      //       c => c.name.toLowerCase() === catApi.categoryName.toLowerCase()
+      //     );
+      //     return {
+      //       ...catApi,
+      //       link: matched?.link || '/',
+      //     };
+      //   }
+      // );
+      const mapped: Category[] = CATEGORIES.map(catStatic => {
+        const matchedApi = res.data.find(
+          (catApi: Omit<Category, 'link'>) =>
+            catApi.categoryName.toLowerCase() === catStatic.name.toLowerCase()
+        );
+
+        return {
+          id: matchedApi?.id ?? null, // nếu API có thì lấy id, không thì null
+          categoryName: catStatic.name,
+          link: catStatic.link,
+        };
+      });
+
+      setCategories(mapped);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   useEffect(() => {
     if (isAuthenticated) {
       getProfile();
+      fetchCategories();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated]);
@@ -238,7 +276,7 @@ export const Header = memo(() => {
   }
 
   return (
-    <header className='sticky top-0 z-50 bg-[#515154] shadow-md'>
+    <header className='sticky top-0 z-60 bg-[#515154] shadow-md'>
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='flex h-16 items-center justify-between'>
           <div className='flex-shrink-0'>
@@ -319,7 +357,7 @@ export const Header = memo(() => {
           </button>
         </div>
 
-        <MemoizedNavigation categories={CATEGORIES} />
+        <MemoizedNavigation categories={categories} />
 
         {isMobileMenuOpen && (
           <div className='border-t border-white/20 py-4 lg:hidden'>
@@ -522,13 +560,18 @@ export const FloatingButton = memo(() => {
 FloatingButton.displayName = 'FloatingButton';
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const breadcrumbs = AutoBreadcrumbs();
+
   return (
     <div className='flex min-h-screen flex-col'>
       <Header />
-      <div className='max-w-7xl px-4 pt-6 sm:px-6 lg:px-8'>
-        <AutoBreadcrumbs />
-      </div>
-
+      {breadcrumbs && (
+        <div className='sticky top-[108px] z-50 bg-gray-50'>
+          <div className='mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8'>
+            {breadcrumbs}
+          </div>
+        </div>
+      )}
       <main className='flex-1 bg-gray-50'>{children}</main>
       <FloatingButton />
       <Footer />

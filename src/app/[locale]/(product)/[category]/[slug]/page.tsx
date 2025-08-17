@@ -2,47 +2,76 @@
 
 import ProductTabs from '@/components/ui/describe-detail';
 import ProductCombo from '@/components/ui/product-accompanying';
+import { Product, productApi } from '@/lib/api/products.api';
+import { ProductVariant, productVariantApi } from '@/lib/api/variants.api';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 
 export default function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState('red');
   const [selectedStorage, setSelectedStorage] = useState('128GB');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [productVariant, setProductVariant] = useState<ProductVariant | null>(
+    null
+  );
+
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
+
+  const fetchData = async () => {
+    try {
+      const product = await productApi.getProductById(id || '');
+
+      const productVariants = await productVariantApi.getProductVariantById(
+        id || ''
+      );
+
+      setProduct(product.data);
+      setProductVariant(productVariants.data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+  useEffect(() => {
+    if (id) {
+      fetchData();
+    }
+  }, [id]);
+  console.log('products', productVariant);
 
   const colors = [
-    { name: 'Black', value: 'black', bg: 'bg-gray-900' },
-    { name: 'Red', value: 'red', bg: 'bg-red-500' },
-    { name: 'Blue', value: 'blue', bg: 'bg-blue-500' },
-    { name: 'White', value: 'white', bg: 'bg-gray-100 border border-gray-300' },
-    { name: 'Yellow', value: 'yellow', bg: 'bg-yellow-400' },
+    { name: 'Đen', value: 'black', bg: 'bg-gray-900' },
+    { name: 'Đỏ', value: 'red', bg: 'bg-red-500' },
+    { name: 'Xanh Dương', value: 'blue', bg: 'bg-blue-400' },
+    { name: 'Trắng', value: 'white', bg: 'bg-gray-100 border border-gray-300' },
+    { name: 'Vàng', value: 'yellow', bg: 'bg-yellow-300' },
+    { name: 'Hồng', value: 'pink', bg: 'bg-pink-300' },
+    { name: 'Xanh lá', value: 'green', bg: 'bg-green-300' },
+    {
+      name: 'Titan Trắng',
+      value: 'white-titan',
+      bg: 'bg-gray-100 border border-gray-300',
+    },
+    { name: 'Titan Đen', value: 'black-titan', bg: 'bg-gray-900' },
+    { name: 'Titan Sa Mạc', value: 'desert-titan', bg: 'bg-[#BFA48F]' },
+    { name: 'Titan Tự nhiên', value: 'natural-titan', bg: 'bg-[#C2BCB2]' },
   ];
 
-  const storageOptions = ['64GB', '128GB', '256GB', '512GB'];
+  // const availableColors = colors.filter(c =>
+  //   productVariant?.color?.some(
+  //     colorName => colorName.toLowerCase() === c.name.toLowerCase()
+  //   )
+  // );
 
-  const productImages = [
-    'https://shopdunk.com/images/thumbs/0009514_iphone-14-plus-128gb_550.png',
-    'https://shopdunk.com/images/thumbs/0009515_iphone-14-plus-128gb_550.webp',
-    'https://shopdunk.com/images/thumbs/0009516_iphone-14-plus-128gb_550.webp',
-    'https://shopdunk.com/images/thumbs/0009517_iphone-14-plus-128gb_550.webp',
-    'https://shopdunk.com/images/thumbs/0009518_iphone-14-plus-128gb_550.webp',
-    'https://shopdunk.com/images/thumbs/0009519_iphone-14-plus-128gb_550.webp',
-    'https://shopdunk.com/images/thumbs/0009520_iphone-14-plus-128gb_550.webp',
-    'https://shopdunk.com/images/thumbs/0009521_iphone-14-plus-128gb_550.webp',
-    'https://shopdunk.com/images/thumbs/0009522_iphone-14-plus-128gb_550.webp',
-  ];
+  const availableColors = colors.filter(
+    c => c.name.toLowerCase() === productVariant?.color?.toLowerCase()
+  );
 
-  const thumbnailImages = [
-    'https://shopdunk.com/images/thumbs/0009514_iphone-14-plus-128gb_550.png',
-    'https://shopdunk.com/images/thumbs/0009515_iphone-14-plus-128gb_550.webp',
-    'https://shopdunk.com/images/thumbs/0009516_iphone-14-plus-128gb_550.webp',
-    'https://shopdunk.com/images/thumbs/0009517_iphone-14-plus-128gb_550.webp',
-    'https://shopdunk.com/images/thumbs/0009518_iphone-14-plus-128gb_550.webp',
-    'https://shopdunk.com/images/thumbs/0009519_iphone-14-plus-128gb_550.webp',
-    'https://shopdunk.com/images/thumbs/0009520_iphone-14-plus-128gb_550.webp',
-    'https://shopdunk.com/images/thumbs/0009521_iphone-14-plus-128gb_550.webp',
-    'https://shopdunk.com/images/thumbs/0009522_iphone-14-plus-128gb_550.webp',
-  ];
+  // const storageOptions = ['64GB', '128GB', '256GB', '512GB'];
+
+  const productImages = [...(productVariant?.imageUrls ?? [])];
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -57,6 +86,20 @@ export default function ProductDetailPage() {
       scrollRef.current.scrollBy({ left: 140, behavior: 'smooth' });
     }
   };
+  const locale = 'vi-VN';
+  const currency = 'VND';
+
+  const formattedOldPrice = productVariant?.price?.toLocaleString(locale, {
+    style: 'currency',
+    currency,
+  });
+  const newPrices =
+    (productVariant?.price ?? 0) *
+    ((100 - (productVariant?.stockQuantity ?? 0)) / 100);
+  const formattedNewPrice = newPrices.toLocaleString(locale, {
+    style: 'currency',
+    currency,
+  });
 
   return (
     <div className='min-h-screen bg-white'>
@@ -87,7 +130,7 @@ export default function ProductDetailPage() {
                 ref={scrollRef}
                 className='scrollbar-hide flex max-w-[840px] space-x-3 overflow-x-auto px-10'
               >
-                {thumbnailImages.map((image, index) => (
+                {productImages.map((image, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentImageIndex(index)}
@@ -122,7 +165,7 @@ export default function ProductDetailPage() {
           <div className='space-y-8'>
             <div>
               <h1 className='mb-2 text-3xl font-bold text-gray-900'>
-                iPhone 14 Plus
+                {product?.name}
               </h1>
               <div className='mb-4 flex items-center space-x-4'>
                 <div className='flex items-center'>
@@ -136,11 +179,11 @@ export default function ProductDetailPage() {
               </div>
               <div className='flex items-center gap-x-8'>
                 <span className='text-2xl font-bold text-[#0066cc]'>
-                  17.490.000 ₫
+                  {formattedNewPrice}
                 </span>
                 <br />
                 <span className='text-2xl text-gray-500 line-through'>
-                  27.990.000 ₫
+                  {formattedOldPrice}
                 </span>
               </div>
               <p className='text-0.3xl text-gray-400'>(Đã bao gồm VAT)</p>
@@ -152,19 +195,21 @@ export default function ProductDetailPage() {
                 Dung lượng
               </h3>
               <div className='flex flex-wrap gap-2'>
-                {storageOptions.map(storage => (
-                  <button
-                    key={storage}
-                    onClick={() => setSelectedStorage(storage)}
-                    className={`cursor-pointer rounded-lg border-2 px-4 py-3 text-center whitespace-nowrap ${
-                      selectedStorage === storage
-                        ? 'border-blue-500 bg-blue-50 text-blue-700'
-                        : 'border-gray-300 text-gray-700 hover:border-gray-400'
-                    }`}
-                  >
-                    {storage}
-                  </button>
-                ))}
+                {/* {storageOptions.map(storage => ( */}
+                <button
+                  key={productVariant?.storage}
+                  onClick={() =>
+                    setSelectedStorage(productVariant?.storage ?? '')
+                  }
+                  className={`cursor-pointer rounded-lg border-2 px-4 py-3 text-center whitespace-nowrap ${
+                    selectedStorage === productVariant?.storage
+                      ? 'border-blue-500 bg-blue-50 text-blue-700'
+                      : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                  }`}
+                >
+                  {productVariant?.storage}
+                </button>
+                {/* ))} */}
               </div>
             </div>
 
@@ -174,7 +219,7 @@ export default function ProductDetailPage() {
                 Màu sắc
               </h3>
               <div className='flex space-x-3'>
-                {colors.map(color => (
+                {availableColors.map(color => (
                   <button
                     key={color.value}
                     onClick={() => setSelectedColor(color.value)}

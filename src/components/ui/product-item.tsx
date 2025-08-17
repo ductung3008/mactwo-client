@@ -1,20 +1,22 @@
 'use client';
 
 import { Link } from '@/i18n/navigation';
+import { ProductVariant } from '@/lib/api/variants.api';
 import { cn } from '@/utils';
 import { Flame, Tag } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { ReactNode, useState } from 'react';
 import { ImageSkeleton, Skeleton } from './skeleton';
+import { slugify } from './slugify';
 
 export interface ProductItemProps {
   id?: string;
   name: string;
   code?: string;
   categoryName?: string;
+  newPrice?: number;
   oldPrice?: number;
-  newPrice: number;
   imageUrl: string;
   promotionPercentage?: number;
   tag?: 'new' | 'installment' | 'hot' | string;
@@ -30,6 +32,7 @@ export interface ProductItemProps {
   loading?: boolean;
   lazy?: boolean;
   priority?: boolean;
+  variants?: ProductVariant[];
 }
 
 export function ProductItem({
@@ -37,8 +40,8 @@ export function ProductItem({
   name,
   code,
   categoryName,
-  oldPrice,
   newPrice,
+  oldPrice,
   imageUrl,
   promotionPercentage,
   tag,
@@ -54,19 +57,28 @@ export function ProductItem({
   loading = false,
   lazy = true,
   priority = false,
+  variants,
 }: ProductItemProps) {
   const t = useTranslations('productItem');
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
 
-  const linkHref =
-    href || (categoryName && code ? `/${categoryName}/${code}` : '#');
+  // const linkHref =
+  //   href || (categoryName && code ? `/${categoryName}/${code}` : '#');
+  const linkHref = `/iphone/${slugify(categoryName || '')}?id=${id}`;
 
-  const formattedOldPrice = oldPrice?.toLocaleString(locale, {
+  // const formattedOldPrice = oldPrice?.toLocaleString(locale, {
+  //   style: 'currency',
+  //   currency,
+  // });
+  const formattedOldPrice = variants?.[0]?.price?.toLocaleString(locale, {
     style: 'currency',
     currency,
   });
-  const formattedNewPrice = newPrice.toLocaleString(locale, {
+  const newPrices =
+    (variants?.[0]?.price ?? 0) *
+    ((100 - (variants?.[0]?.stockQuantity ?? 0)) / 100);
+  const formattedNewPrice = newPrices.toLocaleString(locale, {
     style: 'currency',
     currency,
   });
@@ -197,7 +209,12 @@ export function ProductItem({
           <span className='mr-1 text-base font-bold text-[#0066cc]'>
             {formattedNewPrice}
           </span>
-          {!!oldPrice && oldPrice > 0 && oldPrice !== newPrice && (
+          {/* {!!oldPrice && oldPrice > 0 && oldPrice !== newPrice && (
+            <span className='mx-1 text-sm text-gray-500 line-through'>
+              {formattedOldPrice}
+            </span>
+          )} */}
+          {!!variants?.[0]?.price && variants?.[0]?.price > 0 && (
             <span className='mx-1 text-sm text-gray-500 line-through'>
               {formattedOldPrice}
             </span>
@@ -214,9 +231,16 @@ export function ProductItem({
       </div>
 
       <div>
-        {!!promotionPercentage && promotionPercentage > 0 && (
+        {/* {!!promotionPercentage && promotionPercentage > 0 && (
           <span className='absolute top-0 -left-1 flex h-8 w-21 justify-center bg-[url("/price-ratio.png")] bg-cover bg-no-repeat pt-1.5 text-xs font-bold text-white'>
             {loading ? '' : t('promotion', { percentage: promotionPercentage })}
+          </span>
+        )} */}
+        {!!variants?.[0]?.stockQuantity && variants?.[0]?.stockQuantity > 0 && (
+          <span className='absolute top-0 -left-1 flex h-8 w-21 justify-center bg-[url("/price-ratio.png")] bg-cover bg-no-repeat pt-1.5 text-xs font-bold text-white'>
+            {loading
+              ? ''
+              : t('promotion', { percentage: variants?.[0]?.stockQuantity })}
           </span>
         )}
         {renderTag()}

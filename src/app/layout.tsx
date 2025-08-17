@@ -1,4 +1,5 @@
 import { PageLoading } from '@/components/ui';
+import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Suspense } from 'react';
 import './globals.css';
@@ -6,6 +7,12 @@ import './globals.css';
 const inter = Inter({
   subsets: ['latin'],
 });
+
+export const metadata: Metadata = {
+  icons: {
+    icon: '/favicon.ico',
+  },
+};
 
 export default async function RootLayout({
   children,
@@ -19,6 +26,8 @@ export default async function RootLayout({
           href='https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css'
           rel='stylesheet'
         />
+        <link rel='icon' href='/favicon.ico' sizes='any' />
+        <link rel='icon' type='image/png' href='/favicon.png' />
         <script
           type='application/ld+json'
           dangerouslySetInnerHTML={{
@@ -26,6 +35,7 @@ export default async function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'Store',
               name: 'MacTwo',
+              alternateName: 'Mac Two',
               url: 'https://mactwo.click',
               logo: 'https://mactwo.click/mactwo-logo.png',
               description:

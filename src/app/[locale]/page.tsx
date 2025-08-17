@@ -22,7 +22,6 @@ export default function HomePage() {
   useEffect(() => {
     fetchData();
   }, []);
-  console.log('products', productTop);
 
   return (
     <main className='min-h-screen'>

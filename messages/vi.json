@@ -172,7 +172,6 @@
     "compare": "So sánh các {category}",
     "findAccessories": "Tìm phụ kiện"
   },
-<<<<<<< HEAD
   "admin": {
     "products": {
       "title": "Quản lý sản phẩm",
@@ -186,7 +185,7 @@
       "variants": "Phiên bản",
       "actions": "Thao tác"
     }
-=======
+  },
   "profile": {
     "error": "Lỗi",
     "success": "Thành công",
@@ -258,6 +257,5 @@
   },
   "modal": {
     "processing": "Đang xử lý..."
->>>>>>> main
   }
 }

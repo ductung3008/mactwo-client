@@ -13,19 +13,6 @@ const AdminUsersPage = () => {
   const [data, setData] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const sampleData = [
-    {
-      id: 1,
-      fullName: 'John Doe',
-      email: 'john.doe@example.com',
-      gender: Gender.Male,
-      dateOfBirth: '1990-01-01',
-      active: true,
-      roleName: Role.Admin,
-      createdDate: new Date(),
-      lastModifiedDate: new Date(),
-    },
-  ];
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -40,6 +27,19 @@ const AdminUsersPage = () => {
     };
     fetchUsers();
   }, []);
+  const sampleData = [
+    {
+      id: 1,
+      fullName: 'John Doe',
+      email: 'john.doe@example.com',
+      gender: Gender.Male,
+      dateOfBirth: '1990-01-01',
+      active: true,
+      roleName: Role.Admin,
+      createdDate: new Date(),
+      lastModifiedDate: new Date(),
+    },
+  ];
 
   return (
     <div>

@@ -19,15 +19,15 @@ const AdminProductsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [params, setParams] = useState({
-    page: 10,
+    page: 1,
     size: 10,
-    sort: null,
+    sort: '',
   });
 
   const fetchProducts = async () => {
     setLoading(true);
+    console.log(params);
     const response = await productApi.getProducts(params);
-    console.log(response.data.content);
     if (response.success) {
       setData(response.data.content);
     } else {

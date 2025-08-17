@@ -172,6 +172,16 @@
     "compare": "So sánh các {category}",
     "findAccessories": "Tìm phụ kiện"
   },
+  "productDetail": {
+    "addToCart": "Thêm vào giỏ hàng",
+    "buyNow": "Mua ngay",
+    "productDescription": "Mô tả sản phẩm",
+    "productSpecifications": "Thông số kỹ thuật",
+    "customerReviews": "Đánh giá của khách hàng",
+    "productComparison": "So sánh",
+    "productQA": "Hỏi đáp",
+    "relatedProducts": "Sản phẩm liên quan"
+  },
   "profile": {
     "error": "Lỗi",
     "success": "Thành công",

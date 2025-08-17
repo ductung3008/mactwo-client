@@ -1,11 +1,28 @@
+'use client';
 import { BannerSlider } from '@/components/ui';
 import CategorySection from '@/components/ui/category-section';
 import { mainBanners, secondaryBanners } from '@/data/banners';
-import { categories } from '@/data/categories';
+import { Category, categoryApi } from '@/lib/api/categories.api';
 import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
 
 export default function HomePage() {
   const t = useTranslations('homepage');
+  const [productTop, setProductTop] = useState<Category[]>([]);
+
+  const fetchData = async () => {
+    try {
+      const product = await categoryApi.getTopProductByCategory();
+
+      setProductTop(product.data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  console.log('products', productTop);
 
   return (
     <main className='min-h-screen'>
@@ -28,7 +45,7 @@ export default function HomePage() {
         />
 
         <div>
-          {categories.map(category => (
+          {productTop.map(category => (
             <CategorySection
               key={category.id}
               category={category}

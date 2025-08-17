@@ -1,19 +1,21 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import ProductDescription from './product-description';
-import Specifications from './specifications';
 import ProductDetail from './product-detail';
+import Specifications from './specifications';
 
 export default function ProductTabs() {
   const [activeTab, setActiveTab] = useState('specs');
+  const t = useTranslations('productDetail');
 
   const tabs = [
-    { key: 'description', label: 'Mô tả sản phẩm' },
-    { key: 'specs', label: 'Thông số kỹ thuật' },
-    { key: 'details', label: 'Chi tiết sản phẩm' },
-    { key: 'compare', label: 'So sánh' },
-    { key: 'qa', label: 'Hỏi đáp' },
+    { key: 'description', label: t('productDescription') },
+    { key: 'specs', label: t('productSpecifications') },
+    { key: 'details', label: t('customerReviews') },
+    { key: 'compare', label: t('productComparison') },
+    { key: 'qa', label: t('productQA') },
   ];
 
   const renderContent = () => {

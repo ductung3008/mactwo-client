@@ -47,7 +47,6 @@ export type { ProductItemProps } from './product-item';
 
 export { OtpInput } from './otp-input';
 
-<<<<<<< HEAD
 export {
   AlertDialog,
   AlertDialogAction,
@@ -77,7 +76,3 @@ export {
 
 export { CategoryModal } from './category-modal';
 export { ProductModal } from './product-modal';
-=======
-export { ConfirmationModal, Modal } from './modal';
-export type { ConfirmationModalProps, ModalProps } from './modal';
->>>>>>> main

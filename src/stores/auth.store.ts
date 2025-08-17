@@ -1,4 +1,4 @@
-import { Role } from '@/constants';
+import { Gender, Role } from '@/constants';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
@@ -6,6 +6,7 @@ export interface User {
   id: string;
   email: string;
   fullName: string;
+  gender: Gender;
   phoneNumber: string;
   dateOfBirth: string;
   roleName: Role;

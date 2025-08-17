@@ -23,4 +23,11 @@ export const categoryApi = {
     const response = await api.get(`/categories/${id}`);
     return response.data;
   },
+
+  async getTopProductByCategory(): Promise<ApiResponse<Category[]>> {
+    const response = await api.get(
+      'products/top-4-products-by-all-level1-categories'
+    );
+    return response.data;
+  },
 };

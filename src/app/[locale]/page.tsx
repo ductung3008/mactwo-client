@@ -2,9 +2,7 @@
 import { BannerSlider } from '@/components/ui';
 import CategorySection from '@/components/ui/category-section';
 import { mainBanners, secondaryBanners } from '@/data/banners';
-import { categories } from '@/data/categories';
-import { Category } from '@/lib/api/categories.api';
-import { Product, productApi } from '@/lib/api/products.api';
+import { Category, categoryApi } from '@/lib/api/categories.api';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
@@ -14,7 +12,7 @@ export default function HomePage() {
 
   const fetchData = async () => {
     try {
-      const product = await productApi.getTopProductByCategory();
+      const product = await categoryApi.getTopProductByCategory();
 
       setProductTop(product.data);
     } catch (error) {

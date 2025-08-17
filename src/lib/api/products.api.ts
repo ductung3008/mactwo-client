@@ -1,6 +1,5 @@
 import { ApiResponse } from '@/types';
 import api from '../axios';
-import { Category } from './categories.api';
 import { ProductVariant } from './variants.api';
 
 export interface Product {
@@ -21,13 +20,6 @@ export const productApi = {
 
   async getProductById(id: string): Promise<ApiResponse<Product>> {
     const response = await api.get(`/products/getByID/${id}`);
-    return response.data;
-  },
-
-  async getTopProductByCategory(): Promise<ApiResponse<Category[]>> {
-    const response = await api.get(
-      'products/top-4-products-by-all-level1-categories'
-    );
     return response.data;
   },
 };

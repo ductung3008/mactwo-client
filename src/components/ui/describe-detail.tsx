@@ -10,13 +10,13 @@ export default function ProductTabs() {
   const [activeTab, setActiveTab] = useState('specs');
   const t = useTranslations('productDetail');
 
-   const tabs = [
-     { key: 'description', label: t('productDescription') },
-     { key: 'specs', label: t('productSpecifications') },
-     { key: 'details', label: t('customerReviews') },
-     { key: 'compare', label: t('productComparison') },
-     { key: 'qa', label: t('productQA') },
-   ];
+  const tabs = [
+    { key: 'description', label: t('productDescription') },
+    { key: 'specs', label: t('productSpecifications') },
+    { key: 'details', label: t('customerReviews') },
+    { key: 'compare', label: t('productComparison') },
+    { key: 'qa', label: t('productQA') },
+  ];
 
   const renderContent = () => {
     switch (activeTab) {

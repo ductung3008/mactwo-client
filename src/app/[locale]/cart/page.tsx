@@ -9,7 +9,8 @@ const CartBox = () => {
   const { items, updateQuantity, removeItem, getTotalItems } = useCartStore();
 
   const totalPrice = items.reduce((sum, item) => {
-    return sum + item.product.newPrice * item.quantity;
+    // return sum + item.product.newPrice * item.quantity;
+    return 0;
   }, 0);
 
   if (items.length === 0) {
@@ -19,7 +20,7 @@ const CartBox = () => {
       </div>
     );
   }
-
+  console.log(items);
   return (
     <div className='rounded-lg bg-white shadow'>
       <div className='border-b p-6'>
@@ -43,7 +44,7 @@ const CartBox = () => {
               <h3 className='font-medium'>{item.product.name}</h3>
               <div className='mt-2 flex items-center space-x-2'>
                 <span className='font-semibold text-red-600'>
-                  {item.product.newPrice.toLocaleString('vi-VN')}đ
+                  {/* {item.product.newPrice.toLocaleString('vi-VN')}đ */}
                 </span>
                 {item.product.oldPrice > 0 && (
                   <span className='text-sm text-gray-400 line-through'>

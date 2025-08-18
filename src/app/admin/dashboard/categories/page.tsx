@@ -98,9 +98,14 @@ const AdminCategoriesPage = () => {
         <Filter />
       </div>
       <div className='container mx-auto mt-4 bg-white p-4 shadow-sm'>
-        {loading && <div>Đang tải...</div>}
-        {error && <div className='text-red-500'>Lỗi: {error}</div>}
-        {!loading && !error && <DataTable columns={columns} data={data} />}
+        <DataTable
+          columns={columns}
+          data={data}
+          isLoading={loading}
+          paginationType='client'
+          clientPageSize={8}
+          pageSizeOptions={[5, 8, 10, 15]}
+        />
       </div>
 
       <CategoryModal

@@ -51,7 +51,14 @@ const AdminUsersPage = () => {
         <Filter />
       </div>
       <div className='container mx-auto mt-4 bg-white p-4 shadow-sm'>
-        <DataTable columns={columns} data={data} />
+        <DataTable
+          columns={columns}
+          data={data}
+          isLoading={loading}
+          paginationType='client'
+          clientPageSize={10}
+          pageSizeOptions={[5, 10, 20, 50]}
+        />
       </div>
     </div>
   );

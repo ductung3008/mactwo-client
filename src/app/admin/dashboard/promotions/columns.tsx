@@ -7,42 +7,58 @@ import { ColumnDef } from '@tanstack/react-table';
 
 export const columns: ColumnDef<Promotion>[] = [
   {
-    accessorKey: 'promotionId',
+    accessorKey: 'id',
     header: 'ID',
   },
   {
     accessorKey: 'promotionName',
-    header: 'Name',
+    header: 'Tên khuyến mãi',
   },
   {
     accessorKey: 'description',
-    header: 'Description',
+    header: 'Mô tả',
   },
   {
     accessorKey: 'discountAmount',
-    header: 'Discount Amount',
+    header: 'Số tiền giảm',
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue('discountAmount'));
+      const formatted = new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+      }).format(amount);
+      return <div className='font-medium'>{formatted}</div>;
+    },
   },
   {
     accessorKey: 'startDate',
-    header: 'Start Date',
+    header: 'Ngày bắt đầu',
+    cell: ({ row }) => {
+      const date = new Date(row.getValue('startDate'));
+      return <div>{date.toLocaleDateString('vi-VN')}</div>;
+    },
   },
   {
     accessorKey: 'endDate',
-    header: 'End Date',
+    header: 'Ngày kết thúc',
+    cell: ({ row }) => {
+      const date = new Date(row.getValue('endDate'));
+      return <div>{date.toLocaleDateString('vi-VN')}</div>;
+    },
   },
   {
     accessorKey: 'action',
-    header: 'Action',
+    header: 'Hành động',
     cell: ({ row }) => {
       const promotion = row.original;
       return (
         <div className='flex items-center gap-2'>
-          <Button variant='outline'>Edit</Button>
+          <Button variant='outline'>Sửa</Button>
           <DeleteDialog
             title='Xóa khuyến mãi'
             description={`Bạn có chắc muốn xóa khuyến mãi "${promotion.promotionName}"? Hành động này không thể hoàn tác.`}
             onDelete={() => {
-              console.log('Delete promotion', promotion.promotionId);
+              console.log('Delete promotion', promotion.id);
             }}
           />
         </div>

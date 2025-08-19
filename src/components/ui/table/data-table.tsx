@@ -127,6 +127,8 @@ export function DataTable<TData, TValue>({
     data.length,
     pageSizeOptions,
     isLoading,
+    handlePageChange,
+    handlePageSizeChange,
   ]);
 
   // Determine if pagination should be shown

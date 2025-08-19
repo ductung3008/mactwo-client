@@ -1,5 +1,5 @@
 export interface Address {
-  addressId: string;
+  id: string;
   userId: string;
   shippingAddress: string;
   isDefault: boolean;

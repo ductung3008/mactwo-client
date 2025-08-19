@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/table/data-table';
-import { Gender, Role } from '@/constants';
 import { customerApi } from '@/lib/api/customer.api';
 import { User } from '@/types/user';
 import { Filter } from 'lucide-react';
@@ -27,19 +26,6 @@ const AdminUsersPage = () => {
     };
     fetchUsers();
   }, []);
-  const sampleData = [
-    {
-      id: 1,
-      fullName: 'John Doe',
-      email: 'john.doe@example.com',
-      gender: Gender.Male,
-      dateOfBirth: '1990-01-01',
-      active: true,
-      roleName: Role.Admin,
-      createdDate: new Date(),
-      lastModifiedDate: new Date(),
-    },
-  ];
 
   return (
     <div>

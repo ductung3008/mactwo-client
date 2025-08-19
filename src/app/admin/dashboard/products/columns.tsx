@@ -57,7 +57,7 @@ export const createColumns = ({
       const variants = row.original.variants;
       return variants.map(variant => {
         return (
-          <div className='flex flex-col gap-2'>
+          <div key={variant.product_variant_id} className='flex flex-col gap-2'>
             <div>{variant.color}</div>
             <div>{variant.price}</div>
           </div>

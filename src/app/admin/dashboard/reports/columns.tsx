@@ -28,7 +28,7 @@ export const columns: ColumnDef<Category>[] = [
   {
     accessorKey: 'action',
     header: 'Action',
-    cell: ({ row }) => {
+    cell: ({}) => {
       return (
         <div className='flex items-center gap-2'>
           <Button variant='outline'>Edit</Button>

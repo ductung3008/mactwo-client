@@ -1,16 +1,19 @@
 'use client';
 
 import { addressApi } from '@/lib/api/address.api';
+import { useAuthStore } from '@/stores/auth.store';
 import { useCartStore } from '@/stores/cart.store';
 import { Address } from '@/types/address';
-import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
 
 const CartBox = () => {
-  const { items, updateQuantity, removeItem, getTotalItems } = useCartStore();
+  const { getCurrentUserItems, updateQuantity, removeItem, getTotalItems } =
+    useCartStore();
+  const items = getCurrentUserItems();
 
   const totalPrice = items.reduce((sum, item) => {
-    // return sum + item.product.newPrice * item.quantity;
-    return 0;
+    return sum + item.variant.price * item.quantity;
   }, 0);
 
   if (items.length === 0) {
@@ -20,7 +23,6 @@ const CartBox = () => {
       </div>
     );
   }
-  console.log(items);
   return (
     <div className='rounded-lg bg-white shadow'>
       <div className='border-b p-6'>
@@ -32,58 +34,65 @@ const CartBox = () => {
       <div className='space-y-4 p-6'>
         {items.map(item => (
           <div
-            key={item.variant}
+            key={`${item.product.id}-${item.variant.product_variant_id}`}
             className='flex items-center space-x-4 rounded-lg border p-4'
           >
-            <img
+            <Image
+              width={80}
+              height={80}
               src={item.product.imageUrl}
               alt={item.product.name}
               className='h-20 w-20 rounded object-cover'
             />
             <div className='flex-1'>
               <h3 className='font-medium'>{item.product.name}</h3>
+              <div className='mt-1 text-sm text-gray-600'>
+                <span>Màu: {item.variant.color}</span>
+                <span className='ml-3'>Bộ nhớ: {item.variant.storage}</span>
+                <span className='ml-3'>RAM: {item.variant.ram}</span>
+              </div>
               <div className='mt-2 flex items-center space-x-2'>
                 <span className='font-semibold text-red-600'>
-                  {/* {item.product.newPrice.toLocaleString('vi-VN')}đ */}
+                  {item.variant.price.toLocaleString('vi-VN')}đ
                 </span>
-                {item.product.oldPrice > 0 && (
-                  <span className='text-sm text-gray-400 line-through'>
-                    {item.product.oldPrice.toLocaleString('vi-VN')}đ
-                  </span>
-                )}
-                {item.product.promotionPercentage &&
-                  item.product.promotionPercentage > 0 && (
-                    <span className='rounded bg-red-100 px-2 py-1 text-xs text-red-600'>
-                      -{item.product.promotionPercentage}%
-                    </span>
-                  )}
-                {item.product.tag && (
-                  <span className='rounded bg-blue-100 px-2 py-1 text-xs text-blue-600'>
-                    {item.product.tag}
-                  </span>
-                )}
               </div>
             </div>
 
             <div className='flex items-center space-x-2'>
               <button
-                onClick={() => updateQuantity(item.variant, item.quantity - 1)}
-                className='flex h-8 w-8 items-center justify-center rounded border'
+                onClick={() =>
+                  updateQuantity(
+                    item.product.id,
+                    item.variant.product_variant_id!,
+                    item.quantity - 1
+                  )
+                }
+                className='flex h-8 w-8 items-center justify-center rounded border hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50'
                 disabled={item.quantity <= 1}
               >
                 -
               </button>
-              <span className='w-12 text-center'>{item.quantity}</span>
+              <span className='w-12 text-center font-medium'>
+                {item.quantity}
+              </span>
               <button
-                onClick={() => updateQuantity(item.variant, item.quantity + 1)}
-                className='flex h-8 w-8 items-center justify-center rounded border'
+                onClick={() =>
+                  updateQuantity(
+                    item.product.id,
+                    item.variant.product_variant_id!,
+                    item.quantity + 1
+                  )
+                }
+                className='flex h-8 w-8 items-center justify-center rounded border hover:bg-gray-50'
               >
                 +
               </button>
             </div>
 
             <button
-              onClick={() => removeItem(item.variant)}
+              onClick={() =>
+                removeItem(item.product.id, item.variant.product_variant_id!)
+              }
               className='p-2 text-red-500 hover:text-red-700'
             >
               Xóa
@@ -110,7 +119,7 @@ const OrderConfirmation = () => {
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { getOrderItems } = useCartStore();
+  const { getCurrentUserItems } = useCartStore();
 
   useEffect(() => {
     const fetchAddresses = async () => {
@@ -119,13 +128,6 @@ const OrderConfirmation = () => {
         const response = await addressApi.getAddresses();
         if (response.success) {
           setAddresses(response.data);
-          // Tự động chọn địa chỉ default nếu có
-          const defaultAddress = response.data.find(
-            (addr: Address) => addr.isDefault
-          );
-          if (defaultAddress) {
-            setSelectedAddress(defaultAddress.addressId);
-          }
         } else {
           setError('Không thể tải danh sách địa chỉ');
         }
@@ -147,21 +149,35 @@ const OrderConfirmation = () => {
     { id: 'vnpay', label: 'VNPay' },
   ];
 
+  // Transform cart items thành format API
+  const transformOrderItems = () => {
+    const cartItems = getCurrentUserItems();
+    return cartItems.map(item => ({
+      variantId: item.variant.id || 0,
+      quantity: item.quantity,
+    }));
+  };
+
   const handleCreateOrder = () => {
     if (!selectedAddress || !selectedPayment) {
       alert('Vui lòng chọn địa chỉ giao hàng và phương thức thanh toán');
       return;
     }
 
+    // Transform orderItems theo format API
+    const transformedOrderItems = transformOrderItems();
+
     const orderData = {
-      userId: '1', // Sẽ lấy từ auth store
-      addressId: selectedAddress,
+      userId: useAuthStore.getState().user?.id || '',
+      addressId: parseInt(selectedAddress) || 0,
       promotionId: 0,
-      orderItems: getOrderItems(),
-      paymentMethod: selectedPayment,
+      orderItems: transformedOrderItems,
     };
 
-    console.log('Order data:', orderData);
+    console.log('Raw cart items:', getCurrentUserItems());
+    console.log('Transformed order items:', transformedOrderItems);
+    console.log('Final order data (API format):', orderData);
+
     alert('Đơn hàng đã được tạo thành công!');
   };
 
@@ -199,9 +215,9 @@ const OrderConfirmation = () => {
             <div className='space-y-2'>
               {addresses.map(addr => (
                 <label
-                  key={addr.addressId}
+                  key={addr.id}
                   className={`flex cursor-pointer items-start space-x-3 rounded border p-3 hover:bg-gray-50 ${
-                    selectedAddress === addr.addressId
+                    selectedAddress === addr.id
                       ? 'border-blue-500 bg-blue-50'
                       : ''
                   }`}
@@ -209,19 +225,17 @@ const OrderConfirmation = () => {
                   <input
                     type='radio'
                     name='address'
-                    value={addr.addressId}
-                    checked={selectedAddress === addr.addressId}
-                    onChange={e => setSelectedAddress(e.target.value)}
+                    value={addr.id}
+                    checked={selectedAddress === addr.id}
+                    onChange={e => {
+                      setSelectedAddress(e.target.value);
+                      console.log(selectedAddress);
+                    }}
                     className='mt-1'
                   />
                   <div className='flex-1'>
                     <div className='flex items-center space-x-2'>
                       <span className='font-medium'>Địa chỉ giao hàng</span>
-                      {addr.isDefault && (
-                        <span className='rounded bg-green-100 px-2 py-1 text-xs text-green-600'>
-                          Mặc định
-                        </span>
-                      )}
                     </div>
                     <div className='mt-1 text-sm text-gray-600'>
                       {addr.shippingAddress}
@@ -268,7 +282,13 @@ const OrderConfirmation = () => {
 };
 
 const CartPage = () => {
-  const { items } = useCartStore();
+  const { getCurrentUserItems, initializeFromAuth } = useCartStore();
+  const items = getCurrentUserItems();
+
+  // Khởi tạo cart store từ auth state
+  React.useEffect(() => {
+    initializeFromAuth();
+  }, [initializeFromAuth]);
 
   return (
     <div className='container mx-auto px-4 py-8'>

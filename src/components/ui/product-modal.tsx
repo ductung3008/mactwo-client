@@ -16,7 +16,6 @@ import {
 import { Product } from '@/types/product';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Minus, Plus, X } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
@@ -35,7 +34,6 @@ export function ProductModal({
   product,
   categories,
 }: ProductModalProps) {
-  const t = useTranslations('admin.products');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

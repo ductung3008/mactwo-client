@@ -2,8 +2,10 @@
 
 import ProductTabs from '@/components/ui/describe-detail';
 import ProductCombo from '@/components/ui/product-accompanying';
-import { Product, productApi } from '@/lib/api/products.api';
+import { Product as APIProduct, productApi } from '@/lib/api/products.api';
 import { ProductVariant, productVariantApi } from '@/lib/api/variants.api';
+import { useCartStore } from '@/stores/cart.store';
+import { Product } from '@/types/product';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -12,10 +14,12 @@ export default function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState('red');
   const [selectedStorage, setSelectedStorage] = useState('128GB');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [product, setProduct] = useState<Product | null>(null);
+  const [product, setProduct] = useState<APIProduct | null>(null);
   const [productVariant, setProductVariant] = useState<ProductVariant | null>(
     null
   );
+
+  const { addItem } = useCartStore();
 
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
@@ -39,7 +43,8 @@ export default function ProductDetailPage() {
       fetchData();
     }
   }, [id]);
-  console.log('products', productVariant);
+  console.log('products', product);
+  console.log('productsVariant', productVariant);
 
   const colors = [
     { name: 'Đen', value: 'black', bg: 'bg-gray-900' },
@@ -100,6 +105,32 @@ export default function ProductDetailPage() {
     style: 'currency',
     currency,
   });
+
+  const handleAddToCart = () => {
+    if (!product || !productVariant) {
+      console.warn('Product hoặc productVariant không có');
+      return;
+    }
+
+    // Convert APIProduct thành Product type cho cart
+    const cartProduct: Product = {
+      id: parseInt(product.id), // Convert string to number
+      categoryId: 1, // Sẽ cần lấy từ API hoặc context
+      name: product.name,
+      description: '', // Sẽ cần thêm vào APIProduct hoặc lấy từ nguồn khác
+      imageUrl: product.imageUrl,
+      variants: [], // Không cần thiết cho cart item
+    };
+
+    const item = {
+      product: cartProduct,
+      variant: productVariant,
+    };
+
+    // Thêm vào cart store - quantity mặc định là 1
+    addItem(item, 1);
+    console.log('Đã thêm vào giỏ hàng:', item);
+  };
 
   return (
     <div className='min-h-screen bg-white'>
@@ -325,7 +356,10 @@ export default function ProductDetailPage() {
               <button className='w-full cursor-pointer rounded-lg bg-blue-600 px-6 py-4 font-semibold whitespace-nowrap text-white transition-colors hover:bg-blue-700'>
                 Mua ngay
               </button>
-              <button className='w-full cursor-pointer rounded-lg border-2 border-blue-600 px-6 py-4 font-semibold whitespace-nowrap text-blue-600 transition-colors hover:bg-blue-50'>
+              <button
+                onClick={() => handleAddToCart()}
+                className='w-full cursor-pointer rounded-lg border-2 border-blue-600 px-6 py-4 font-semibold whitespace-nowrap text-blue-600 transition-colors hover:bg-blue-50'
+              >
                 Thêm vào giỏ hàng
               </button>
             </div>

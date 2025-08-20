@@ -39,7 +39,7 @@ export default function ForgotPasswordPage() {
             {/* Left side - Image */}
             <div>
               <Image
-                src='/auth/forgot-password.jpeg'
+                src='/auth/forgot-password.png'
                 alt={t('title')}
                 width={612}
                 height={400}

@@ -83,7 +83,7 @@ export default function LoginPage() {
           <div className='flex flex-col items-center lg:flex-row lg:*:w-1/2'>
             <div>
               <Image
-                src='/auth/login.jpeg'
+                src='/auth/login.png'
                 alt={t('title')}
                 width={612}
                 height={400}

@@ -4,6 +4,12 @@ export interface ApiResponse<T> {
   success: boolean;
 }
 
+export interface OrderApiResponse<T> {
+  status: string;
+  data: T;
+  message?: string;
+}
+
 export interface PaginatedResponse<T> {
   success: boolean;
   data: DataPaginatedResponse<T>;

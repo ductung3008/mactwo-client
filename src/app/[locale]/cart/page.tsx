@@ -1,6 +1,7 @@
 'use client';
 
 import { addressApi } from '@/lib/api/address.api';
+import { orderApi } from '@/lib/api/order.api';
 import { useAuthStore } from '@/stores/auth.store';
 import { useCartStore } from '@/stores/cart.store';
 import { Address } from '@/types/address';
@@ -158,7 +159,7 @@ const OrderConfirmation = () => {
     }));
   };
 
-  const handleCreateOrder = () => {
+  const handleCreateOrder = async () => {
     if (!selectedAddress || !selectedPayment) {
       alert('Vui lòng chọn địa chỉ giao hàng và phương thức thanh toán');
       return;
@@ -170,12 +171,21 @@ const OrderConfirmation = () => {
     const orderData = {
       userId: useAuthStore.getState().user?.id || '',
       addressId: parseInt(selectedAddress) || 0,
-      promotionId: 0,
+      promotionId: null,
       orderItems: transformedOrderItems,
     };
 
-    console.log('Raw cart items:', getCurrentUserItems());
-    console.log('Transformed order items:', transformedOrderItems);
+    try {
+      const response = await orderApi.createOrder(orderData);
+      if (response.success) {
+        useCartStore.getState().clearCart();
+      } else {
+        console.log(response);
+      }
+    } catch (err) {
+      console.error('Error creating order:', err);
+    }
+
     console.log('Final order data (API format):', orderData);
 
     alert('Đơn hàng đã được tạo thành công!');
@@ -226,10 +236,9 @@ const OrderConfirmation = () => {
                     type='radio'
                     name='address'
                     value={addr.id}
-                    checked={selectedAddress === addr.id}
+                    checked={selectedAddress === addr.id.toString()}
                     onChange={e => {
                       setSelectedAddress(e.target.value);
-                      console.log(selectedAddress);
                     }}
                     className='mt-1'
                   />

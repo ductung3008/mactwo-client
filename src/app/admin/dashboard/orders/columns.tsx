@@ -1,56 +1,113 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import DeleteDialog from '@/components/ui/delete-dialog';
+import OrderDetailModal from '@/components/ui/order-detail-modal';
+import OrderStatusPopover from '@/components/ui/order-status-popover';
 import { Order } from '@/types/order';
+import { formatCurrency } from '@/utils';
 import { ColumnDef } from '@tanstack/react-table';
+import { Eye } from 'lucide-react';
+import { useState } from 'react';
 
-export const columns: ColumnDef<Order>[] = [
+interface CreateColumnsProps {
+  onStatusUpdate: () => void;
+}
+
+const ActionsCell = ({ order }: { order: Order }) => {
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+
+  return (
+    <>
+      <div className='flex items-center gap-2'>
+        <Button
+          variant='outline'
+          size='sm'
+          onClick={() => setIsDetailModalOpen(true)}
+        >
+          <Eye className='h-4 w-4' />
+        </Button>
+      </div>
+
+      <OrderDetailModal
+        isOpen={isDetailModalOpen}
+        onClose={() => setIsDetailModalOpen(false)}
+        order={order}
+      />
+    </>
+  );
+};
+
+export const createColumns = ({
+  onStatusUpdate,
+}: CreateColumnsProps): ColumnDef<Order>[] => [
   {
-    accessorKey: 'orderId',
-    header: 'ID',
+    accessorKey: 'id',
+    header: 'Mã đơn',
+    cell: ({ row }) => `#${row.original.id}`,
   },
   {
     accessorKey: 'userId',
-    header: 'User ID',
+    header: 'Khách hàng',
+    cell: ({ row }) => (
+      <div className='max-w-[200px] truncate'>{row.original.userId}</div>
+    ),
   },
   {
-    accessorKey: 'addressId',
-    header: 'Address ID',
+    accessorKey: 'address.shippingAddress',
+    header: 'Địa chỉ',
+    cell: ({ row }) => (
+      <div className='max-w-[200px] truncate'>
+        {row.original.address.shippingAddress}
+      </div>
+    ),
   },
   {
-    accessorKey: 'promotionId',
-    header: 'Promotion ID',
-  },
-  {
-    accessorKey: 'orderDate',
-    header: 'Order Date',
+    accessorKey: 'orderItems',
+    header: 'Số sản phẩm',
+    cell: ({ row }) => {
+      const totalItems = row.original.orderItems.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+      );
+      return totalItems;
+    },
   },
   {
     accessorKey: 'status',
-    header: 'Status',
+    header: 'Trạng thái',
+    cell: ({ row }) => (
+      <OrderStatusPopover
+        order={row.original}
+        onStatusUpdate={onStatusUpdate}
+      />
+    ),
   },
   {
     accessorKey: 'totalAmount',
-    header: 'Total Amount',
+    header: 'Tổng tiền',
+    cell: ({ row }) => (
+      <span className='font-semibold text-red-600'>
+        {formatCurrency(row.original.totalAmount)}
+      </span>
+    ),
   },
   {
-    accessorKey: 'action',
-    header: 'Action',
+    accessorKey: 'createdDate',
+    header: 'Ngày đặt',
     cell: ({ row }) => {
-      const order = row.original;
-      return (
-        <div className='flex items-center gap-2'>
-          <Button variant='outline'>Edit</Button>
-          <DeleteDialog
-            title='Xóa đơn hàng'
-            description={`Bạn có chắc muốn xóa đơn hàng "${order.orderId}"? Hành động này không thể hoàn tác.`}
-            onDelete={() => {
-              console.log('Delete order', order.orderId);
-            }}
-          />
-        </div>
-      );
+      const formatDate = (dateString: string) => {
+        return new Date(dateString).toLocaleDateString('vi-VN', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        });
+      };
+      return formatDate(row.original.createdDate);
     },
+  },
+  {
+    id: 'actions',
+    header: 'Thao tác',
+    cell: ({ row }) => <ActionsCell order={row.original} />,
   },
 ];

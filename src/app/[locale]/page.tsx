@@ -29,7 +29,7 @@ export default function HomePage() {
         banners={mainBanners}
         aspectRatio='16 / 9'
         autoPlay={true}
-        height={600}
+        height='clamp(390px, 55.56vh, 600px)'
         className='mb-12 w-full'
       />
 

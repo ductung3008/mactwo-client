@@ -49,3 +49,6 @@ export { OtpInput } from './otp-input';
 
 export { ConfirmationModal, Modal } from './modal';
 export type { ConfirmationModalProps, ModalProps } from './modal';
+
+export { default as ProductImageGallery } from './product-image-gallery';
+export type { ProductImageGalleryProps } from './product-image-gallery';

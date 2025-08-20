@@ -2,16 +2,15 @@
 
 import ProductTabs from '@/components/ui/describe-detail';
 import ProductCombo from '@/components/ui/product-accompanying';
+import ProductImageGallery from '@/components/ui/product-image-gallery';
 import { Product, productApi } from '@/lib/api/products.api';
 import { ProductVariant, productVariantApi } from '@/lib/api/variants.api';
-import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export default function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState('red');
   const [selectedStorage, setSelectedStorage] = useState('128GB');
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [product, setProduct] = useState<Product | null>(null);
   const [productVariant, setProductVariant] = useState<ProductVariant | null>(
     null
@@ -20,7 +19,7 @@ export default function ProductDetailPage() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const product = await productApi.getProductById(id || '');
 
@@ -33,13 +32,11 @@ export default function ProductDetailPage() {
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
-  };
-  useEffect(() => {
-    if (id) {
-      fetchData();
-    }
   }, [id]);
-  console.log('products', productVariant);
+
+  useEffect(() => {
+    fetchData();
+  }, [id, fetchData]);
 
   const colors = [
     { name: 'Đen', value: 'black', bg: 'bg-gray-900' },
@@ -59,33 +56,12 @@ export default function ProductDetailPage() {
     { name: 'Titan Tự nhiên', value: 'natural-titan', bg: 'bg-[#C2BCB2]' },
   ];
 
-  // const availableColors = colors.filter(c =>
-  //   productVariant?.color?.some(
-  //     colorName => colorName.toLowerCase() === c.name.toLowerCase()
-  //   )
-  // );
-
   const availableColors = colors.filter(
     c => c.name.toLowerCase() === productVariant?.color?.toLowerCase()
   );
 
-  // const storageOptions = ['64GB', '128GB', '256GB', '512GB'];
-
   const productImages = [...(productVariant?.imageUrls ?? [])];
 
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const scrollLeft = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -140, behavior: 'smooth' });
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: 140, behavior: 'smooth' });
-    }
-  };
   const locale = 'vi-VN';
   const currency = 'VND';
 
@@ -106,60 +82,10 @@ export default function ProductDetailPage() {
       <div className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8'>
         <div className='grid grid-cols-1 gap-12 lg:grid-cols-2'>
           {/* Product Images */}
-          <div className='space-y-4'>
-            <div className='aspect-[4/5] overflow-hidden rounded-2xl bg-gray-50'>
-              <Image
-                src={productImages[currentImageIndex]}
-                alt='iPhone 14 Plus'
-                className='h-full w-full object-cover object-top'
-                width={200}
-                height={300}
-              />
-            </div>
-            <div className='relative flex items-center'>
-              {/* Nút trái */}
-              <button
-                onClick={scrollLeft}
-                className='absolute left-0 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow hover:bg-gray-100'
-              >
-                <i className='ri-arrow-left-s-line text-xl'></i>
-              </button>
-
-              {/* Thumbnails slider */}
-              <div
-                ref={scrollRef}
-                className='scrollbar-hide flex max-w-[840px] space-x-3 overflow-x-auto px-10'
-              >
-                {productImages.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentImageIndex(index)}
-                    className={`h-20 w-20 flex-shrink-0 cursor-pointer overflow-hidden rounded-lg border-2 ${
-                      currentImageIndex === index
-                        ? 'border-blue-500'
-                        : 'border-gray-200'
-                    }`}
-                  >
-                    <Image
-                      src={image}
-                      alt={`View ${index + 1}`}
-                      className='h-full w-full object-cover object-top'
-                      width={300}
-                      height={400}
-                    />
-                  </button>
-                ))}
-              </div>
-
-              {/* Nút phải */}
-              <button
-                onClick={scrollRight}
-                className='absolute right-0 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow hover:bg-gray-100'
-              >
-                <i className='ri-arrow-right-s-line text-xl'></i>
-              </button>
-            </div>
-          </div>
+          <ProductImageGallery
+            images={productImages}
+            productName={product?.name}
+          />
 
           {/* Product Details */}
           <div className='space-y-8'>
@@ -195,7 +121,6 @@ export default function ProductDetailPage() {
                 Dung lượng
               </h3>
               <div className='flex flex-wrap gap-2'>
-                {/* {storageOptions.map(storage => ( */}
                 <button
                   key={productVariant?.storage}
                   onClick={() =>
@@ -209,7 +134,6 @@ export default function ProductDetailPage() {
                 >
                   {productVariant?.storage}
                 </button>
-                {/* ))} */}
               </div>
             </div>
 
@@ -378,57 +302,6 @@ export default function ProductDetailPage() {
             Mua kèm giá sốc
           </h2>
           <ProductCombo />
-          {/* <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4'>
-            {[
-              {
-                name: 'iPhone 14 Pro',
-                price: '$999',
-                image:
-                  'https://readdy.ai/api/search-image?query=iPhone%2014%20Pro%20black%20color%20front%20view%20clean%20white%20background%20professional%20product%20photography%20premium%20design&width=300&height=300&seq=iphone-pro-1&orientation=squarish',
-              },
-              {
-                name: 'iPhone 13',
-                price: '$699',
-                image:
-                  'https://readdy.ai/api/search-image?query=iPhone%2013%20blue%20color%20front%20view%20clean%20white%20background%20professional%20product%20photography%20elegant%20design&width=300&height=300&seq=iphone-13-1&orientation=squarish',
-              },
-              {
-                name: 'iPhone SE',
-                price: '$429',
-                image:
-                  'https://readdy.ai/api/search-image?query=iPhone%20SE%20white%20color%20front%20view%20clean%20white%20background%20professional%20product%20photography%20compact%20design&width=300&height=300&seq=iphone-se-1&orientation=squarish',
-              },
-              {
-                name: 'AirPods Pro',
-                price: '$249',
-                image:
-                  'https://readdy.ai/api/search-image?query=AirPods%20Pro%20white%20wireless%20earbuds%20with%20charging%20case%20clean%20white%20background%20professional%20product%20photography&width=300&height=300&seq=airpods-1&orientation=squarish',
-              },
-            ].map((product, index) => (
-              <div
-                key={index}
-                className='cursor-pointer overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-lg'
-              >
-                <div className='aspect-square bg-gray-50'>
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    width={300}
-                    height={300}
-                    className='h-full w-full object-cover object-top'
-                  />
-                </div>
-                <div className='p-4'>
-                  <h3 className='mb-2 font-semibold text-gray-900'>
-                    {product.name}
-                  </h3>
-                  <p className='text-lg font-bold text-red-600'>
-                    {product.price}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div> */}
         </div>
 
         {/* Product Description */}

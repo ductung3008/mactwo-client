@@ -1,17 +1,19 @@
 'use client';
 
-import { ProductModal } from '@/components/ui';
+import { ProductModal, useToastNotification } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/table/data-table';
 import { categoryApi, productApi } from '@/lib/api';
+import { DataPaginatedResponse } from '@/types';
 import { Category } from '@/types/category';
 import { Product } from '@/types/product';
 import { flattenCategories } from '@/utils';
 import { Filter, Plus } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { createColumns } from './columns';
 
 const AdminProductsPage = () => {
+  const toast = useToastNotification();
   const [data, setData] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(false);
@@ -22,23 +24,25 @@ const AdminProductsPage = () => {
   // Pagination state
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [paginationData, setPaginationData] = useState<any>(null);
+  const [paginationData, setPaginationData] = useState<
+    DataPaginatedResponse<Product[]>
+  >({} as DataPaginatedResponse<Product[]>);
 
-  const fetchProducts = async (
-    page: number = currentPage,
-    size: number = pageSize
-  ) => {
-    setLoading(true);
-    const params = { page, size, sort: null };
-    const response = await productApi.getProducts(params);
-    if (response.success) {
-      setData(response.data.content);
-      setPaginationData(response.data);
-    } else {
-      setError(response.message || 'Failed to fetch products');
-    }
-    setLoading(false);
-  };
+  const fetchProducts = useCallback(
+    async (page: number = currentPage, size: number = pageSize) => {
+      setLoading(true);
+      const params = { page, size, sort: null };
+      const response = await productApi.getProducts(params);
+      if (response.success) {
+        setData(response.data.content);
+        setPaginationData(response.data);
+      } else {
+        setError(response.message || 'Failed to fetch products');
+      }
+      setLoading(false);
+    },
+    [currentPage, pageSize]
+  );
 
   const fetchCategories = async () => {
     try {
@@ -54,7 +58,7 @@ const AdminProductsPage = () => {
   useEffect(() => {
     fetchProducts();
     fetchCategories();
-  }, []);
+  }, [fetchProducts]);
 
   // Pagination handlers
   const handlePageChange = (page: number) => {
@@ -104,6 +108,13 @@ const AdminProductsPage = () => {
       }),
     [fetchProducts]
   );
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      setError(null);
+    }
+  }, [error, toast]);
 
   return (
     <div>

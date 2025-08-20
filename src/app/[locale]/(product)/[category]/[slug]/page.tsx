@@ -8,7 +8,7 @@ import { useCartStore } from '@/stores/cart.store';
 import { Product } from '@/types/product';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export default function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState('red');
@@ -24,7 +24,7 @@ export default function ProductDetailPage() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const product = await productApi.getProductById(id || '');
 
@@ -37,14 +37,13 @@ export default function ProductDetailPage() {
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
-  };
+  }, [id]);
+
   useEffect(() => {
     if (id) {
       fetchData();
     }
-  }, [id]);
-  console.log('products', product);
-  console.log('productsVariant', productVariant);
+  }, [id, fetchData]);
 
   const colors = [
     { name: 'Đen', value: 'black', bg: 'bg-gray-900' },

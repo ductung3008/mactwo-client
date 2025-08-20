@@ -45,8 +45,9 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: 'action',
     header: 'Action',
-    cell: ({ row }) => {
-      const customer = row.original;
+    cell: () => {
+      // cell: ({ row }) => {
+      // const customer = row.original;
       return (
         <div className='flex items-center gap-2'>
           <Button>View</Button>

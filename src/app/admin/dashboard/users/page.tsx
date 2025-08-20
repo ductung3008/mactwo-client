@@ -1,5 +1,6 @@
 'use client';
 
+import { useToastNotification } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/table/data-table';
 import { customerApi } from '@/lib/api/customer.api';
@@ -9,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { columns } from './columns';
 
 const AdminUsersPage = () => {
+  const toast = useToastNotification();
   const [data, setData] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -26,6 +28,13 @@ const AdminUsersPage = () => {
     };
     fetchUsers();
   }, []);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      setError(null);
+    }
+  }, [error, toast]);
 
   return (
     <div>

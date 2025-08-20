@@ -19,7 +19,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { DataPaginatedResponse } from '@/types';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -72,22 +72,28 @@ export function DataTable<TData, TValue>({
   });
 
   // Pagination handlers
-  const handlePageChange = (page: number) => {
-    if (paginationType === 'server' && onPageChange) {
-      onPageChange(page);
-    } else {
-      setClientCurrentPage(page);
-    }
-  };
+  const handlePageChange = useCallback(
+    (page: number) => {
+      if (paginationType === 'server' && onPageChange) {
+        onPageChange(page);
+      } else {
+        setClientCurrentPage(page);
+      }
+    },
+    [paginationType, onPageChange]
+  );
 
-  const handlePageSizeChange = (pageSize: number) => {
-    if (paginationType === 'server' && onPageSizeChange) {
-      onPageSizeChange(pageSize);
-    } else {
-      setCurrentPageSize(pageSize);
-      setClientCurrentPage(0); // Reset to first page when page size changes
-    }
-  };
+  const handlePageSizeChange = useCallback(
+    (pageSize: number) => {
+      if (paginationType === 'server' && onPageSizeChange) {
+        onPageSizeChange(pageSize);
+      } else {
+        setCurrentPageSize(pageSize);
+        setClientCurrentPage(0); // Reset to first page when page size changes
+      }
+    },
+    [paginationType, onPageSizeChange]
+  );
 
   // Calculate pagination props
   const paginationProps = useMemo(() => {

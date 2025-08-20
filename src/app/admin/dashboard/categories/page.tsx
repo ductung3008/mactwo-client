@@ -1,16 +1,17 @@
 'use client';
 
-import { CategoryModal } from '@/components/ui';
+import { CategoryModal, useToastNotification } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/table/data-table';
 import { categoryApi } from '@/lib/api';
 import { Category, FlatCategory } from '@/types/category';
 import { flattenCategories } from '@/utils';
 import { Filter, Plus } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { createColumns } from './columns';
 
 const AdminCategoriesPage = () => {
+  const toast = useToastNotification();
   const [data, setData] = useState<FlatCategory[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(false);
@@ -20,7 +21,7 @@ const AdminCategoriesPage = () => {
     null
   );
 
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     setLoading(true);
     try {
       const response = await categoryApi.getCategories();
@@ -39,11 +40,11 @@ const AdminCategoriesPage = () => {
       setError('Failed to fetch categories');
     }
     setLoading(false);
-  };
+  }, []);
 
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [fetchCategories]);
 
   const handleOpenCreateModal = () => {
     setSelectedCategory(null);
@@ -81,6 +82,13 @@ const AdminCategoriesPage = () => {
       }),
     [fetchCategories]
   );
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      setError(null);
+    }
+  }, [error, toast]);
 
   return (
     <div>

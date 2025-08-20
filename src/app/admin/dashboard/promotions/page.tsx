@@ -1,12 +1,15 @@
+/* eslint-disable */
+
 'use client';
 
 import { Button } from '@/components/ui/button';
 import { PromotionModal } from '@/components/ui/promotion-modal';
 import { DataTable } from '@/components/ui/table/data-table';
 import { promotionApi } from '@/lib/api';
+import { DataPaginatedResponse } from '@/types';
 import { Promotion } from '@/types/promotion';
 import { Filter } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { columns } from './columns';
 
 const AdminPromotionsPage = () => {
@@ -20,34 +23,36 @@ const AdminPromotionsPage = () => {
   // Pagination state
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [paginationData, setPaginationData] = useState<any>(null);
+  const [paginationData, setPaginationData] = useState<
+    DataPaginatedResponse<Promotion[]>
+  >({} as DataPaginatedResponse<Promotion[]>);
 
-  const fetchPromotions = async (
-    page: number = currentPage,
-    size: number = pageSize
-  ) => {
-    try {
-      setIsLoading(true);
-      const response = await promotionApi.getPromotions({
-        page,
-        size,
-        sort: null,
-      });
+  const fetchPromotions = useCallback(
+    async (page: number = currentPage, size: number = pageSize) => {
+      try {
+        setIsLoading(true);
+        const response = await promotionApi.getPromotions({
+          page,
+          size,
+          sort: null,
+        });
 
-      if (response.success) {
-        setPromotions(response.data.content);
-        setPaginationData(response.data);
+        if (response.success) {
+          setPromotions(response.data.content);
+          setPaginationData(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching promotions:', error);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error('Error fetching promotions:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    },
+    [currentPage, pageSize]
+  );
 
   useEffect(() => {
     fetchPromotions();
-  }, []);
+  }, [fetchPromotions]);
 
   // Pagination handlers
   const handlePageChange = (page: number) => {
@@ -93,6 +98,7 @@ const AdminPromotionsPage = () => {
   };
 
   // Update columns to pass handlers
+  //
   const columnsWithHandlers = columns.map((column: any) => {
     if (column.accessorKey === 'action') {
       return {

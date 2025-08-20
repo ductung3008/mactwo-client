@@ -1,7 +1,5 @@
 'use client';
 
-import MacTwoLogoTransWhite from '@/../public/mactwo-logo-trans-white.png';
-import MacTwoLogo from '@/../public/mactwo-logo.png';
 import { useAuth } from '@/hooks';
 import { Link } from '@/i18n/navigation';
 import { Category, categoryApi } from '@/lib/api/categories.api';
@@ -253,7 +251,7 @@ export const Header = memo(() => {
           <div className='flex-shrink-0'>
             <Link href='/' className='block' aria-label='MacTwo Home'>
               <Image
-                src={MacTwoLogoTransWhite}
+                src='/mactwo-logo-trans-white.png'
                 alt='MacTwo Logo'
                 height={60}
                 width={120}
@@ -462,8 +460,9 @@ export const Footer = memo(() => {
       <div className='divide-4 mx-auto grid max-w-7xl grid-cols-1 gap-5 divide-dashed px-4 py-12 sm:px-6 lg:grid-cols-4 lg:gap-16 lg:px-8'>
         <div>
           <Image
-            src={MacTwoLogo}
+            src='/mactwo-logo.png'
             alt='MacTwo Logo'
+            width={120}
             height={50}
             className='mb-4'
             loading='lazy'

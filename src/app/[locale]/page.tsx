@@ -22,7 +22,6 @@ export default function HomePage() {
   useEffect(() => {
     fetchData();
   }, []);
-  console.log('products', productTop);
 
   return (
     <main className='min-h-screen'>
@@ -30,7 +29,7 @@ export default function HomePage() {
         banners={mainBanners}
         aspectRatio='16 / 9'
         autoPlay={true}
-        height={600}
+        height='clamp(390px, 55.56vh, 600px)'
         className='mb-12 w-full'
       />
 

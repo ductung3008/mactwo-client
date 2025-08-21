@@ -84,7 +84,7 @@ export default function RegisterPage() {
           <div className='flex flex-col items-center lg:flex-row lg:*:w-1/2'>
             <div>
               <Image
-                src='/auth/register.jpeg'
+                src='/auth/register.png'
                 alt={t('title')}
                 width={900}
                 height={600}

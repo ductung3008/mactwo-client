@@ -1,6 +1,5 @@
 'use client';
 
-import MacTwoLogoTrans from '@/../public/mactwo-logo-trans.png';
 import { useToastNotification } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -79,7 +78,7 @@ export default function AdminLogin() {
       <div className='w-full max-w-md space-y-8 p-8'>
         <div className='text-center'>
           <Image
-            src={MacTwoLogoTrans}
+            src='/mactwo-logo-trans.png'
             alt='MacTwo Logo'
             width={150}
             height={150}

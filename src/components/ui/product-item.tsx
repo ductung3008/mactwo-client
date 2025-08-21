@@ -38,15 +38,10 @@ export interface ProductItemProps {
 export function ProductItem({
   id,
   name,
-  // code,
   categoryName,
-  // newPrice,
-  // oldPrice,
   imageUrl,
-  // promotionPercentage,
   tag,
   className,
-  // href,
   customTag,
   imageClassName,
   contentClassName,
@@ -63,18 +58,13 @@ export function ProductItem({
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
 
-  // const linkHref =
-  //   href || (categoryName && code ? `/${categoryName}/${code}` : '#');
-  const linkHref = `/iphone/${slugify(categoryName || '')}?id=${id}`;
+  const linkHref = `${categoryName}/${slugify(name)}?id=${id}`;
 
-  // const formattedOldPrice = oldPrice?.toLocaleString(locale, {
-  //   style: 'currency',
-  //   currency,
-  // });
   const formattedOldPrice = variants?.[0]?.price?.toLocaleString(locale, {
     style: 'currency',
     currency,
   });
+
   const newPrices =
     (variants?.[0]?.price ?? 0) *
     ((100 - (variants?.[0]?.stockQuantity ?? 0)) / 100);
@@ -109,7 +99,7 @@ export function ProductItem({
     const config = tagConfig[tag as keyof typeof tagConfig];
     if (!config) {
       return (
-        <span className='absolute top-2 right-2 flex gap-1 rounded-lg border border-gray-700 px-3 py-1.5 text-xs font-bold text-gray-700'>
+        <span className='absolute right-2 top-2 flex gap-1 rounded-lg border border-gray-700 px-3 py-1.5 text-xs font-bold text-gray-700'>
           {tag}
         </span>
       );
@@ -118,7 +108,7 @@ export function ProductItem({
     return (
       <span
         className={cn(
-          'absolute top-2 right-2 flex gap-1 rounded-lg border px-3 py-1.5 text-xs font-bold',
+          'absolute right-2 top-2 flex gap-1 rounded-lg border px-3 py-1.5 text-xs font-bold',
           config.className
         )}
       >
@@ -139,31 +129,33 @@ export function ProductItem({
     }
 
     return (
-      <div className='relative'>
+      <div className='relative flex items-center justify-center'>
         {imageLoading && (
           <ImageSkeleton
             height={240}
             className={cn('absolute inset-0 rounded-lg', imageClassName)}
           />
         )}
-        <Image
-          src={imageUrl}
-          alt={name}
-          width={240}
-          height={240}
-          loading={lazy ? 'lazy' : priority ? 'eager' : undefined}
-          priority={priority}
-          className={cn(
-            'size-full rounded-lg object-cover transition-opacity duration-300',
-            imageLoading ? 'opacity-0' : 'opacity-100',
-            imageClassName
-          )}
-          onLoad={() => setImageLoading(false)}
-          onError={() => {
-            setImageLoading(false);
-            setImageError(true);
-          }}
-        />
+        <div className='flex h-[240px] w-[240px] items-center justify-center'>
+          <Image
+            src={imageUrl}
+            alt={name}
+            width={200}
+            height={200}
+            loading={lazy ? 'lazy' : priority ? 'eager' : undefined}
+            priority={priority}
+            className={cn(
+              'h-10/12 w-auto rounded-lg object-contain transition-opacity duration-300',
+              imageLoading ? 'opacity-0' : 'opacity-100',
+              imageClassName
+            )}
+            onLoad={() => setImageLoading(false)}
+            onError={() => {
+              setImageLoading(false);
+              setImageError(true);
+            }}
+          />
+        </div>
         {imageError && (
           <div className='absolute inset-0 flex items-center justify-center rounded-lg bg-gray-100'>
             <span className='text-sm text-gray-400'>Failed to load</span>
@@ -193,7 +185,7 @@ export function ProductItem({
       <div className={cn(contentClassName)}>
         <h3
           className={cn(
-            'line-clamp-2 max-h-14 min-h-14 overflow-hidden text-lg leading-7 font-bold text-ellipsis',
+            'line-clamp-2 max-h-14 min-h-14 overflow-hidden text-ellipsis text-lg font-bold leading-7',
             titleClassName
           )}
           title={name}
@@ -209,11 +201,6 @@ export function ProductItem({
           <span className='mr-1 text-base font-bold text-[#0066cc]'>
             {formattedNewPrice}
           </span>
-          {/* {!!oldPrice && oldPrice > 0 && oldPrice !== newPrice && (
-            <span className='mx-1 text-sm text-gray-500 line-through'>
-              {formattedOldPrice}
-            </span>
-          )} */}
           {!!variants?.[0]?.price && variants?.[0]?.price > 0 && (
             <span className='mx-1 text-sm text-gray-500 line-through'>
               {formattedOldPrice}
@@ -226,18 +213,10 @@ export function ProductItem({
 
   const content = (
     <>
-      <div className={cn('mx-2 my-3 size-60', imageClassName)}>
-        {renderImage()}
-      </div>
-
+      <div className={cn('mx-2 my-3', imageClassName)}>{renderImage()}</div>
       <div>
-        {/* {!!promotionPercentage && promotionPercentage > 0 && (
-          <span className='absolute top-0 -left-1 flex h-8 w-21 justify-center bg-[url("/price-ratio.png")] bg-cover bg-no-repeat pt-1.5 text-xs font-bold text-white'>
-            {loading ? '' : t('promotion', { percentage: promotionPercentage })}
-          </span>
-        )} */}
         {!!variants?.[0]?.stockQuantity && variants?.[0]?.stockQuantity > 0 && (
-          <span className='absolute top-0 -left-1 flex h-8 w-21 justify-center bg-[url("/price-ratio.png")] bg-cover bg-no-repeat pt-1.5 text-xs font-bold text-white'>
+          <span className='w-21 absolute -left-1 top-0 flex h-8 justify-center bg-[url("/price-ratio.png")] bg-cover bg-no-repeat pt-1.5 text-xs font-bold text-white'>
             {loading
               ? ''
               : t('promotion', { percentage: variants?.[0]?.stockQuantity })}
@@ -255,7 +234,7 @@ export function ProductItem({
       href={linkHref}
       data-product-id={id}
       className={cn(
-        'relative size-full rounded-xl bg-white px-5 pt-6 pb-4 shadow-lg transition-shadow duration-300 hover:shadow-2xl',
+        'relative size-full rounded-xl bg-white px-5 pb-4 pt-6 shadow-lg transition-shadow duration-300 hover:shadow-2xl',
         loading && 'pointer-events-none',
         className
       )}
@@ -269,7 +248,7 @@ export function ProductItemSkeleton({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        'relative size-full rounded-xl px-5 pt-6 pb-4 shadow-lg',
+        'relative size-full rounded-xl px-5 pb-4 pt-6 shadow-lg',
         className
       )}
     >
@@ -281,12 +260,12 @@ export function ProductItemSkeleton({ className }: { className?: string }) {
         <Skeleton
           width={60}
           height={32}
-          className='absolute top-0 -left-1 rounded-r-lg'
+          className='absolute -left-1 top-0 rounded-r-lg'
         />
         <Skeleton
           width={50}
           height={28}
-          className='absolute top-2 right-2 rounded-lg'
+          className='absolute right-2 top-2 rounded-lg'
         />
       </div>
 

@@ -4,6 +4,7 @@ import { addressApi } from '@/lib/api/address.api';
 import { orderApi } from '@/lib/api/order.api';
 import { useAuthStore } from '@/stores/auth.store';
 import { useCartStore } from '@/stores/cart.store';
+import { storeManager } from '@/stores/store-manager';
 import { Address } from '@/types/address';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
@@ -291,13 +292,15 @@ const OrderConfirmation = () => {
 };
 
 const CartPage = () => {
-  const { getCurrentUserItems, initializeFromAuth } = useCartStore();
+  const { getCurrentUserItems } = useCartStore();
+  const { initializeCartFromAuth } = storeManager;
+
   const items = getCurrentUserItems();
 
   // Khởi tạo cart store từ auth state
   React.useEffect(() => {
-    initializeFromAuth();
-  }, [initializeFromAuth]);
+    initializeCartFromAuth();
+  }, [initializeCartFromAuth]);
 
   return (
     <div className='container mx-auto px-4 py-8'>

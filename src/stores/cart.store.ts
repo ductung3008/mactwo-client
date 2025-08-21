@@ -31,7 +31,6 @@ interface CartStore {
   getCurrentUserItems: () => CartItem[];
   getTotalItems: () => number;
   getUserCart: (userId: string) => UserCart | undefined;
-  initializeFromAuth: () => void;
 }
 
 export const useCartStore = create<CartStore>()(
@@ -187,21 +186,6 @@ export const useCartStore = create<CartStore>()(
       getUserCart: (userId: string) => {
         const state = get();
         return state.userCarts.find(cart => cart.userId === userId);
-      },
-
-      initializeFromAuth: () => {
-        // Import dynamically để tránh circular dependency
-        import('./auth.store').then(({ useAuthStore }) => {
-          const authState = useAuthStore.getState();
-          if (authState.isAuthenticated && authState.user) {
-            const state = get();
-            if (state.currentUserId !== authState.user.id) {
-              set({ currentUserId: authState.user.id });
-            }
-          } else {
-            set({ currentUserId: '' });
-          }
-        });
       },
     }),
     {

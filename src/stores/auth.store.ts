@@ -44,10 +44,6 @@ export const useAuthStore = create<AuthStore>()(
           isAuthenticated: true,
           isLoading: false,
         });
-
-        import('./cart.store').then(({ useCartStore }) => {
-          useCartStore.getState().setCurrentUserId(user.id);
-        });
       },
 
       logout: () => {
@@ -56,10 +52,6 @@ export const useAuthStore = create<AuthStore>()(
           token: null,
           isAuthenticated: false,
           isLoading: false,
-        });
-
-        import('./cart.store').then(({ useCartStore }) => {
-          useCartStore.getState().setCurrentUserId('');
         });
       },
 

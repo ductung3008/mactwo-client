@@ -190,6 +190,8 @@ export const OrderList = ({ className }: OrderListProps) => {
                 >
                   <div className='flex-shrink-0'>
                     <Image
+                      width={64}
+                      height={64}
                       src={item.variant.imageUrls[0]}
                       alt={`${item.variant.color} ${item.variant.storage}`}
                       className='h-16 w-16 rounded-md object-cover'

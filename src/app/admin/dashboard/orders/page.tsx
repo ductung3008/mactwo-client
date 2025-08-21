@@ -40,9 +40,9 @@ const AdminOrdersPage = () => {
     console.log('Open create modal');
   };
 
-  const handleStatusUpdate = () => {
+  const handleStatusUpdate = useCallback(() => {
     fetchOrders();
-  };
+  }, [fetchOrders]);
 
   // Create columns with callbacks
   const columns = useMemo(

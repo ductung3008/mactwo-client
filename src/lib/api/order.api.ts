@@ -15,8 +15,13 @@ export const orderApi = {
     return response.data;
   },
 
+  async getUserOrders(userId: string): Promise<OrderApiResponse<Order[]>> {
+    const response = await api.get(`/orders/user/${userId}`);
+    return response.data;
+  },
+
   async getOrderById(orderId: number): Promise<ApiResponse<Order>> {
-    const response = await api.get(`/orders/${orderId}`);
+    const response = await api.get(`/orders/user/${orderId}`);
     return response.data;
   },
 

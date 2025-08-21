@@ -76,3 +76,6 @@ export {
 
 export { CategoryModal } from './category-modal';
 export { ProductModal } from './product-modal';
+
+export { OrderList } from './order-list';
+export type { OrderListProps } from './order-list';

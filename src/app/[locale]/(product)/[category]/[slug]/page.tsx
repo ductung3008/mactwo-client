@@ -87,7 +87,8 @@ export default function ProductDetailPage() {
     }
 
     // Convert APIProduct thành Product type cho cart
-    const cartProduct: Product = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const cartProduct: any = {
       id: parseInt(product.id), // Convert string to number
       categoryId: 1, // Sẽ cần lấy từ API hoặc context
       name: product.name,

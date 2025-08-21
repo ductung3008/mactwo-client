@@ -139,19 +139,20 @@ export function ProductModal({
   const addImageUrl = (variantIndex: number) => {
     const currentVariant = watch(`variants.${variantIndex}`);
     setValue(`variants.${variantIndex}.imageUrls`, [
-      ...currentVariant.imageUrls,
+      ...(currentVariant?.imageUrls || []),
       '',
     ]);
   };
 
   const removeImageUrl = (variantIndex: number, imageIndex: number) => {
     const currentVariant = watch(`variants.${variantIndex}`);
-    if (currentVariant.imageUrls.length > 1) {
-      const newUrls = currentVariant.imageUrls.filter(
-        (_, index) => index !== imageIndex
-      );
-      setValue(`variants.${variantIndex}.imageUrls`, newUrls);
-    }
+    if (currentVariant)
+      if (currentVariant?.imageUrls.length > 1) {
+        const newUrls = currentVariant.imageUrls.filter(
+          (_, index) => index !== imageIndex
+        );
+        setValue(`variants.${variantIndex}.imageUrls`, newUrls);
+      }
   };
 
   return (
@@ -436,7 +437,7 @@ export function ProductModal({
                               placeholder='Nhập URL hình ảnh'
                               className='flex-1'
                             />
-                            {watch(`variants.${variantIndex}.imageUrls`)
+                            {(watch(`variants.${variantIndex}.imageUrls`) || [])
                               .length > 1 && (
                               <Button
                                 type='button'

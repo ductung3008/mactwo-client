@@ -99,7 +99,7 @@ export function ProductItem({
     const config = tagConfig[tag as keyof typeof tagConfig];
     if (!config) {
       return (
-        <span className='absolute right-2 top-2 flex gap-1 rounded-lg border border-gray-700 px-3 py-1.5 text-xs font-bold text-gray-700'>
+        <span className='absolute top-2 right-2 flex gap-1 rounded-lg border border-gray-700 px-3 py-1.5 text-xs font-bold text-gray-700'>
           {tag}
         </span>
       );
@@ -108,7 +108,7 @@ export function ProductItem({
     return (
       <span
         className={cn(
-          'absolute right-2 top-2 flex gap-1 rounded-lg border px-3 py-1.5 text-xs font-bold',
+          'absolute top-2 right-2 flex gap-1 rounded-lg border px-3 py-1.5 text-xs font-bold',
           config.className
         )}
       >
@@ -185,7 +185,7 @@ export function ProductItem({
       <div className={cn(contentClassName)}>
         <h3
           className={cn(
-            'line-clamp-2 max-h-14 min-h-14 overflow-hidden text-ellipsis text-lg font-bold leading-7',
+            'line-clamp-2 max-h-14 min-h-14 overflow-hidden text-lg leading-7 font-bold text-ellipsis',
             titleClassName
           )}
           title={name}
@@ -216,7 +216,7 @@ export function ProductItem({
       <div className={cn('mx-2 my-3', imageClassName)}>{renderImage()}</div>
       <div>
         {!!variants?.[0]?.stockQuantity && variants?.[0]?.stockQuantity > 0 && (
-          <span className='w-21 absolute -left-1 top-0 flex h-8 justify-center bg-[url("/price-ratio.png")] bg-cover bg-no-repeat pt-1.5 text-xs font-bold text-white'>
+          <span className='absolute top-0 -left-1 flex h-8 w-21 justify-center bg-[url("/price-ratio.png")] bg-cover bg-no-repeat pt-1.5 text-xs font-bold text-white'>
             {loading
               ? ''
               : t('promotion', { percentage: variants?.[0]?.stockQuantity })}
@@ -234,7 +234,7 @@ export function ProductItem({
       href={linkHref}
       data-product-id={id}
       className={cn(
-        'relative size-full rounded-xl bg-white px-5 pb-4 pt-6 shadow-lg transition-shadow duration-300 hover:shadow-2xl',
+        'relative size-full rounded-xl bg-white px-5 pt-6 pb-4 shadow-lg transition-shadow duration-300 hover:shadow-2xl',
         loading && 'pointer-events-none',
         className
       )}
@@ -248,7 +248,7 @@ export function ProductItemSkeleton({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        'relative size-full rounded-xl px-5 pb-4 pt-6 shadow-lg',
+        'relative size-full rounded-xl px-5 pt-6 pb-4 shadow-lg',
         className
       )}
     >
@@ -260,12 +260,12 @@ export function ProductItemSkeleton({ className }: { className?: string }) {
         <Skeleton
           width={60}
           height={32}
-          className='absolute -left-1 top-0 rounded-r-lg'
+          className='absolute top-0 -left-1 rounded-r-lg'
         />
         <Skeleton
           width={50}
           height={28}
-          className='absolute right-2 top-2 rounded-lg'
+          className='absolute top-2 right-2 rounded-lg'
         />
       </div>
 

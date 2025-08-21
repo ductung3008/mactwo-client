@@ -1,7 +1,6 @@
 import { Gender, Role } from '@/constants';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import { useCartStore } from './cart.store';
 
 export interface User {
   id: string;
@@ -46,8 +45,9 @@ export const useAuthStore = create<AuthStore>()(
           isLoading: false,
         });
 
-        // Set currentUserId trong cart store khi login
-        useCartStore.getState().setCurrentUserId(user.id);
+        import('./cart.store').then(({ useCartStore }) => {
+          useCartStore.getState().setCurrentUserId(user.id);
+        });
       },
 
       logout: () => {
@@ -58,8 +58,9 @@ export const useAuthStore = create<AuthStore>()(
           isLoading: false,
         });
 
-        // Clear currentUserId trong cart store khi logout
-        useCartStore.getState().setCurrentUserId('');
+        import('./cart.store').then(({ useCartStore }) => {
+          useCartStore.getState().setCurrentUserId('');
+        });
       },
 
       setUser: (user: User) => {

@@ -49,7 +49,7 @@ export default async function CategoryPage({
           aspectRatio='16 / 9'
           autoPlay={true}
           height={400}
-          className='mb-6 mt-5 w-full'
+          className='mt-5 mb-6 w-full'
         />
 
         <div className='flex flex-row flex-wrap gap-4'>

@@ -1,8 +1,5 @@
 'use client';
-// Breadcrumbs dùng chung cho mọi trang
 
-import MacTwoLogoTransWhite from '@/../public/mactwo-logo-trans-white.png';
-import MacTwoLogo from '@/../public/mactwo-logo.png';
 import { useAuth } from '@/hooks';
 import { Link } from '@/i18n/navigation';
 import { Category, categoryApi } from '@/lib/api/categories.api';
@@ -30,22 +27,8 @@ import {
   useMemo,
   useState,
 } from 'react';
+import useSWR from 'swr';
 import { Button, Input, LanguageSwitcher, PageLoading } from '../ui';
-import { AutoBreadcrumbs } from '../ui/breadcrumbs';
-
-const CATEGORIES = [
-  { name: 'iPhone', link: '/iphone' },
-  { name: 'iPad', link: '/ipad' },
-  { name: 'Mac', link: '/mac' },
-  { name: 'Watch', link: '/watch' },
-  { name: 'Phụ kiện', link: '/accessories' },
-  { name: 'Âm thanh', link: '/sound' },
-  { name: 'Camera', link: '/camera' },
-  { name: 'Gia dụng', link: '/home-appliances' },
-  { name: 'Máy lướt', link: '/refurbished' },
-  { name: 'Tin tức', link: '/news' },
-  { name: 'Liên hệ', link: '/contact' },
-] as const;
 
 const SOCIAL_LINKS = [
   {
@@ -149,7 +132,7 @@ const MemoizedNavigation = memo(
           <Link
             key={category.id}
             href={{
-              pathname: category.link, // vẫn là link
+              pathname: `/${category.slug}`, // vẫn là link
               query: { id: category.id }, // thêm param id
             }}
             className='py-3 text-center text-sm font-medium text-white/80 transition-all duration-200 hover:text-white hover:underline lg:min-w-20'
@@ -164,6 +147,16 @@ const MemoizedNavigation = memo(
 
 MemoizedNavigation.displayName = 'MemoizedNavigation';
 
+const fetchCategories = async () => {
+  const categoriesResponse = await categoryApi.getAllCategory();
+  return categoriesResponse.data.map(cat => ({
+    id: cat.id,
+    categoryName: cat.categoryName,
+    slug: cat.slug,
+    link: cat.link || `/${cat.slug || ''}`,
+  }));
+};
+
 export const Header = memo(() => {
   const t = useTranslations('layout.header');
   const { user, isAuthenticated, logout, isLoading } = useAuthStore();
@@ -171,44 +164,20 @@ export const Header = memo(() => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [categories, setCategories] = useState<Category[]>([]);
-  const fetchCategories = async () => {
-    try {
-      const res = await categoryApi.getAllCategory(); // API
 
-      // const mapped: Category[] = res.data.map(
-      //   (catApi: Omit<Category, 'link'>) => {
-      //     const matched = CATEGORIES.find(
-      //       c => c.name.toLowerCase() === catApi.categoryName.toLowerCase()
-      //     );
-      //     return {
-      //       ...catApi,
-      //       link: matched?.link || '/',
-      //     };
-      //   }
-      // );
-      const mapped: Category[] = CATEGORIES.map(catStatic => {
-        const matchedApi = res.data.find(
-          (catApi: Omit<Category, 'link'>) =>
-            catApi.categoryName.toLowerCase() === catStatic.name.toLowerCase()
-        );
-
-        return {
-          id: matchedApi?.id ?? null, // nếu API có thì lấy id, không thì null
-          categoryName: catStatic.name,
-          link: catStatic.link,
-        };
-      });
-
-      setCategories(mapped);
-    } catch (err) {
-      console.error(err);
+  const { data: categories = [], isLoading: isLoadingCategories } = useSWR(
+    'categories',
+    fetchCategories,
+    {
+      dedupingInterval: 1000 * 60 * 30,
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
     }
-  };
+  );
+
   useEffect(() => {
     if (isAuthenticated) {
       getProfile();
-      fetchCategories();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated]);
@@ -271,7 +240,7 @@ export const Header = memo(() => {
     closeMobileMenu();
   }, [handleLogout, closeMobileMenu]);
 
-  if (isLoading || loading) {
+  if (isLoading || isLoadingCategories || loading) {
     return <PageLoading />;
   }
 
@@ -282,7 +251,7 @@ export const Header = memo(() => {
           <div className='flex-shrink-0'>
             <Link href='/' className='block' aria-label='MacTwo Home'>
               <Image
-                src={MacTwoLogoTransWhite}
+                src='/mactwo-logo-trans-white.png'
                 alt='MacTwo Logo'
                 height={60}
                 width={120}
@@ -378,16 +347,20 @@ export const Header = memo(() => {
             <div className='space-y-3'>
               <div className='mb-4 border-b border-white/20 pb-4'>
                 <div className='grid grid-cols-2 gap-2 border-t border-white/20 pt-4'>
-                  {CATEGORIES.map(category => (
-                    <Link
-                      key={category.name}
-                      href={category.link}
-                      className='text-sm text-white/80 transition-colors hover:text-white hover:underline'
-                      onClick={closeMobileMenu}
-                    >
-                      {category.name}
-                    </Link>
-                  ))}
+                  {categories.map(category => {
+                    console.log(category);
+
+                    return (
+                      <Link
+                        key={category.id}
+                        href={`/${category.slug}?id=${category.id}`}
+                        className='text-sm text-white/80 transition-colors hover:text-white hover:underline'
+                        onClick={closeMobileMenu}
+                      >
+                        {category.categoryName}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -487,8 +460,9 @@ export const Footer = memo(() => {
       <div className='divide-4 mx-auto grid max-w-7xl grid-cols-1 gap-5 divide-dashed px-4 py-12 sm:px-6 lg:grid-cols-4 lg:gap-16 lg:px-8'>
         <div>
           <Image
-            src={MacTwoLogo}
+            src='/mactwo-logo.png'
             alt='MacTwo Logo'
+            width={120}
             height={50}
             className='mb-4'
             loading='lazy'
@@ -560,18 +534,9 @@ export const FloatingButton = memo(() => {
 FloatingButton.displayName = 'FloatingButton';
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const breadcrumbs = AutoBreadcrumbs();
-
   return (
     <div className='flex min-h-screen flex-col'>
       <Header />
-      {breadcrumbs && (
-        <div className='sticky top-[108px] z-50 bg-gray-50'>
-          <div className='mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8'>
-            {breadcrumbs}
-          </div>
-        </div>
-      )}
       <main className='flex-1 bg-gray-50'>{children}</main>
       <FloatingButton />
       <Footer />

@@ -1,7 +1,6 @@
 // app/admin/layout.tsx
 'use client';
 
-import MacTwoLogoTransWhite from '@/../public/mactwo-logo-trans-white.png';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks';
 import Image from 'next/image';
@@ -46,7 +45,7 @@ export default function AdminLayout({
       >
         <div className='flex h-16 items-center justify-center bg-blue-600 px-4'>
           <Image
-            src={MacTwoLogoTransWhite}
+            src='/mactwo-logo-trans-white.png'
             alt='MacTwo Logo'
             width={120}
             height={40}

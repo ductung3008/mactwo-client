@@ -10,14 +10,13 @@ export interface ProductVariant {
   imageUrls: string[];
   price: number;
   stockQuantity: number;
+  percentagePercent: number;
 }
 export const productVariantApi = {
   async getProductVariantById(
     id: string
-  ): Promise<ApiResponse<ProductVariant>> {
-    const response = await api.get(
-      `/products/get-by-id/product-variants/${id}`
-    );
+  ): Promise<ApiResponse<ProductVariant[]>> {
+    const response = await api.get(`/products/get-by-productId/${id}/variants`);
     return response.data;
   },
 };

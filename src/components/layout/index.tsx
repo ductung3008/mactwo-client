@@ -352,8 +352,6 @@ export const Header = memo(() => {
               <div className='mb-4 border-b border-white/20 pb-4'>
                 <div className='grid grid-cols-2 gap-2 border-t border-white/20 pt-4'>
                   {categories.map(category => {
-                    console.log(category);
-
                     return (
                       <Link
                         key={category.id}

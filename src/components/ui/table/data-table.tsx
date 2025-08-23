@@ -144,15 +144,21 @@ export function DataTable<TData, TValue>({
       : data.length > pageSizeOptions[0];
 
   return (
-    <div className='space-y-4'>
-      <div className='overflow-hidden rounded-md border'>
-        <Table className='table-auto'>
-          <TableHeader>
+    <div className='w-full space-y-6'>
+      <div className='overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm'>
+        <Table className='w-full table-auto'>
+          <TableHeader className='bg-gray-50/80'>
             {table.getHeaderGroups().map(headerGroup => (
-              <TableRow key={headerGroup.id}>
+              <TableRow
+                key={headerGroup.id}
+                className='border-b border-gray-200'
+              >
                 {headerGroup.headers.map(header => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      key={header.id}
+                      className='bg-gray-50 px-6 py-4 text-left text-xs font-semibold tracking-wider text-gray-700 uppercase first:rounded-tl-lg last:rounded-tr-lg'
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -165,17 +171,24 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className='divide-y divide-gray-100 bg-white'>
             {isLoading ? (
               // Skeleton loading rows
               Array.from({ length: 5 }, (_, index) => (
-                <TableRow key={`skeleton-${index}`}>
+                <TableRow
+                  key={`skeleton-${index}`}
+                  className='transition-colors duration-150 hover:bg-gray-50/50'
+                >
                   {columns.map((_, colIndex) => (
                     <TableCell
                       key={`skeleton-cell-${colIndex}`}
-                      className='px-4 py-3'
+                      className='px-6 py-4 whitespace-nowrap'
                     >
-                      <Skeleton height={16} width='80%' />
+                      <Skeleton
+                        height={20}
+                        width='80%'
+                        className='rounded-md bg-gray-200'
+                      />
                     </TableCell>
                   ))}
                 </TableRow>
@@ -185,10 +198,14 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+                  className='group transition-all duration-200 ease-in-out hover:bg-gray-50/70'
                 >
                   {row.getVisibleCells().map(cell => (
-                    <TableCell key={cell.id} className='max-w-xs'>
-                      <div className='line-clamp-2 text-sm'>
+                    <TableCell
+                      key={cell.id}
+                      className='max-w-xs px-6 py-4 transition-colors duration-150 group-hover:text-gray-900'
+                    >
+                      <div className='line-clamp-2 text-sm leading-relaxed text-gray-700'>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -202,9 +219,31 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className='h-24 text-center'
+                  className='h-32 bg-gray-50/30 text-center'
                 >
-                  Không có dữ liệu.
+                  <div className='flex flex-col items-center justify-center space-y-3'>
+                    <div className='flex h-16 w-16 items-center justify-center rounded-full bg-gray-100'>
+                      <svg
+                        className='h-8 w-8 text-gray-400'
+                        fill='none'
+                        stroke='currentColor'
+                        viewBox='0 0 24 24'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          strokeWidth={2}
+                          d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
+                        />
+                      </svg>
+                    </div>
+                    <p className='text-sm font-medium text-gray-500'>
+                      Không có dữ liệu
+                    </p>
+                    <p className='text-xs text-gray-400'>
+                      Dữ liệu sẽ xuất hiện ở đây khi có sẵn
+                    </p>
+                  </div>
                 </TableCell>
               </TableRow>
             )}
@@ -213,7 +252,11 @@ export function DataTable<TData, TValue>({
       </div>
 
       {/* Pagination Controls */}
-      {showPagination && <Pagination {...paginationProps} />}
+      {showPagination && (
+        <div className='flex items-center justify-center pt-2'>
+          <Pagination {...paginationProps} />
+        </div>
+      )}
     </div>
   );
 }

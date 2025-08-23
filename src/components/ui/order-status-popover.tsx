@@ -98,8 +98,6 @@ const OrderStatusPopover: React.FC<OrderStatusPopoverProps> = ({
 
   const handleButtonClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    console.log('Status button clicked, current isOpen:', isOpen);
-
     if (buttonRef.current) {
       setButtonRect(buttonRef.current.getBoundingClientRect());
     }
@@ -111,9 +109,6 @@ const OrderStatusPopover: React.FC<OrderStatusPopoverProps> = ({
 
     return createPortal(
       <>
-        {/* Debug log */}
-        {console.log('Popover is rendering via portal, isOpen:', isOpen)}
-
         {/* Backdrop */}
         <div className='fixed inset-0 z-40' onClick={() => setIsOpen(false)} />
 

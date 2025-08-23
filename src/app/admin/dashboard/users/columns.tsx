@@ -12,7 +12,7 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: 'fullName',
-    header: 'Name',
+    header: 'Tên',
   },
   {
     accessorKey: 'email',
@@ -20,19 +20,19 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: 'gender',
-    header: 'Gender',
+    header: 'Giới tính',
   },
   {
     accessorKey: 'dateOfBirth',
-    header: 'Date of Birth',
+    header: 'Ngày sinh',
   },
   {
     accessorKey: 'active',
-    header: 'Active',
+    header: 'Hoạt động',
   },
   {
     accessorKey: 'roleName',
-    header: 'Role',
+    header: 'Vai trò',
   },
   // {
   //   accessorKey: 'createdDate',
@@ -44,13 +44,13 @@ export const columns: ColumnDef<User>[] = [
   // },
   {
     accessorKey: 'action',
-    header: 'Action',
+    header: 'Thao tác',
     cell: () => {
       // cell: ({ row }) => {
       // const customer = row.original;
       return (
         <div className='flex items-center gap-2'>
-          <Button>View</Button>
+          <Button>Xem</Button>
         </div>
       );
     },

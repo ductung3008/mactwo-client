@@ -13,6 +13,7 @@ export default function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState('red');
   const [selectedStorage, setSelectedStorage] = useState('128GB');
   const [product, setProduct] = useState<Product | null>(null);
+
   // const [productVariant, setProductVariant] = useState<ProductVariant | null>(
   //   null
   // );
@@ -42,7 +43,7 @@ export default function ProductDetailPage() {
   useEffect(() => {
     fetchData();
   }, [id, fetchData]);
-  console.log('ádasdasdasdasdasd', productVariant);
+  console.log('ádasdasdasdasdasd', product);
   const colors = [
     { name: 'Đen', value: 'black', bg: 'bg-gray-900' },
     { name: 'Đỏ', value: 'red', bg: 'bg-red-500' },
@@ -96,8 +97,20 @@ export default function ProductDetailPage() {
   });
 
   const handleAddToCart = () => {
-    if (!product || !productVariant) {
-      console.warn('Product hoặc productVariant không có');
+    if (!product) {
+      console.warn('Product không có');
+      return;
+    }
+
+    const selectedVariant = productVariant.find(
+      v =>
+        v.color?.toLowerCase() === selectedColor.toLowerCase() &&
+        v.storage === selectedStorage
+    );
+    console.log('selectedVariant', selectedVariant);
+
+    if (!selectedVariant) {
+      console.warn('Không tìm thấy variant phù hợp');
       return;
     }
 
@@ -105,19 +118,18 @@ export default function ProductDetailPage() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const cartProduct: any = {
       id: parseInt(product.id), // Convert string to number
-      categoryId: 1, // Sẽ cần lấy từ API hoặc context
+      categoryId: product.categoryId ?? 1,
       name: product.name,
-      description: '', // Sẽ cần thêm vào APIProduct hoặc lấy từ nguồn khác
+      description: product.description ?? '',
       imageUrl: product.imageUrl,
-      variants: [], // Không cần thiết cho cart item
+      variants: [], // không cần cho cart item
     };
 
     const item = {
       product: cartProduct,
-      variant: productVariant,
+      variant: selectedVariant, //  chỉ 1 variant
     };
 
-    // Thêm vào cart store - quantity mặc định là 1
     addItem(item, 1);
     console.log('Đã thêm vào giỏ hàng:', item);
   };
@@ -191,9 +203,9 @@ export default function ProductDetailPage() {
                 {availableColors.map(color => (
                   <button
                     key={color.value}
-                    onClick={() => setSelectedColor(color.value)}
+                    onClick={() => setSelectedColor(color.name)}
                     className={`h-8 w-8 rounded-full ${color.bg} cursor-pointer border-2 ${
-                      selectedColor === color.value
+                      selectedColor === color.name
                         ? 'border-gray-800 shadow-lg'
                         : 'border-gray-300'
                     }`}

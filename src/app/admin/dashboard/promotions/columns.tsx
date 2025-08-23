@@ -15,40 +15,28 @@ export const columns: ColumnDef<Promotion>[] = [
     header: 'Tên khuyến mãi',
   },
   {
-    accessorKey: 'description',
-    header: 'Mô tả',
+    accessorKey: 'discountValue',
+    header: 'Giá trị giảm',
   },
   {
-    accessorKey: 'discountAmount',
-    header: 'Số tiền giảm',
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue('discountAmount'));
-      const formatted = new Intl.NumberFormat('vi-VN', {
-        style: 'currency',
-        currency: 'VND',
-      }).format(amount);
-      return <div className='font-medium'>{formatted}</div>;
-    },
+    accessorKey: 'discountType',
+    header: 'Loại giảm giá',
   },
   {
     accessorKey: 'startDate',
     header: 'Ngày bắt đầu',
-    cell: ({ row }) => {
-      const date = new Date(row.getValue('startDate'));
-      return <div>{date.toLocaleDateString('vi-VN')}</div>;
-    },
   },
   {
     accessorKey: 'endDate',
     header: 'Ngày kết thúc',
-    cell: ({ row }) => {
-      const date = new Date(row.getValue('endDate'));
-      return <div>{date.toLocaleDateString('vi-VN')}</div>;
-    },
+  },
+  {
+    accessorKey: 'isActive',
+    header: 'Trạng thái',
   },
   {
     accessorKey: 'action',
-    header: 'Hành động',
+    header: 'Thao tác',
     cell: ({ row }) => {
       const promotion = row.original;
       return (
@@ -57,9 +45,7 @@ export const columns: ColumnDef<Promotion>[] = [
           <DeleteDialog
             title='Xóa khuyến mãi'
             description={`Bạn có chắc muốn xóa khuyến mãi "${promotion.promotionName}"? Hành động này không thể hoàn tác.`}
-            onDelete={() => {
-              console.log('Delete promotion', promotion.id);
-            }}
+            onDelete={() => {}}
           />
         </div>
       );

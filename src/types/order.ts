@@ -20,6 +20,7 @@ export interface OrderVariant {
 
 export interface OrderItem {
   id: number;
+  name: string;
   variant: OrderVariant;
   quantity: number;
   pricePerItem: number;

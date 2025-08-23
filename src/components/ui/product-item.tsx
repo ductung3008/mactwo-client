@@ -240,7 +240,7 @@ export function ProductItem({
       href={linkHref}
       data-product-id={id}
       className={cn(
-        'relative size-full rounded-xl bg-white px-5 pt-6 pb-4 shadow-lg transition-shadow duration-300 hover:shadow-2xl',
+        'relative size-full rounded-xl bg-white px-5 pt-6 pb-4 shadow-[0px_7px_29px_0px_rgba(100,100,111,0.2)] transition-shadow duration-300 hover:shadow-2xl',
         loading && 'pointer-events-none',
         className
       )}

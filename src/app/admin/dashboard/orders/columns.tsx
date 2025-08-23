@@ -3,18 +3,131 @@
 import { Button } from '@/components/ui/button';
 import OrderDetailModal from '@/components/ui/order-detail-modal';
 import OrderStatusPopover from '@/components/ui/order-status-popover';
+import { customerApi } from '@/lib/api';
 import { Order } from '@/types/order';
+import { User } from '@/types/user';
 import { formatCurrency } from '@/utils';
 import { ColumnDef } from '@tanstack/react-table';
 import { Eye } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface CreateColumnsProps {
   onStatusUpdate: () => void;
 }
 
+const userCache = new Map<
+  string,
+  { data: User | null; loading: boolean; error: boolean }
+>();
+
+const UserNameCell = ({ userId }: { userId: string }) => {
+  const [userName, setUserName] = useState<string>('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      if (userCache.has(userId)) {
+        const cached = userCache.get(userId)!;
+        if (cached.loading) {
+          const checkCache = () => {
+            const updated = userCache.get(userId)!;
+            if (!updated.loading) {
+              setUserName(updated.data?.fullName || `ID: ${userId}`);
+              setLoading(false);
+            } else {
+              setTimeout(checkCache, 100);
+            }
+          };
+          checkCache();
+          return;
+        } else {
+          setUserName(cached.data?.fullName || `ID: ${userId}`);
+          setLoading(false);
+          return;
+        }
+      }
+
+      userCache.set(userId, { data: null, loading: true, error: false });
+
+      try {
+        const response = await customerApi.getUserById(userId);
+        if (response.success) {
+          const userData = response.data;
+          userCache.set(userId, {
+            data: userData,
+            loading: false,
+            error: false,
+          });
+          setUserName(userData.fullName);
+        } else {
+          userCache.set(userId, { data: null, loading: false, error: true });
+          setUserName(`ID: ${userId}`);
+        }
+      } catch (error) {
+        console.error(error);
+        userCache.set(userId, { data: null, loading: false, error: true });
+        setUserName(`ID: ${userId}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserName();
+  }, [userId]);
+
+  if (loading) {
+    return (
+      <div className='max-w-[200px] truncate'>
+        <div className='h-4 w-20 animate-pulse rounded bg-gray-200'></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className='max-w-[200px] truncate'>{userName || `ID: ${userId}`}</div>
+  );
+};
+
 const ActionsCell = ({ order }: { order: Order }) => {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [userName, setUserName] = useState<string>('');
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const userId = order.userId;
+
+      if (userCache.has(userId)) {
+        const cached = userCache.get(userId)!;
+        if (cached.loading) {
+          const checkCache = () => {
+            const updated = userCache.get(userId)!;
+            if (!updated.loading) {
+              setUserName(updated.data?.fullName || `ID: ${userId}`);
+            } else {
+              setTimeout(checkCache, 100);
+            }
+          };
+          checkCache();
+          return;
+        } else {
+          setUserName(cached.data?.fullName || `ID: ${userId}`);
+          return;
+        }
+      }
+
+      const waitForCache = () => {
+        if (userCache.has(userId) && !userCache.get(userId)!.loading) {
+          const cached = userCache.get(userId)!;
+          setUserName(cached.data?.fullName || `ID: ${userId}`);
+        } else {
+          setTimeout(waitForCache, 100);
+        }
+      };
+      waitForCache();
+    };
+
+    fetchUserName();
+  }, [order.userId]);
 
   return (
     <>
@@ -32,6 +145,7 @@ const ActionsCell = ({ order }: { order: Order }) => {
         isOpen={isDetailModalOpen}
         onClose={() => setIsDetailModalOpen(false)}
         order={order}
+        orderBy={userName || `ID: ${order.userId}`}
       />
     </>
   );
@@ -48,9 +162,7 @@ export const createColumns = ({
   {
     accessorKey: 'userId',
     header: 'Khách hàng',
-    cell: ({ row }) => (
-      <div className='max-w-[200px] truncate'>{row.original.userId}</div>
-    ),
+    cell: ({ row }) => <UserNameCell userId={row.original.userId} />,
   },
   {
     accessorKey: 'address.shippingAddress',

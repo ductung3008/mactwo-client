@@ -11,28 +11,28 @@ export const columns: ColumnDef<Category>[] = [
   },
   {
     accessorKey: 'category_name',
-    header: 'Name',
+    header: 'Tên danh mục',
   },
   {
     accessorKey: 'parent_id',
-    header: 'Parent ID',
+    header: 'ID danh mục cha',
   },
   {
     accessorKey: 'createdAt',
-    header: 'Created At',
+    header: 'Ngày tạo',
   },
   {
     accessorKey: 'updatedAt',
-    header: 'Updated At',
+    header: 'Ngày cập nhật',
   },
   {
     accessorKey: 'action',
-    header: 'Action',
+    header: 'Thao tác',
     cell: ({}) => {
       return (
         <div className='flex items-center gap-2'>
-          <Button variant='outline'>Edit</Button>
-          <Button variant='destructive'>Delete</Button>
+          <Button variant='outline'>Sửa</Button>
+          <Button variant='destructive'>Xóa</Button>
         </div>
       );
     },

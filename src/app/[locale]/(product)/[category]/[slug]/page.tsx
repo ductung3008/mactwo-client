@@ -1,5 +1,6 @@
 'use client';
 
+import { useToastNotification } from '@/components/ui';
 import ProductTabs from '@/components/ui/describe-detail';
 import ProductCombo from '@/components/ui/product-accompanying';
 import ProductImageGallery from '@/components/ui/product-image-gallery';
@@ -10,13 +11,11 @@ import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
 export default function ProductDetailPage() {
-  const [selectedColor, setSelectedColor] = useState('red');
-  const [selectedStorage, setSelectedStorage] = useState('128GB');
+  const toast = useToastNotification();
+  const [selectedColor, setSelectedColor] = useState('');
+  const [selectedStorage, setSelectedStorage] = useState('');
   const [product, setProduct] = useState<Product | null>(null);
 
-  // const [productVariant, setProductVariant] = useState<ProductVariant | null>(
-  //   null
-  // );
   const [productVariant, setProductVariants] = useState<ProductVariant[]>([]);
 
   const { addItem } = useCartStore();
@@ -33,8 +32,20 @@ export default function ProductDetailPage() {
       );
 
       setProduct(product.data);
-      // setProductVariant(productVariants.data[0]);
       setProductVariants(productVariants.data);
+
+      if (productVariants.data && productVariants.data.length > 0) {
+        const firstVariantWithStorage = productVariants.data.find(
+          v => v.storage !== null && v.storage !== undefined
+        );
+        if (firstVariantWithStorage) {
+          setSelectedStorage(firstVariantWithStorage.storage);
+        }
+
+        if (productVariants.data[0]?.color) {
+          setSelectedColor(productVariants.data[0].color);
+        }
+      }
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
@@ -43,7 +54,7 @@ export default function ProductDetailPage() {
   useEffect(() => {
     fetchData();
   }, [id, fetchData]);
-  console.log('ádasdasdasdasdasd', product);
+
   const colors = [
     { name: 'Đen', value: 'black', bg: 'bg-gray-900' },
     { name: 'Đỏ', value: 'red', bg: 'bg-red-500' },
@@ -68,17 +79,16 @@ export default function ProductDetailPage() {
     },
   ];
 
-  // const availableColors = colors.filter(
-  //   c => c.name.toLowerCase() === productVariant?.color?.toLowerCase()
-  // );
-
-  // lấy ra danh sách màu từ productVariant (mảng)
   const variantColors = productVariant.map(v => v.color?.toLowerCase());
 
-  // lọc trong danh sách colors những màu nào có trong variantColors
   const availableColors = colors.filter(c =>
     variantColors.includes(c.name.toLowerCase())
   );
+
+  const variantsWithStorage = productVariant.filter(
+    variant => variant.storage !== null && variant.storage !== undefined
+  );
+
   const productImages = [...(productVariant[0]?.imageUrls ?? [])];
 
   const locale = 'vi-VN';
@@ -96,275 +106,342 @@ export default function ProductDetailPage() {
     currency,
   });
 
+  const handleBuyNow = () => {
+    handleAddToCart();
+    window.location.href = '/cart';
+  };
+
   const handleAddToCart = () => {
     if (!product) {
-      console.warn('Product không có');
+      toast.error('Lỗi', 'Sản phẩm không tồn tại.');
       return;
     }
 
     const selectedVariant = productVariant.find(
       v =>
         v.color?.toLowerCase() === selectedColor.toLowerCase() &&
-        v.storage === selectedStorage
+        (variantsWithStorage.length > 0 ? v.storage === selectedStorage : true)
     );
-    console.log('selectedVariant', selectedVariant);
 
     if (!selectedVariant) {
-      console.warn('Không tìm thấy variant phù hợp');
       return;
     }
 
-    // Convert APIProduct thành Product type cho cart
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const cartProduct: any = {
-      id: parseInt(product.id), // Convert string to number
+      id: parseInt(product.id),
       categoryId: product.categoryId ?? 1,
       name: product.name,
       description: product.description ?? '',
       imageUrl: product.imageUrl,
-      variants: [], // không cần cho cart item
+      variants: [],
     };
 
     const item = {
       product: cartProduct,
-      variant: selectedVariant, //  chỉ 1 variant
+      variant: selectedVariant,
     };
 
     addItem(item, 1);
-    console.log('Đã thêm vào giỏ hàng:', item);
+    toast.success('Thành công', 'Đã thêm sản phẩm vào giỏ hàng.');
   };
 
   return (
-    <div className='min-h-screen bg-white'>
-      <div className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8'>
-        <div className='grid grid-cols-1 gap-12 lg:grid-cols-2'>
-          {/* Product Images */}
-          <ProductImageGallery
-            images={productImages}
-            productName={product?.name}
-          />
+    <div className='min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100'>
+      <div className='mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8'>
+        <div className='grid grid-cols-1 gap-16 lg:grid-cols-2'>
+          <div className='relative'>
+            <ProductImageGallery
+              images={productImages}
+              productName={product?.name}
+            />
 
-          {/* Product Details */}
-          <div className='space-y-8'>
-            <div>
-              <h1 className='mb-2 text-3xl font-bold text-gray-900'>
-                {product?.name}
-              </h1>
-              <div className='mb-4 flex items-center space-x-4'>
-                <div className='flex items-center'>
-                  {[...Array(5)].map((_, i) => (
-                    <i
-                      key={i}
-                      className='ri-star-fill flex h-5 w-5 items-center justify-center text-yellow-400'
-                    ></i>
-                  ))}
-                </div>
-              </div>
-              <div className='flex items-center gap-x-8'>
-                <span className='text-2xl font-bold text-[#0066cc]'>
-                  {formattedNewPrice}
-                </span>
-                <br />
-                <span className='text-2xl text-gray-500 line-through'>
-                  {formattedOldPrice}
-                </span>
-              </div>
-              <p className='text-0.3xl text-gray-400'>(Đã bao gồm VAT)</p>
-            </div>
-
-            {/* Storage Selection */}
-            <div>
-              <h3 className='text-0.3xl mb-4 font-semibold text-gray-500'>
-                Dung lượng
+            <div className='mt-4 rounded-2xl border border-slate-200/60 bg-slate-50 p-8 shadow-sm'>
+              <h3 className='mb-6 flex items-center text-lg font-bold text-slate-800'>
+                <i className='ri-information-line mr-3 text-blue-600'></i>
+                Thông tin bổ sung
               </h3>
-              <div className='flex flex-wrap gap-2'>
-                {productVariant.map(variant => (
-                  <button
-                    key={variant.id}
-                    onClick={() => setSelectedStorage(variant.storage)}
-                    className={`cursor-pointer rounded-lg border-2 px-4 py-3 text-center whitespace-nowrap ${
-                      selectedStorage === variant.storage
-                        ? 'border-blue-500 bg-blue-50 text-blue-700'
-                        : 'border-gray-300 text-gray-700 hover:border-gray-400'
-                    }`}
-                  >
-                    {variant.storage}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Color Selection */}
-            <div>
-              <h3 className='text-0.3xl mb-4 font-semibold text-gray-500'>
-                Màu sắc
-              </h3>
-              <div className='flex space-x-3'>
-                {availableColors.map(color => (
-                  <button
-                    key={color.value}
-                    onClick={() => setSelectedColor(color.name)}
-                    className={`h-8 w-8 rounded-full ${color.bg} cursor-pointer border-2 ${
-                      selectedColor === color.name
-                        ? 'border-gray-800 shadow-lg'
-                        : 'border-gray-300'
-                    }`}
-                    title={color.name}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Key Features */}
-            <div className='rounded-lg border border-gray-200 p-4'>
-              <h3 className='mb-2 flex items-center text-lg font-semibold text-gray-900'>
-                <i className='ri-gift-line mr-2 text-xl'></i> Ưu đãi
-              </h3>
-              <div className='mb-2 rounded-lg border border-gray-200 bg-gray-100 p-2'>
-                <p className='text-sm text-gray-500'>
-                  ( Khuyến mãi dự kiến áp dụng{' '}
-                  <b className='text-black'>đến 23h59 | 31/08/2025</b> )
-                </p>
-              </div>
-
-              {/* Ưu đãi thanh toán */}
-              <div className='mb-4'>
-                <h4 className='mb-2 font-semibold text-red-600'>
-                  I. Ưu đãi thanh toán
-                </h4>
-                <ul className='space-y-1 text-sm text-gray-800'>
-                  <li className='flex'>
-                    <i className='ri-check-line mt-0.5 mr-2 text-green-500'></i>
-                    Giảm đến <b>200.000đ</b> khi thanh toán qua Kredivo
-                  </li>
-                  <li className='flex'>
-                    <i className='ri-check-line mt-0.5 mr-2 text-green-500'></i>
-                    Hỗ trợ trả góp 0% lãi suất{' '}
-                    <a href='#' className='text-blue-600'>
-                      (xem chi tiết)
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Ưu đãi mua kèm */}
-              <div className='mb-4'>
-                <h4 className='mb-2 font-semibold text-red-600'>
-                  II. Ưu đãi mua kèm
-                </h4>
-                <ul className='space-y-1 text-sm text-gray-800'>
-                  <li className='flex'>
-                    <i className='ri-check-line mt-0.5 mr-2 text-green-500'></i>
-                    <b>Ốp chính hãng Apple iPhone 14 series</b> đồng giá{' '}
-                    <b>990.000đ</b>
-                  </li>
-                  <li className='flex'>
-                    <i className='ri-check-line mt-0.5 mr-2 text-green-500'></i>
-                    Mua combo phụ kiện chính hãng giảm đến <b>200.000đ</b>{' '}
-                    <a href='#' className='text-blue-600'>
-                      (xem chi tiết)
-                    </a>
-                  </li>
-                  <li className='flex'>
-                    <i className='ri-check-line mt-0.5 mr-2 text-green-500'></i>
-                    <b>Tai nghe Sony giảm đến 1.000.000đ</b>{' '}
-                    <a href='#' className='text-blue-600'>
-                      (xem chi tiết)
-                    </a>
-                  </li>
-                  <li className='flex'>
-                    <i className='ri-check-line mt-0.5 mr-2 text-green-500'></i>
-                    Giảm đến <b>20%</b> khi mua các gói bảo hành{' '}
-                    <a href='#' className='text-blue-600'>
-                      (xem chi tiết)
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Ưu đãi khác */}
-              <div>
-                <h4 className='mb-2 font-semibold text-red-600'>
-                  III. Ưu đãi khác
-                </h4>
-                <ul className='space-y-1 text-sm text-gray-800'>
-                  <li className='flex'>
-                    <i className='ri-check-line mt-0.5 mr-2 text-green-500'></i>
-                    Thu cũ lên đời iPhone - trợ giá lên đến <b>
-                      1.000.000đ
-                    </b>{' '}
-                    <a href='#' className='text-blue-600'>
-                      (xem chi tiết)
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className='space-y-4'>
-              <button className='w-full cursor-pointer rounded-lg bg-blue-600 px-6 py-4 font-semibold whitespace-nowrap text-white transition-colors hover:bg-blue-700'>
-                Mua ngay
-              </button>
-              <button
-                onClick={() => handleAddToCart()}
-                className='w-full cursor-pointer rounded-lg border-2 border-blue-600 px-6 py-4 font-semibold whitespace-nowrap text-blue-600 transition-colors hover:bg-blue-50'
-              >
-                Thêm vào giỏ hàng
-              </button>
-            </div>
-
-            {/* Additional Info */}
-            <div className='rounded-lg border border-gray-200 p-4'>
-              <ul className='space-y-2 text-sm text-gray-800'>
-                <li className='flex items-start'>
-                  <i className='ri-check-fill mt-1 mr-2 text-blue-600'></i>
-                  Bộ sản phẩm gồm: Hộp, Sách hướng dẫn, Cây lấy sim, Cáp
-                  Lightning - Type C
+              <ul className='space-y-4 text-sm text-slate-700'>
+                <li className='flex items-center rounded-lg bg-white p-3 shadow-sm'>
+                  <i className='ri-check-fill mt-1 mr-3 text-blue-600'></i>
+                  <span>
+                    Bộ sản phẩm gồm: Hộp, Sách hướng dẫn, Cây lấy sim, Cáp
+                    Lightning - Type C
+                  </span>
                 </li>
-                <li className='flex items-start'>
-                  <i className='ri-check-fill mt-1 mr-2 text-blue-600'></i>
-                  Bảo hành chính hãng 1 năm{' '}
-                  <a href='#' className='text-blue-600'>
-                    (chi tiết)
-                  </a>
+                <li className='flex items-center rounded-lg bg-white p-3 shadow-sm'>
+                  <i className='ri-check-fill mt-1 mr-3 text-blue-600'></i>
+                  <span>
+                    Bảo hành chính hãng 1 năm{' '}
+                    <a
+                      href='#'
+                      className='font-medium text-blue-600 hover:underline'
+                    >
+                      (chi tiết)
+                    </a>
+                  </span>
                 </li>
-                <li className='flex items-start'>
-                  <i className='ri-check-fill mt-1 mr-2 text-blue-600'></i>
-                  Giao hàng nhanh toàn quốc{' '}
-                  <a href='#' className='text-blue-600'>
-                    (chi tiết)
-                  </a>
+                <li className='flex items-center rounded-lg bg-white p-3 shadow-sm'>
+                  <i className='ri-check-fill mt-1 mr-3 text-blue-600'></i>
+                  <span>
+                    Giao hàng nhanh toàn quốc{' '}
+                    <a
+                      href='#'
+                      className='font-medium text-blue-600 hover:underline'
+                    >
+                      (chi tiết)
+                    </a>
+                  </span>
                 </li>
-                <li className='flex items-start'>
-                  <i className='ri-check-fill mt-1 mr-2 text-blue-600'></i>
-                  Hoàn thuế cho người nước ngoài{' '}
-                  <a href='#' className='text-blue-600'>
-                    (chi tiết)
-                  </a>
+                <li className='flex items-center rounded-lg bg-white p-3 shadow-sm'>
+                  <i className='ri-check-fill mt-1 mr-3 text-blue-600'></i>
+                  <span>
+                    Hoàn thuế cho người nước ngoài{' '}
+                    <a
+                      href='#'
+                      className='font-medium text-blue-600 hover:underline'
+                    >
+                      (chi tiết)
+                    </a>
+                  </span>
                 </li>
-                <li className='flex items-start'>
-                  <i className='ri-check-fill mt-1 mr-2 text-blue-600'></i>
-                  Gọi đặt mua{' '}
-                  <span className='font-semibold text-blue-700'>
-                    1900.6626
-                  </span>{' '}
-                  (8:00 - 22:00)
+                <li className='flex items-center rounded-lg bg-white p-3 shadow-sm'>
+                  <i className='ri-check-fill mt-1 mr-3 text-blue-600'></i>
+                  <span>
+                    Gọi đặt mua{' '}
+                    <span className='text-lg font-bold text-blue-700'>
+                      1900.6626
+                    </span>{' '}
+                    (8:00 - 22:00)
+                  </span>
                 </li>
               </ul>
             </div>
           </div>
+
+          <div className='space-y-10'>
+            <div className='rounded-2xl border border-slate-200/60 bg-white p-8 shadow-sm'>
+              <h1 className='mb-2 text-4xl leading-tight font-bold text-slate-800'>
+                {product?.name}
+              </h1>
+              <div className='mb-2 flex items-center space-x-4'>
+                <div className='flex items-center space-x-1'>
+                  {[...Array(5)].map((_, i) => (
+                    <i
+                      key={i}
+                      className='ri-star-fill text-lg text-amber-400'
+                    ></i>
+                  ))}
+                </div>
+              </div>
+              <div className='space-y-2'>
+                <div className='flex items-center gap-x-6'>
+                  <span className='text-3xl font-bold text-emerald-600'>
+                    {formattedNewPrice}
+                  </span>
+                  <span className='text-xl text-slate-400 line-through'>
+                    {formattedOldPrice}
+                  </span>
+                </div>
+                <p className='text-sm text-slate-500'>(Đã bao gồm VAT)</p>
+              </div>
+
+              {variantsWithStorage.length > 0 && (
+                <div className='mt-4 mb-2'>
+                  <h3 className='mb-2 text-lg font-semibold text-slate-800'>
+                    Dung lượng
+                  </h3>
+                  <div className='flex flex-wrap gap-3'>
+                    {variantsWithStorage.map(variant => (
+                      <button
+                        key={variant.id}
+                        onClick={() => setSelectedStorage(variant.storage)}
+                        className={`cursor-pointer rounded-xl border-2 px-4 py-2 text-center font-medium whitespace-nowrap transition-all duration-200 ${
+                          selectedStorage === variant.storage
+                            ? 'scale-105 border-blue-500 bg-blue-50 text-blue-700 shadow-md'
+                            : 'border-slate-300 text-slate-700 hover:border-slate-400 hover:shadow-sm'
+                        }`}
+                      >
+                        {variant.storage}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {variantColors.filter(c => !!c).length > 0 && (
+                <div className='mt-4 mb-2'>
+                  <h3 className='mb-2 text-lg font-semibold text-slate-800'>
+                    Màu sắc
+                  </h3>
+                  <div className='flex flex-wrap gap-4'>
+                    {availableColors.map(color => (
+                      <button
+                        key={color.value}
+                        onClick={() => setSelectedColor(color.name)}
+                        className={`h-12 w-12 rounded-full ${color.bg} cursor-pointer border-3 transition-all duration-200 hover:scale-110 ${
+                          selectedColor === color.name
+                            ? 'scale-110 border-slate-800 shadow-lg'
+                            : 'border-slate-300 shadow-sm'
+                        }`}
+                        title={color.name}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className='overflow-hidden rounded-2xl border border-red-200/60 bg-gradient-to-r from-red-50 to-orange-50 shadow-sm'>
+              <div className='bg-gradient-to-r from-red-600 to-orange-500 p-4'>
+                <h3 className='flex items-center text-xl font-bold text-white'>
+                  <i className='ri-gift-line mr-3 text-2xl'></i>
+                  Ưu đãi đặc biệt
+                </h3>
+              </div>
+
+              <div className='p-8'>
+                <div className='mb-6 rounded-xl border border-amber-300 bg-gradient-to-r from-amber-50 to-yellow-50 p-4'>
+                  <p className='text-sm font-medium text-amber-800'>
+                    <i className='ri-time-line mr-2'></i>
+                    Khuyến mãi dự kiến áp dụng{' '}
+                    <b className='text-red-600'>đến 23h59 | 31/08/2025</b>
+                  </p>
+                </div>
+
+                <div className='mb-8'>
+                  <h4 className='mb-4 flex items-center text-lg font-bold text-red-700'>
+                    <i className='ri-bank-card-line mr-2'></i>
+                    I. Ưu đãi thanh toán
+                  </h4>
+                  <ul className='space-y-3 text-sm text-slate-700'>
+                    <li className='flex items-center rounded-lg bg-white p-3 shadow-sm'>
+                      <i className='ri-check-line mt-0.5 mr-3 text-lg text-emerald-500'></i>
+                      <p>
+                        Giảm đến{' '}
+                        <span className='font-bold text-red-600'>200.000đ</span>{' '}
+                        khi thanh toán qua Kredivo
+                      </p>
+                    </li>
+                    <li className='flex items-center rounded-lg bg-white p-3 shadow-sm'>
+                      <i className='ri-check-line mt-0.5 mr-3 text-lg text-emerald-500'></i>
+                      <div>
+                        Hỗ trợ trả góp 0% lãi suất
+                        <a
+                          href='#'
+                          className='ml-2 font-medium text-blue-600 hover:underline'
+                        >
+                          (xem chi tiết)
+                        </a>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className='mb-8'>
+                  <h4 className='mb-4 flex items-center text-lg font-bold text-red-700'>
+                    <i className='ri-shopping-bag-line mr-2'></i>
+                    II. Ưu đãi mua kèm
+                  </h4>
+                  <ul className='space-y-3 text-sm text-slate-700'>
+                    <li className='flex items-center rounded-lg bg-white p-3 shadow-sm'>
+                      <i className='ri-check-line mt-0.5 mr-3 text-lg text-emerald-500'></i>
+                      <span className='flex flex-wrap gap-1'>
+                        <b>Ốp chính hãng Apple iPhone 14 series</b> đồng giá
+                        <b className='text-red-600'>990.000đ</b>
+                      </span>
+                    </li>
+                    <li className='flex items-center rounded-lg bg-white p-3 shadow-sm'>
+                      <i className='ri-check-line mt-0.5 mr-3 text-lg text-emerald-500'></i>
+                      <div className='flex flex-wrap gap-1'>
+                        Mua combo phụ kiện chính hãng giảm đến{' '}
+                        <b className='text-red-600'>200.000đ</b>
+                        <a
+                          href='#'
+                          className='font-medium text-blue-600 hover:underline'
+                        >
+                          (xem chi tiết)
+                        </a>
+                      </div>
+                    </li>
+                    <li className='flex items-center rounded-lg bg-white p-3 shadow-sm'>
+                      <i className='ri-check-line mt-0.5 mr-3 text-lg text-emerald-500'></i>
+                      <div className='flex flex-wrap gap-1'>
+                        <b>Tai nghe Sony giảm đến 1.000.000đ</b>
+                        <a
+                          href='#'
+                          className='font-medium text-blue-600 hover:underline'
+                        >
+                          (xem chi tiết)
+                        </a>
+                      </div>
+                    </li>
+                    <li className='flex items-center rounded-lg bg-white p-3 shadow-sm'>
+                      <i className='ri-check-line mt-0.5 mr-3 text-lg text-emerald-500'></i>
+                      <div className='flex flex-wrap gap-1'>
+                        Giảm đến <b className='text-red-600'>20%</b> khi mua các
+                        gói bảo hành{' '}
+                        <a
+                          href='#'
+                          className='font-medium text-blue-600 hover:underline'
+                        >
+                          (xem chi tiết)
+                        </a>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className='mb-4 flex items-center text-lg font-bold text-red-700'>
+                    <i className='ri-star-line mr-2'></i>
+                    III. Ưu đãi khác
+                  </h4>
+                  <ul className='space-y-3 text-sm text-slate-700'>
+                    <li className='flex items-center rounded-lg bg-white p-3 shadow-sm'>
+                      <i className='ri-check-line mt-0.5 mr-3 text-lg text-emerald-500'></i>
+                      <div className='flex flex-wrap gap-1'>
+                        Thu cũ lên đời iPhone - trợ giá lên đến{' '}
+                        <b className='text-red-600'>1.000.000đ</b>
+                        <a
+                          href='#'
+                          className='font-medium text-blue-600 hover:underline'
+                        >
+                          (xem chi tiết)
+                        </a>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className='space-y-4'>
+              <button
+                onClick={() => handleBuyNow()}
+                className='w-full cursor-pointer rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-5 text-lg font-bold whitespace-nowrap text-white shadow-lg transition-all duration-200 hover:scale-105 hover:from-blue-700 hover:to-blue-800 hover:shadow-xl'
+              >
+                <i className='ri-shopping-cart-line mr-2'></i>
+                Mua ngay
+              </button>
+              <button
+                onClick={() => handleAddToCart()}
+                className='w-full cursor-pointer rounded-2xl border-2 border-blue-600 bg-white px-8 py-5 text-lg font-bold whitespace-nowrap text-blue-600 transition-all duration-200 hover:scale-105 hover:bg-blue-50 hover:shadow-lg'
+              >
+                <i className='ri-add-line mr-2'></i>
+                Thêm vào giỏ hàng
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* Related Products */}
-        <div className='mt-16 border-t border-gray-200'>
-          <h2 className='mt-8 mb-8 text-2xl font-bold text-gray-900'>
+        <div className='mt-10 border-t border-slate-200 pt-8'>
+          <h2 className='mb-4 text-center text-3xl font-bold text-slate-800'>
             Sản phẩm tương tự
           </h2>
           <ProductCombo categoryId={product?.categoryId} />
         </div>
 
-        {/* Product Description */}
         <ProductTabs product={product} />
       </div>
     </div>

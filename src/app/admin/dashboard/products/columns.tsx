@@ -11,11 +11,13 @@ import Image from 'next/image';
 interface ProductColumnProps {
   onEdit: (product: Product) => void;
   onDeleteSuccess: () => void;
+  categories: Array<{ id: number; name: string }>;
 }
 
 export const createColumns = ({
   onEdit,
   onDeleteSuccess,
+  categories,
 }: ProductColumnProps): ColumnDef<Product>[] => [
   {
     accessorKey: 'productId',
@@ -26,7 +28,7 @@ export const createColumns = ({
   },
   {
     accessorKey: 'imageUrl',
-    header: 'Image',
+    header: 'Hình ảnh',
     cell: ({ row }) => {
       return (
         <Image
@@ -40,11 +42,16 @@ export const createColumns = ({
   },
   {
     accessorKey: 'name',
-    header: 'Name',
+    header: 'Tên sản phẩm',
   },
   {
     accessorKey: 'categoryId',
-    header: 'Category',
+    header: 'Danh mục',
+    cell: ({ row }) => {
+      const categoryId = row.original.categoryId;
+      const category = categories.find(cat => cat.id === categoryId);
+      return <div>{category?.name.trim()}</div>;
+    },
   },
   // {
   //   accessorKey: 'description',
@@ -52,14 +59,19 @@ export const createColumns = ({
   // },
   {
     accessorKey: 'productVariants',
-    header: 'Variants',
+    header: 'Biến thể',
     cell: ({ row }) => {
       const variants = row.original.variants;
       return variants.map(variant => {
         return (
           <div key={variant.product_variant_id} className='flex flex-col gap-2'>
-            <div>{variant.color}</div>
-            <div>{variant.price}</div>
+            <div>
+              {variant.color} -{' '}
+              {variant.price.toLocaleString('vi', {
+                style: 'currency',
+                currency: 'VND',
+              })}
+            </div>
           </div>
         );
       });

@@ -44,6 +44,7 @@ export default function AdminLayout({
 
 function AdminLayoutContent({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, user, loading } = useAuth();
+
   const router = useRouter();
   const pathname = usePathname();
 
@@ -56,10 +57,9 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
     }
 
     // if (!loading && isAuthenticated && user?.role === Role.Admin) {
-    if (!loading && isAuthenticated) {
-      router.push('/admin/dashboard');
-    }
+    // if (!loading && isAuthenticated) {
+    //   router.push('/admin/dashboard');
+    // }
   }, [loading, isAuthenticated, user, pathname, router]);
-
   return <ToastProvider>{children}</ToastProvider>;
 }

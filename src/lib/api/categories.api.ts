@@ -11,6 +11,7 @@ export interface Category {
   slug?: string;
   products?: Product[];
   name?: string;
+  content?: string;
 }
 
 export const categoryApi = {

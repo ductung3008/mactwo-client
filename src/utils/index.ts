@@ -1,3 +1,4 @@
+import { Category, FlatCategory } from '@/types/category';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -7,7 +8,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // Format currency
-export function formatCurrency(amount: number, currency = 'USD'): string {
+export function formatCurrency(amount: number, currency = 'VND'): string {
+  if (currency === 'VND') {
+    return new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+    }).format(amount);
+  }
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
@@ -116,4 +123,35 @@ export function formatFileSize(bytes: number): string {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+// Flatten nested categories
+export function flattenCategories(
+  categories: Category[],
+  level: number = 0
+): FlatCategory[] {
+  const result: FlatCategory[] = [];
+
+  categories.forEach(category => {
+    // Thêm category hiện tại
+    result.push({
+      id: category.id,
+      parentId: category.parentId,
+      level: level,
+
+      // Các thuộc tính để tương thích với Category interface
+      categoryName: category.categoryName,
+      children: [], // Flatten sẽ không có children
+      createdAt: category.createdAt,
+      updatedAt: category.updatedAt,
+    });
+
+    // Nếu có children, đệ quy flatten các children
+    if (category.children && category.children.length > 0) {
+      const flattenedChildren = flattenCategories(category.children, level + 1);
+      result.push(...flattenedChildren);
+    }
+  });
+
+  return result;
 }

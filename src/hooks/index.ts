@@ -25,6 +25,7 @@ export function useAuth() {
       setLocalLoading(true);
       setError(null);
       const response = await authApi.login(credentials);
+      // const user = await authApi.getUserInfo();
 
       if (response.success) {
         login(response.data.user, response.data.accessToken);

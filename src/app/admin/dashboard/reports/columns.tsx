@@ -11,6 +11,7 @@ export const columns: ColumnDef<Category>[] = [
   },
   {
     accessorKey: 'category_name',
+<<<<<<< HEAD
     header: 'Name',
   },
   {
@@ -33,6 +34,30 @@ export const columns: ColumnDef<Category>[] = [
         <div className='flex items-center gap-2'>
           <Button variant='outline'>Edit</Button>
           <Button variant='destructive'>Delete</Button>
+=======
+    header: 'Tên danh mục',
+  },
+  {
+    accessorKey: 'parent_id',
+    header: 'ID danh mục cha',
+  },
+  {
+    accessorKey: 'createdAt',
+    header: 'Ngày tạo',
+  },
+  {
+    accessorKey: 'updatedAt',
+    header: 'Ngày cập nhật',
+  },
+  {
+    accessorKey: 'action',
+    header: 'Thao tác',
+    cell: ({}) => {
+      return (
+        <div className='flex items-center gap-2'>
+          <Button variant='outline'>Sửa</Button>
+          <Button variant='destructive'>Xóa</Button>
+>>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
         </div>
       );
     },

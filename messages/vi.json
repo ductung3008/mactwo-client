@@ -243,5 +243,15 @@
   },
   "modal": {
     "processing": "Đang xử lý..."
+  },
+  "productDetail": {
+    "addToCart": "Thêm vào giỏ hàng",
+    "buyNow": "Mua ngay",
+    "productDescription": "Mô tả sản phẩm",
+    "productSpecifications": "Thông số kỹ thuật",
+    "customerReviews": "Đánh giá của khách hàng",
+    "productComparison": "So sánh",
+    "productQA": "Hỏi đáp",
+    "relatedProducts": "Sản phẩm liên quan"
   }
 }

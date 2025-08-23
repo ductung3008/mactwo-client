@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/hooks';
-import { Link } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import { Category, categoryApi } from '@/lib/api/categories.api';
 import { useAuthStore } from '@/stores/auth.store';
 import {
@@ -164,6 +164,7 @@ export const Header = memo(() => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const router = useRouter();
 
   const { data: categories = [], isLoading: isLoadingCategories } = useSWR(
     'categories',
@@ -210,10 +211,13 @@ export const Header = memo(() => {
     (e: FormEvent) => {
       e.preventDefault();
       if (searchQuery.trim()) {
-        console.log('Search query:', searchQuery);
+        router.push({
+          pathname: '/search',
+          query: { keyword: searchQuery.trim() },
+        });
       }
     },
-    [searchQuery]
+    [searchQuery, router]
   );
 
   const handleSearchChange = useCallback(
@@ -348,8 +352,6 @@ export const Header = memo(() => {
               <div className='mb-4 border-b border-white/20 pb-4'>
                 <div className='grid grid-cols-2 gap-2 border-t border-white/20 pt-4'>
                   {categories.map(category => {
-                    console.log(category);
-
                     return (
                       <Link
                         key={category.id}

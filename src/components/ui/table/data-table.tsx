@@ -19,7 +19,11 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { DataPaginatedResponse } from '@/types';
+<<<<<<< HEAD
 import { useMemo, useState } from 'react';
+=======
+import { useCallback, useMemo, useState } from 'react';
+>>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -72,6 +76,7 @@ export function DataTable<TData, TValue>({
   });
 
   // Pagination handlers
+<<<<<<< HEAD
   const handlePageChange = (page: number) => {
     if (paginationType === 'server' && onPageChange) {
       onPageChange(page);
@@ -88,6 +93,30 @@ export function DataTable<TData, TValue>({
       setClientCurrentPage(0); // Reset to first page when page size changes
     }
   };
+=======
+  const handlePageChange = useCallback(
+    (page: number) => {
+      if (paginationType === 'server' && onPageChange) {
+        onPageChange(page);
+      } else {
+        setClientCurrentPage(page);
+      }
+    },
+    [paginationType, onPageChange]
+  );
+
+  const handlePageSizeChange = useCallback(
+    (pageSize: number) => {
+      if (paginationType === 'server' && onPageSizeChange) {
+        onPageSizeChange(pageSize);
+      } else {
+        setCurrentPageSize(pageSize);
+        setClientCurrentPage(0); // Reset to first page when page size changes
+      }
+    },
+    [paginationType, onPageSizeChange]
+  );
+>>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
 
   // Calculate pagination props
   const paginationProps = useMemo(() => {
@@ -127,6 +156,11 @@ export function DataTable<TData, TValue>({
     data.length,
     pageSizeOptions,
     isLoading,
+<<<<<<< HEAD
+=======
+    handlePageChange,
+    handlePageSizeChange,
+>>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
   ]);
 
   // Determine if pagination should be shown
@@ -136,6 +170,7 @@ export function DataTable<TData, TValue>({
       : data.length > pageSizeOptions[0];
 
   return (
+<<<<<<< HEAD
     <div className='space-y-4'>
       <div className='overflow-hidden rounded-md border'>
         <Table className='table-auto'>
@@ -145,6 +180,23 @@ export function DataTable<TData, TValue>({
                 {headerGroup.headers.map(header => {
                   return (
                     <TableHead key={header.id}>
+=======
+    <div className='w-full space-y-6'>
+      <div className='overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm'>
+        <Table className='w-full table-auto'>
+          <TableHeader className='bg-gray-50/80'>
+            {table.getHeaderGroups().map(headerGroup => (
+              <TableRow
+                key={headerGroup.id}
+                className='border-b border-gray-200'
+              >
+                {headerGroup.headers.map(header => {
+                  return (
+                    <TableHead
+                      key={header.id}
+                      className='bg-gray-50 px-6 py-4 text-left text-xs font-semibold tracking-wider text-gray-700 uppercase first:rounded-tl-lg last:rounded-tr-lg'
+                    >
+>>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -157,6 +209,7 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
+<<<<<<< HEAD
           <TableBody>
             {isLoading ? (
               // Skeleton loading rows
@@ -168,6 +221,26 @@ export function DataTable<TData, TValue>({
                       className='px-4 py-3'
                     >
                       <Skeleton height={16} width='80%' />
+=======
+          <TableBody className='divide-y divide-gray-100 bg-white'>
+            {isLoading ? (
+              // Skeleton loading rows
+              Array.from({ length: 5 }, (_, index) => (
+                <TableRow
+                  key={`skeleton-${index}`}
+                  className='transition-colors duration-150 hover:bg-gray-50/50'
+                >
+                  {columns.map((_, colIndex) => (
+                    <TableCell
+                      key={`skeleton-cell-${colIndex}`}
+                      className='px-6 py-4 whitespace-nowrap'
+                    >
+                      <Skeleton
+                        height={20}
+                        width='80%'
+                        className='rounded-md bg-gray-200'
+                      />
+>>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
                     </TableCell>
                   ))}
                 </TableRow>
@@ -177,10 +250,21 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+<<<<<<< HEAD
                 >
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id} className='max-w-xs'>
                       <div className='line-clamp-2 text-sm'>
+=======
+                  className='group transition-all duration-200 ease-in-out hover:bg-gray-50/70'
+                >
+                  {row.getVisibleCells().map(cell => (
+                    <TableCell
+                      key={cell.id}
+                      className='max-w-xs px-6 py-4 transition-colors duration-150 group-hover:text-gray-900'
+                    >
+                      <div className='line-clamp-2 text-sm leading-relaxed text-gray-700'>
+>>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -194,9 +278,37 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
+<<<<<<< HEAD
                   className='h-24 text-center'
                 >
                   Không có dữ liệu.
+=======
+                  className='h-32 bg-gray-50/30 text-center'
+                >
+                  <div className='flex flex-col items-center justify-center space-y-3'>
+                    <div className='flex h-16 w-16 items-center justify-center rounded-full bg-gray-100'>
+                      <svg
+                        className='h-8 w-8 text-gray-400'
+                        fill='none'
+                        stroke='currentColor'
+                        viewBox='0 0 24 24'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          strokeWidth={2}
+                          d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
+                        />
+                      </svg>
+                    </div>
+                    <p className='text-sm font-medium text-gray-500'>
+                      Không có dữ liệu
+                    </p>
+                    <p className='text-xs text-gray-400'>
+                      Dữ liệu sẽ xuất hiện ở đây khi có sẵn
+                    </p>
+                  </div>
+>>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
                 </TableCell>
               </TableRow>
             )}
@@ -205,7 +317,15 @@ export function DataTable<TData, TValue>({
       </div>
 
       {/* Pagination Controls */}
+<<<<<<< HEAD
       {showPagination && <Pagination {...paginationProps} />}
+=======
+      {showPagination && (
+        <div className='flex items-center justify-center pt-2'>
+          <Pagination {...paginationProps} />
+        </div>
+      )}
+>>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
     </div>
   );
 }

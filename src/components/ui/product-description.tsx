@@ -1,82 +1,81 @@
 'use client';
 
+import { Product } from '@/lib/api/products.api';
 import Image from 'next/image';
 
-export default function ProductDescription() {
-  const descriptionImages = [
-    'https://shopdunk.com/images/uploaded/icon/ip14plus/iphone-14-plus-l-11%20(1).jpg',
-    'https://shopdunk.com/images/uploaded/icon/ip14plus/iphone-14-plus-l-11%20(2).jpg',
-    'https://shopdunk.com/images/uploaded/icon/ip14plus/iphone-14-plus-l-11%20(3).jpg',
-    'https://shopdunk.com/images/uploaded/icon/ip14plus/iphone-14-plus-l-11%20(4).jpg',
-    'https://shopdunk.com/images/uploaded/icon/ip14plus/iphone-14-plus-l-11%20(6).jpg',
-    'https://shopdunk.com/images/uploaded/icon/ip14plus/iphone-14-plus-l-11%20(7).jpg',
-  ];
+interface ProductDescriptionProps {
+  product: Product | null;
+}
 
-  const details = [
-    {
-      title: 'Pin và Nguồn Điện',
-      content:
-        'Tất cả các xác nhận về thời lượng pin phụ thuộc vào cấu hình mạng và nhiều yếu tố khác; các kết quả thực tế sẽ khác nhau. Pin có giới hạn chu kỳ sạc và cuối cùng có thể cần được thay thế. Thời lượng pin và chu kỳ sạc khác nhau tùy theo cách sử dụng và cài đặt. Truy cập  và  để biết thêm thông tin.',
-    },
-    {
-      title: 'Chống Nước',
-      content:
-        'iPhone 14 Pro và iPhone 14 Pro Max có khả năng chống tia nước, chống nước và chống bụi. Sản phẩm đã qua kiểm nghiệm trong điều kiện phòng thí nghiệm có kiểm soát đạt mức IP68 theo tiêu chuẩn IEC 60529 (chống nước ở độ sâu tối đa 6 mét trong vòng tối đa 30 phút). Khả năng chống tia nước, chống nước và chống bụi không phải là các điều kiện vĩnh viễn, và khả năng này có thể giảm do hao mòn thông thường. Không sạc pin khi iPhone đang bị ướt. Vui lòng tham khảo hướng dẫn sử dụng để biết cách lau sạch và làm khô máy. Không bảo hành sản phẩm bị hỏng do thấm chất lỏng.',
-    },
-    {
-      title: 'Phát Hiện Va Chạm',
-      content:
-        'iPhone 14 và iPhone 14 Pro có thể phát hiện tình huống va chạm xe nghiêm trọng và gọi trợ giúp. Yêu cầu kết nối mạng di động hoặc cuộc gọi Wi-Fi.',
-    },
-    {
-      title: 'Màn Hình',
-      content:
-        'Màn hình có các góc bo tròn theo đường cong tuyệt đẹp và nằm gọn theo một hình chữ nhật chuẩn. Khi tính theo hình chữ nhật chuẩn, kích thước màn hình theo đường chéo là 5,42 inch (iPhone 13 mini, iPhone 12 mini), 5,85 inch (iPhone 11 Pro, iPhone XS, iPhone X), 6,06 inch (iPhone 14, iPhone 13 Pro, iPhone 13, iPhone 12 Pro, iPhone 12, iPhone 11, iPhone XR), 6,12 inch (iPhone 14 Pro), 6,46 inch (iPhone 11 Pro Max, iPhone XS Max), 6,68 inch (iPhone 14 Plus, iPhone 13 Pro Max, iPhone 12 Pro Max), hoặc 6,69 inch (iPhone 14 Pro Max). Diện tích hiển thị thực tế nhỏ hơn.',
-    },
-    {
-      title: 'Mạng Di Động và Không Dây',
-      content:
-        'Cần có gói cước dữ liệu. Mạng 5G chỉ khả dụng ở một số thị trường và được cung cấp qua một số nhà mạng. Tốc độ có thể thay đổi tùy địa điểm và nhà mạng. Để biết thông tin về hỗ trợ mạng 5G, vui lòng liên hệ nhà mạng và truy cập.',
-    },
-    {
-      title: 'Phụ Kiện',
-      content: 'Phụ kiện được bán riêng.',
-    },
-    {
-      title: 'Tính Năng Khả Dụng',
-      content:
-        'Một số tính năng không khả dụng tại một số quốc gia hoặc khu vực.',
-    },
-    {
-      title: 'Apple Music',
-      content: 'Apple Music yêu cầu đăng ký thuê bao.',
-    },
-  ];
+export default function ProductDescription({
+  product,
+}: ProductDescriptionProps) {
+  if (!product) {
+    return (
+      <div className='flex items-center justify-center p-8'>
+        <div className='text-lg text-gray-500'>Không có thông tin sản phẩm</div>
+      </div>
+    );
+  }
 
   return (
-    <div className='space-y-8'>
-      {/* Hình ảnh sản phẩm */}
-      <div className='space-y-4'>
-        {descriptionImages.map((src, idx) => (
-          <Image
-            key={idx}
-            src={src}
-            alt={`Mô tả sản phẩm ${idx + 1}`}
-            width={1200}
-            height={700}
-          />
-        ))}
+    <div className='mx-auto max-w-6xl space-y-12 p-6'>
+      <div className='space-y-2 text-center'>
+        <h2 className='mb-2 text-3xl font-bold text-gray-900'>
+          Mô tả sản phẩm
+        </h2>
+        <div className='mx-auto h-1 w-24 rounded-full bg-blue-600'></div>
       </div>
 
-      {/* Danh sách mô tả sản phẩm */}
-      <ul className='space-y-6'>
-        {details.map((item, idx) => (
-          <li key={idx} className='text-gray-700'>
-            <span className='font-semibold text-blue-600'>{item.title}:</span>
-            <span className='mt-1 text-sm leading-relaxed'>{item.content}</span>
-          </li>
-        ))}
-      </ul>
+      {product.description && (
+        <div className='space-y-4'>
+          <h3 className='border-b-2 border-gray-200 pb-2 text-xl font-semibold text-gray-800'>
+            Thông tin sản phẩm
+          </h3>
+          <div className='rounded-lg bg-gray-50 p-6'>
+            <p className='text-base leading-relaxed whitespace-pre-wrap text-gray-700'>
+              {product.description}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {product.variants[0]?.imageUrls &&
+        product.variants[0].imageUrls.length > 0 && (
+          <div className='space-y-6'>
+            <h3 className='border-b-2 border-gray-200 pb-2 text-xl font-semibold text-gray-800'>
+              Ảnh sản phẩm
+            </h3>
+            <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+              {product.variants[0].imageUrls.map((src, idx) => (
+                <div
+                  key={idx}
+                  className='relative overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-shadow duration-300 hover:shadow-xl'
+                >
+                  <Image
+                    src={src}
+                    alt={`Mô tả sản phẩm ${idx + 1}`}
+                    width={1200}
+                    height={700}
+                    className='h-auto w-full object-cover transition-transform duration-300 hover:scale-105'
+                    priority={idx === 0}
+                  />
+                  <div className='absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 transition-opacity duration-300 hover:opacity-100'></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+      {(!product.variants[0]?.imageUrls ||
+        product.variants[0].imageUrls.length === 0) &&
+        !product.description && (
+          <div className='py-12 text-center'>
+            <div className='text-lg text-gray-400'>
+              Không có thông tin sản phẩm bổ sung
+            </div>
+          </div>
+        )}
     </div>
   );
 }

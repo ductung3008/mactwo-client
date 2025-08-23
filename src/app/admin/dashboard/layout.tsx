@@ -9,6 +9,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const navigation = [
+<<<<<<< HEAD
   { name: 'Dashboard', href: '/admin/dashboard', icon: '🏠' },
   { name: 'Products', href: '/admin/dashboard/products', icon: '💻' },
   { name: 'Categories', href: '/admin/dashboard/categories', icon: '🗂️' },
@@ -16,6 +17,15 @@ const navigation = [
   { name: 'Promotions', href: '/admin/dashboard/promotions', icon: '🎁' },
   { name: 'Users', href: '/admin/dashboard/users', icon: '👤' },
   { name: 'Reports', href: '/admin/dashboard/reports', icon: '📊' },
+=======
+  { name: 'Tổng quan', href: '/admin/dashboard', icon: '📊' },
+  { name: 'Sản phẩm', href: '/admin/dashboard/products', icon: '🛍️' },
+  { name: 'Danh mục', href: '/admin/dashboard/categories', icon: '📋' },
+  { name: 'Đơn hàng', href: '/admin/dashboard/orders', icon: '📦' },
+  { name: 'Khuyến mãi', href: '/admin/dashboard/promotions', icon: '🎯' },
+  { name: 'Người dùng', href: '/admin/dashboard/users', icon: '👥' },
+  { name: 'Báo cáo', href: '/admin/dashboard/reports', icon: '📈' },
+>>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
 ];
 
 export default function AdminLayout({
@@ -37,24 +47,27 @@ export default function AdminLayout({
   };
 
   return (
-    <div className='flex min-h-screen bg-gray-100'>
+    <div className='flex min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50'>
+      {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 flex w-64 transform flex-col overflow-y-auto bg-white shadow-lg transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-72 transform flex-col bg-white shadow-2xl transition-all duration-300 ease-in-out lg:static lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        } border-r border-slate-200`}
       >
-        <div className='flex h-16 items-center justify-center bg-blue-600 px-4'>
+        {/* Logo Header */}
+        <div className='flex h-20 items-center justify-center bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 px-6 shadow-lg'>
           <Image
             src='/mactwo-logo-trans-white.png'
-            alt='MacTwo Logo'
-            width={120}
-            height={40}
-            className='h-auto w-auto'
+            alt='MacTwo Admin'
+            width={140}
+            height={50}
+            className='h-auto w-auto drop-shadow-md'
           />
         </div>
 
-        <nav className='mt-8 flex flex-1 flex-col justify-between px-4 pb-6'>
-          <div className='space-y-2'>
+        {/* Navigation */}
+        <nav className='flex flex-1 flex-col px-4 py-8'>
+          <div>
             {navigation.map(item => {
               const isActive = pathname === item.href;
               return (
@@ -62,50 +75,92 @@ export default function AdminLayout({
                   key={item.name}
                   href={item.href}
                   onClick={closeSidebar}
-                  className={`flex items-center rounded-lg px-4 py-3 transition-colors duration-200 ${
+                  className={`group relative flex items-center rounded-xl px-4 py-4 text-sm font-semibold transition-all duration-200 ${
                     isActive
-                      ? 'border-r-2 border-blue-600 bg-blue-50 text-blue-600'
-                      : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600'
+                      ? 'scale-[1.02] transform bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg'
+                      : 'text-slate-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:text-blue-700 hover:shadow-md'
                   }`}
                   aria-current={isActive ? 'page' : undefined}
                 >
-                  <span className='mr-3 text-lg'>{item.icon}</span>
-                  {item.name}
+                  {/* Active indicator */}
+                  {isActive && (
+                    <div className='absolute top-1/2 left-0 h-8 w-1 -translate-y-1/2 rounded-r-full bg-white'></div>
+                  )}
+
+                  <span className='mr-4 text-lg'>{item.icon}</span>
+                  <span className='flex-1'>{item.name}</span>
+
+                  {/* Hover effect */}
+                  <div
+                    className={`absolute inset-0 rounded-xl transition-opacity duration-200 ${
+                      isActive
+                        ? 'opacity-0'
+                        : 'opacity-0 group-hover:opacity-100'
+                    } bg-gradient-to-r from-blue-500/5 to-indigo-600/5`}
+                  ></div>
                 </Link>
               );
             })}
           </div>
 
-          <div className='pt-4'>
+          {/* Logout Button */}
+          <div className='mt-auto pt-8'>
             <Button
               onClick={handleLogout}
               variant='outline'
-              className='w-full'
+              className='w-full border-slate-300 bg-white text-slate-700 transition-all duration-200 hover:border-red-300 hover:bg-red-50 hover:text-red-700 hover:shadow-md'
               aria-label='Logout from admin panel'
             >
-              <span className='mr-2' aria-hidden='true'>
+              <span className='mr-2 text-lg' aria-hidden='true'>
                 🚪
               </span>
-              Logout
+              Đăng xuất
             </Button>
           </div>
         </nav>
       </div>
 
-      <div className='flex-1'>
-        <header className='flex h-16 items-center justify-between bg-white px-4 shadow-sm lg:hidden'>
-          <h1 className='text-lg font-semibold text-gray-800'>Admin Panel</h1>
+      {/* Main Content Area */}
+      <div className='flex flex-1 flex-col'>
+        {/* Mobile Header */}
+        <header className='flex h-16 items-center justify-between border-b border-slate-200 bg-white/80 px-6 shadow-sm backdrop-blur-md lg:hidden'>
+          <h1 className='bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-xl font-bold text-transparent'>
+            MacTwo Admin
+          </h1>
           <button
             onClick={toggleSidebar}
-            className='rounded bg-gray-200 p-2 text-gray-600 hover:bg-gray-300'
+            className='rounded-lg bg-slate-100 p-3 text-slate-600 transition-colors hover:bg-slate-200 hover:text-slate-800'
             aria-label='Toggle sidebar'
           >
-            ☰
+            <svg
+              className='h-5 w-5'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={2}
+                d='M4 6h16M4 12h16M4 18h16'
+              />
+            </svg>
           </button>
         </header>
 
-        <main className='p-6'>{children}</main>
+        {/* Main Content */}
+        <main className='flex-1 p-8'>
+          <div className='mx-auto'>{children}</div>
+        </main>
       </div>
+
+      {/* Mobile Sidebar Overlay */}
+      {sidebarOpen && (
+        <div
+          className='fixed inset-0 z-40 bg-black/20 backdrop-blur-sm lg:hidden'
+          onClick={closeSidebar}
+        />
+      )}
     </div>
   );
 }

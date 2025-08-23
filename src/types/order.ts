@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 export interface Order {
   orderId: string;
   userId: string;
@@ -6,4 +7,61 @@ export interface Order {
   orderDate: Date;
   status: string;
   totalAmount: number;
+=======
+export interface OrderAddress {
+  id: number;
+  shippingAddress: string;
+  userId: string;
+  createdDate: string;
+  lastModifiedDate: string;
+  default: boolean;
+}
+
+export interface OrderVariant {
+  id: number;
+  productId: number;
+  color: string;
+  storage: string;
+  ram: string;
+  imageUrls: string[];
+  price: number;
+  stockQuantity: number;
+}
+
+export interface OrderItem {
+  id: number;
+  name: string;
+  variant: OrderVariant;
+  quantity: number;
+  pricePerItem: number;
+}
+
+export interface Promotion {
+  id: number;
+  name: string;
+  discountPercentage: number;
+}
+
+export interface Order {
+  id: number;
+  userId: string;
+  address: OrderAddress;
+  promotion: Promotion | null;
+  status: string;
+  totalAmount: number;
+  createdDate: string;
+  orderItems: OrderItem[];
+}
+
+export interface CreateOrderItem {
+  variantId: number;
+  quantity: number;
+}
+
+export interface CreateOrderRequest {
+  userId: string;
+  addressId: number;
+  promotionId: number | null;
+  orderItems: CreateOrderItem[];
+>>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
 }

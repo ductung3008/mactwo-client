@@ -1,84 +1,66 @@
 'use client';
 
+import { Product } from '@/lib/api/products.api';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import ProductDescription from './product-description';
-import ProductDetail from './product-detail';
 import Specifications from './specifications';
 
-export default function ProductTabs() {
+interface ProductTabsProps {
+  product: Product | null;
+}
+
+export default function ProductTabs({ product }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState('specs');
   const t = useTranslations('productDetail');
 
   const tabs = [
     { key: 'description', label: t('productDescription') },
     { key: 'specs', label: t('productSpecifications') },
-    { key: 'details', label: t('customerReviews') },
-    { key: 'compare', label: t('productComparison') },
-    { key: 'qa', label: t('productQA') },
   ];
 
   const renderContent = () => {
     switch (activeTab) {
       case 'description':
-        return <ProductDescription />;
+        return <ProductDescription product={product} />;
       case 'specs':
-        return <Specifications />;
-      case 'details':
-        return <ProductDetail />;
-      case 'compare':
-        return (
-          <p className='text-gray-700'>
-            iPhone 14 Plus có thời lượng pin lâu hơn so với iPhone 13, camera
-            tốt hơn và hiệu năng tương đương iPhone 14 Pro trong nhiều tác vụ
-            thường ngày.
-          </p>
-        );
-      case 'qa':
-        return (
-          <div className='text-gray-700'>
-            <p className='mb-2'>
-              <strong>Hỏi:</strong> Máy có hỗ trợ eSIM không?
-            </p>
-            <p className='mb-4'>
-              <strong>Đáp:</strong> Có, hỗ trợ cả Nano SIM và eSIM.
-            </p>
-
-            <p className='mb-2'>
-              <strong>Hỏi:</strong> Bảo hành bao lâu?
-            </p>
-            <p>
-              <strong>Đáp:</strong> Chính hãng 12 tháng tại các trung tâm bảo
-              hành Apple.
-            </p>
-          </div>
-        );
+        return <Specifications product={product} />;
       default:
         return null;
     }
   };
 
   return (
-    <div className='mt-12'>
-      {/* Tab Buttons */}
-      <div className='mb-6 flex flex-wrap justify-center gap-3'>
-        {tabs.map(tab => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
-            className={`rounded-md border px-4 py-2 font-medium transition-colors duration-200 ${
-              activeTab === tab.key
-                ? 'border-blue-500 bg-white text-blue-600'
-                : 'border-gray-300 text-gray-700 hover:text-blue-600'
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
+    <div className='mx-auto mt-16 w-full max-w-6xl px-4'>
+      {/* Tab Navigation */}
+      <div className='relative mb-8'>
+        <div className='flex items-center justify-center space-x-1 rounded-xl bg-gray-50 p-1 shadow-sm'>
+          {tabs.map(tab => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`relative transform rounded-lg px-8 py-3 text-sm font-semibold transition-all duration-300 ease-in-out ${
+                activeTab === tab.key
+                  ? 'scale-105 border border-blue-100 bg-white text-blue-600 shadow-md'
+                  : 'text-gray-600 hover:bg-white/50 hover:text-blue-500'
+              }`}
+            >
+              {tab.label}
+              {/* Active indicator */}
+              {activeTab === tab.key && (
+                <div className='absolute -bottom-1 left-1/2 h-1 w-8 -translate-x-1/2 transform rounded-full bg-blue-500' />
+              )}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Tab Content */}
-      {renderContent()}
+      <div className='min-h-[400px] rounded-2xl border border-gray-100 bg-white p-6 shadow-sm md:p-8'>
+        <div className='transform transition-all duration-500 ease-in-out'>
+          {renderContent()}
+        </div>
+      </div>
     </div>
   );
 }

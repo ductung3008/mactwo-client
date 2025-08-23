@@ -21,7 +21,11 @@ const DeleteDialog = ({ title, description, onDelete }: DeleteDialogProps) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
+<<<<<<< HEAD
         <Button variant='destructive'>Delete</Button>
+=======
+        <Button variant='destructive'>Xóa</Button>
+>>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

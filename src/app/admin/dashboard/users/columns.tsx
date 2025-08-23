@@ -12,7 +12,11 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: 'fullName',
+<<<<<<< HEAD
     header: 'Name',
+=======
+    header: 'Tên',
+>>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
   },
   {
     accessorKey: 'email',
@@ -20,6 +24,7 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: 'gender',
+<<<<<<< HEAD
     header: 'Gender',
   },
   {
@@ -33,6 +38,21 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: 'roleName',
     header: 'Role',
+=======
+    header: 'Giới tính',
+  },
+  {
+    accessorKey: 'dateOfBirth',
+    header: 'Ngày sinh',
+  },
+  {
+    accessorKey: 'active',
+    header: 'Hoạt động',
+  },
+  {
+    accessorKey: 'roleName',
+    header: 'Vai trò',
+>>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
   },
   // {
   //   accessorKey: 'createdDate',
@@ -44,12 +64,22 @@ export const columns: ColumnDef<User>[] = [
   // },
   {
     accessorKey: 'action',
+<<<<<<< HEAD
     header: 'Action',
     cell: ({ row }) => {
       const customer = row.original;
       return (
         <div className='flex items-center gap-2'>
           <Button>View</Button>
+=======
+    header: 'Thao tác',
+    cell: () => {
+      // cell: ({ row }) => {
+      // const customer = row.original;
+      return (
+        <div className='flex items-center gap-2'>
+          <Button>Xem</Button>
+>>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
         </div>
       );
     },

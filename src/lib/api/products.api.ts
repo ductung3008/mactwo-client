@@ -10,6 +10,20 @@ export interface Product {
   imageUrl: string;
   variants: ProductVariant[];
   tag: 'new' | 'installment';
+  description?: string;
+  categoryId?: string;
+  storage: string;
+  screen: string;
+  resolution: string;
+  rearCamera: string;
+  frontCamera: string;
+  battery: string;
+  charging: string;
+  network: string;
+  chip: string;
+  ram: string;
+  security: string;
+  waterResistance: string;
 }
 
 export const productApi = {
@@ -20,6 +34,13 @@ export const productApi = {
 
   async getProductById(id: string): Promise<ApiResponse<Product>> {
     const response = await api.get(`/products/getByID/${id}`);
+    return response.data;
+  },
+
+  async searchProducts(keyword: string): Promise<ApiResponse<Product[]>> {
+    const response = await api.get(`/products/search`, {
+      params: { keyword },
+    });
     return response.data;
   },
 };

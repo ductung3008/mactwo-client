@@ -36,4 +36,11 @@ export const productApi = {
     const response = await api.get(`/products/getByID/${id}`);
     return response.data;
   },
+
+  async searchProducts(keyword: string): Promise<ApiResponse<Product[]>> {
+    const response = await api.get(`/products/search`, {
+      params: { keyword },
+    });
+    return response.data;
+  },
 };

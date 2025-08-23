@@ -12,6 +12,18 @@ export interface Product {
   tag: 'new' | 'installment';
   description?: string;
   categoryId?: string;
+  storage: string;
+  screen: string;
+  resolution: string;
+  rearCamera: string;
+  frontCamera: string;
+  battery: string;
+  charging: string;
+  network: string;
+  chip: string;
+  ram: string;
+  security: string;
+  waterResistance: string;
 }
 
 export const productApi = {

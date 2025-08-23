@@ -4,10 +4,6 @@ import { Product, productApi } from '@/lib/api/products.api';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ProductItem } from './product-item';
 
-
-
-
-
 function formatVND(price: number) {
   return price.toLocaleString('vi-VN') + '₫';
 }
@@ -38,9 +34,6 @@ export default function ProductCombo({ categoryId }: { categoryId?: string }) {
     );
   };
 
-
-
-
   const scrollByCard = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
       const container = scrollRef.current;
@@ -59,7 +52,6 @@ export default function ProductCombo({ categoryId }: { categoryId?: string }) {
   const scrollRight = () => scrollByCard('right');
 
   return (
-  
     <div className='relative mt-8'>
       {/* nút scroll left */}
 

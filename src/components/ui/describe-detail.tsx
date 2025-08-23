@@ -26,7 +26,7 @@ export default function ProductTabs({ product }: ProductTabsProps) {
       case 'description':
         return <ProductDescription product={product} />;
       case 'specs':
-        return <Specifications />;
+        return <Specifications product={product} />;
       case 'details':
         return <ProductDetail />;
       case 'compare':

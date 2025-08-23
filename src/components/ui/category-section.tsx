@@ -1,4 +1,5 @@
 import { Button, ProductItem } from '@/components/ui';
+import { Link } from '@/i18n/navigation';
 import { Category } from '@/lib/api/categories.api';
 import { ChevronRight } from 'lucide-react';
 import { memo } from 'react';
@@ -19,10 +20,12 @@ const CategorySection = memo(
           ))}
         </div>
         <div className='mt-6 flex justify-center'>
-          <Button className='border bg-transparent text-blue-600 hover:text-white'>
-            {viewAllText} {category.name}
-            <ChevronRight />
-          </Button>
+          <Link href={`/${category.slug}?id=${category.id}`}>
+            <Button className='border bg-transparent text-blue-600 hover:text-white'>
+              {viewAllText} {category.name}
+              <ChevronRight />
+            </Button>
+          </Link>
         </div>
       </section>
     );

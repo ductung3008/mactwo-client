@@ -10,6 +10,8 @@ export interface Product {
   imageUrl: string;
   variants: ProductVariant[];
   tag: 'new' | 'installment';
+  description?: string;
+  categoryId?: string;
 }
 
 export const productApi = {

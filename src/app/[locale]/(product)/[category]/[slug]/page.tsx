@@ -12,9 +12,10 @@ export default function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState('red');
   const [selectedStorage, setSelectedStorage] = useState('128GB');
   const [product, setProduct] = useState<Product | null>(null);
-  const [productVariant, setProductVariant] = useState<ProductVariant | null>(
-    null
-  );
+  // const [productVariant, setProductVariant] = useState<ProductVariant | null>(
+  //   null
+  // );
+  const [productVariant, setProductVariants] = useState<ProductVariant[]>([]);
 
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
@@ -28,7 +29,8 @@ export default function ProductDetailPage() {
       );
 
       setProduct(product.data);
-      setProductVariant(productVariants.data);
+      // setProductVariant(productVariants.data[0]);
+      setProductVariants(productVariants.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
@@ -37,7 +39,7 @@ export default function ProductDetailPage() {
   useEffect(() => {
     fetchData();
   }, [id, fetchData]);
-
+  console.log('ádasdasdasdasdasd', productVariant);
   const colors = [
     { name: 'Đen', value: 'black', bg: 'bg-gray-900' },
     { name: 'Đỏ', value: 'red', bg: 'bg-red-500' },
@@ -46,6 +48,7 @@ export default function ProductDetailPage() {
     { name: 'Vàng', value: 'yellow', bg: 'bg-yellow-300' },
     { name: 'Hồng', value: 'pink', bg: 'bg-pink-300' },
     { name: 'Xanh lá', value: 'green', bg: 'bg-green-300' },
+    { name: 'Xanh Mòng Két', value: 'green', bg: 'bg-green-300' },
     {
       name: 'Titan Trắng',
       value: 'white-titan',
@@ -54,24 +57,36 @@ export default function ProductDetailPage() {
     { name: 'Titan Đen', value: 'black-titan', bg: 'bg-gray-900' },
     { name: 'Titan Sa Mạc', value: 'desert-titan', bg: 'bg-[#BFA48F]' },
     { name: 'Titan Tự nhiên', value: 'natural-titan', bg: 'bg-[#C2BCB2]' },
+    {
+      name: 'Default',
+      value: 'white',
+      bg: 'bg-gray-100 border border-gray-300',
+    },
   ];
 
-  const availableColors = colors.filter(
-    c => c.name.toLowerCase() === productVariant?.color?.toLowerCase()
-  );
+  // const availableColors = colors.filter(
+  //   c => c.name.toLowerCase() === productVariant?.color?.toLowerCase()
+  // );
 
-  const productImages = [...(productVariant?.imageUrls ?? [])];
+  // lấy ra danh sách màu từ productVariant (mảng)
+  const variantColors = productVariant.map(v => v.color?.toLowerCase());
+
+  // lọc trong danh sách colors những màu nào có trong variantColors
+  const availableColors = colors.filter(c =>
+    variantColors.includes(c.name.toLowerCase())
+  );
+  const productImages = [...(productVariant[0]?.imageUrls ?? [])];
 
   const locale = 'vi-VN';
   const currency = 'VND';
 
-  const formattedOldPrice = productVariant?.price?.toLocaleString(locale, {
+  const formattedOldPrice = productVariant[0]?.price?.toLocaleString(locale, {
     style: 'currency',
     currency,
   });
   const newPrices =
-    (productVariant?.price ?? 0) *
-    ((100 - (productVariant?.stockQuantity ?? 0)) / 100);
+    (productVariant[0]?.price ?? 0) *
+    ((100 - (productVariant[0]?.percentagePercent ?? 0)) / 100);
   const formattedNewPrice = newPrices.toLocaleString(locale, {
     style: 'currency',
     currency,
@@ -121,19 +136,19 @@ export default function ProductDetailPage() {
                 Dung lượng
               </h3>
               <div className='flex flex-wrap gap-2'>
-                <button
-                  key={productVariant?.storage}
-                  onClick={() =>
-                    setSelectedStorage(productVariant?.storage ?? '')
-                  }
-                  className={`cursor-pointer rounded-lg border-2 px-4 py-3 text-center whitespace-nowrap ${
-                    selectedStorage === productVariant?.storage
-                      ? 'border-blue-500 bg-blue-50 text-blue-700'
-                      : 'border-gray-300 text-gray-700 hover:border-gray-400'
-                  }`}
-                >
-                  {productVariant?.storage}
-                </button>
+                {productVariant.map(variant => (
+                  <button
+                    key={variant.id}
+                    onClick={() => setSelectedStorage(variant.storage)}
+                    className={`cursor-pointer rounded-lg border-2 px-4 py-3 text-center whitespace-nowrap ${
+                      selectedStorage === variant.storage
+                        ? 'border-blue-500 bg-blue-50 text-blue-700'
+                        : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                    }`}
+                  >
+                    {variant.storage}
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -299,13 +314,13 @@ export default function ProductDetailPage() {
         {/* Related Products */}
         <div className='mt-16 border-t border-gray-200'>
           <h2 className='mt-8 mb-8 text-2xl font-bold text-gray-900'>
-            Mua kèm giá sốc
+            Sản phẩm tương tự
           </h2>
-          <ProductCombo />
+          <ProductCombo categoryId={product?.categoryId} />
         </div>
 
         {/* Product Description */}
-        <ProductTabs />
+        <ProductTabs product={product} />
       </div>
     </div>
   );

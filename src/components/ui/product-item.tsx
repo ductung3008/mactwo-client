@@ -15,6 +15,7 @@ export interface ProductItemProps {
   name: string;
   code?: string;
   categoryName?: string;
+  categorySlug?: string;
   newPrice?: number;
   oldPrice?: number;
   imageUrl: string;
@@ -39,6 +40,7 @@ export function ProductItem({
   id,
   name,
   categoryName,
+  categorySlug,
   imageUrl,
   tag,
   className,
@@ -57,8 +59,9 @@ export function ProductItem({
   const t = useTranslations('productItem');
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
-
-  const linkHref = `${categoryName}/${slugify(name)}?id=${id}`;
+  const slug = categorySlug || (categoryName ? slugify(categoryName) : '');
+  const linkHref = `/${slug}/${slugify(name)}?id=${id}`;
+  // const linkHref = `${categoryName}/${slugify(name)}?id=${id}`;
 
   const formattedOldPrice = variants?.[0]?.price?.toLocaleString(locale, {
     style: 'currency',
@@ -67,7 +70,7 @@ export function ProductItem({
 
   const newPrices =
     (variants?.[0]?.price ?? 0) *
-    ((100 - (variants?.[0]?.stockQuantity ?? 0)) / 100);
+    ((100 - (variants?.[0]?.percentagePercent ?? 0)) / 100);
   const formattedNewPrice = newPrices.toLocaleString(locale, {
     style: 'currency',
     currency,
@@ -215,13 +218,16 @@ export function ProductItem({
     <>
       <div className={cn('mx-2 my-3', imageClassName)}>{renderImage()}</div>
       <div>
-        {!!variants?.[0]?.stockQuantity && variants?.[0]?.stockQuantity > 0 && (
-          <span className='absolute top-0 -left-1 flex h-8 w-21 justify-center bg-[url("/price-ratio.png")] bg-cover bg-no-repeat pt-1.5 text-xs font-bold text-white'>
-            {loading
-              ? ''
-              : t('promotion', { percentage: variants?.[0]?.stockQuantity })}
-          </span>
-        )}
+        {!!variants?.[0]?.percentagePercent &&
+          variants?.[0]?.percentagePercent > 0 && (
+            <span className='absolute top-0 -left-1 flex h-8 w-21 justify-center bg-[url("/price-ratio.png")] bg-cover bg-no-repeat pt-1.5 text-xs font-bold text-white'>
+              {loading
+                ? ''
+                : t('promotion', {
+                    percentage: variants?.[0]?.percentagePercent,
+                  })}
+            </span>
+          )}
         {renderTag()}
       </div>
 

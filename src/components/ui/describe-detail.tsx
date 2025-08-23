@@ -1,12 +1,15 @@
 'use client';
 
+import { Product } from '@/lib/api/products.api';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import ProductDescription from './product-description';
 import ProductDetail from './product-detail';
 import Specifications from './specifications';
-
-export default function ProductTabs() {
+interface ProductTabsProps {
+  product: Product | null;
+}
+export default function ProductTabs({ product }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState('specs');
   const t = useTranslations('productDetail');
 
@@ -21,7 +24,7 @@ export default function ProductTabs() {
   const renderContent = () => {
     switch (activeTab) {
       case 'description':
-        return <ProductDescription />;
+        return <ProductDescription product={product} />;
       case 'specs':
         return <Specifications />;
       case 'details':

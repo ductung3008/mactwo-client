@@ -1,8 +1,14 @@
 'use client';
 
+import { Product } from '@/lib/api/products.api';
 import Image from 'next/image';
-
-export default function ProductDescription() {
+interface ProductDescriptionProps {
+  product: Product | null;
+}
+export default function ProductDescription({
+  product,
+}: ProductDescriptionProps) {
+  console.log('ProductDescriptionProps', product);
   const descriptionImages = [
     'https://shopdunk.com/images/uploaded/icon/ip14plus/iphone-14-plus-l-11%20(1).jpg',
     'https://shopdunk.com/images/uploaded/icon/ip14plus/iphone-14-plus-l-11%20(2).jpg',
@@ -57,7 +63,7 @@ export default function ProductDescription() {
     <div className='space-y-8'>
       {/* Hình ảnh sản phẩm */}
       <div className='space-y-4'>
-        {descriptionImages.map((src, idx) => (
+        {product?.variants[0].imageUrls.map((src, idx) => (
           <Image
             key={idx}
             src={src}
@@ -70,12 +76,14 @@ export default function ProductDescription() {
 
       {/* Danh sách mô tả sản phẩm */}
       <ul className='space-y-6'>
-        {details.map((item, idx) => (
-          <li key={idx} className='text-gray-700'>
-            <span className='font-semibold text-blue-600'>{item.title}:</span>
-            <span className='mt-1 text-sm leading-relaxed'>{item.content}</span>
-          </li>
-        ))}
+        {/* {details.map((item, idx) => ( */}
+        {/* <li key={idx} className='text-gray-700'> */}
+        {/* <span className='font-semibold text-blue-600'>{item.title}:</span> */}
+        <span className='mt-1 text-sm leading-relaxed'>
+          {product?.description}
+        </span>
+        {/* </li> */}
+        {/* ))} */}
       </ul>
     </div>
   );

@@ -47,8 +47,35 @@ export type { ProductItemProps } from './product-item';
 
 export { OtpInput } from './otp-input';
 
-export { ConfirmationModal, Modal } from './modal';
-export type { ConfirmationModalProps, ModalProps } from './modal';
+export {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  AlertDialogPortal,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from './alert-dialog';
 
-export { default as ProductImageGallery } from './product-image-gallery';
-export type { ProductImageGalleryProps } from './product-image-gallery';
+export {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
+} from './dialog';
+
+export { CategoryModal } from './category-modal';
+export { ProductModal } from './product-modal';
+
+export { OrderList } from './order-list';
+export type { OrderListProps } from './order-list';

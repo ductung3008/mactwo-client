@@ -2,11 +2,11 @@
 
 import {
   Button,
-  ConfirmationModal,
   Input,
   PageLoading,
   useToastNotification,
 } from '@/components/ui';
+import { ConfirmationModal } from '@/components/ui/modal';
 import { addressApi } from '@/lib/api/address.api';
 import { createCreateAddressSchema } from '@/schemas/address.schema';
 import { Address } from '@/types/address.type';

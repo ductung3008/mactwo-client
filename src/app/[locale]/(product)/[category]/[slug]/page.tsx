@@ -5,6 +5,7 @@ import ProductCombo from '@/components/ui/product-accompanying';
 import ProductImageGallery from '@/components/ui/product-image-gallery';
 import { Product, productApi } from '@/lib/api/products.api';
 import { ProductVariant, productVariantApi } from '@/lib/api/variants.api';
+import { useCartStore } from '@/stores/cart.store';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -15,6 +16,8 @@ export default function ProductDetailPage() {
   const [productVariant, setProductVariant] = useState<ProductVariant | null>(
     null
   );
+
+  const { addItem } = useCartStore();
 
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
@@ -76,6 +79,33 @@ export default function ProductDetailPage() {
     style: 'currency',
     currency,
   });
+
+  const handleAddToCart = () => {
+    if (!product || !productVariant) {
+      console.warn('Product hoặc productVariant không có');
+      return;
+    }
+
+    // Convert APIProduct thành Product type cho cart
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const cartProduct: any = {
+      id: parseInt(product.id), // Convert string to number
+      categoryId: 1, // Sẽ cần lấy từ API hoặc context
+      name: product.name,
+      description: '', // Sẽ cần thêm vào APIProduct hoặc lấy từ nguồn khác
+      imageUrl: product.imageUrl,
+      variants: [], // Không cần thiết cho cart item
+    };
+
+    const item = {
+      product: cartProduct,
+      variant: productVariant,
+    };
+
+    // Thêm vào cart store - quantity mặc định là 1
+    addItem(item, 1);
+    console.log('Đã thêm vào giỏ hàng:', item);
+  };
 
   return (
     <div className='min-h-screen bg-white'>
@@ -249,7 +279,10 @@ export default function ProductDetailPage() {
               <button className='w-full cursor-pointer rounded-lg bg-blue-600 px-6 py-4 font-semibold whitespace-nowrap text-white transition-colors hover:bg-blue-700'>
                 Mua ngay
               </button>
-              <button className='w-full cursor-pointer rounded-lg border-2 border-blue-600 px-6 py-4 font-semibold whitespace-nowrap text-blue-600 transition-colors hover:bg-blue-50'>
+              <button
+                onClick={() => handleAddToCart()}
+                className='w-full cursor-pointer rounded-lg border-2 border-blue-600 px-6 py-4 font-semibold whitespace-nowrap text-blue-600 transition-colors hover:bg-blue-50'
+              >
                 Thêm vào giỏ hàng
               </button>
             </div>

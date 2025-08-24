@@ -11,9 +11,9 @@ export const mainBanners: BannerItem[] = [
   {
     id: '2',
     image:
-      'https://shopdunk.com/images/uploaded/banner/Banner%202025/Thang_8/banner%20iPdsr-T8_PC.png',
-    href: '/ipad',
-    alt: 'Study Smart with iPad',
+      'https://macone.vn/wp-content/uploads/2025/08/slide-show-saigon-02.jpg',
+    href: '/lenovo?id=53',
+    alt: 'Study Smart with lenovo',
   },
   {
     id: '3',
@@ -25,29 +25,23 @@ export const mainBanners: BannerItem[] = [
   {
     id: '4',
     image:
-      'https://shopdunk.com/images/uploaded/banner/Banner%202025/Thang_8/banner%20iP16sr-T8_PC.png',
-    href: '/mac',
-    alt: 'IPhone sale',
+      'https://macone.vn/wp-content/uploads/2024/11/464277525_531963139472607_5648188381988869690_n-scaled.jpg',
+    href: '/acer?id=63',
+    alt: 'Study Smart with acer',
   },
+
   {
     id: '5',
     image:
-      'https://shopdunk.com/images/uploaded/banner/Banner%202025/Thang_8/banner%20Wtsr-T8_PC.png',
-    href: '/mac',
-    alt: 'Watch sale',
+      'https://shopdunk.com/images/uploaded/banner/Banner%202025/thang_7/thang7_2/PC.jpg',
+    href: '/zagg-month',
+    alt: 'Zagg Month Sale',
   },
   {
     id: '6',
     image:
-      'https://shopdunk.com/images/uploaded/banner/Banner%202025/Thang_8/banner%20Adrsr-T8_PC.png',
-    href: '/mac',
-    alt: 'Airpod sale',
-  },
-  {
-    id: '7',
-    image:
-      'https://shopdunk.com/images/uploaded/banner/Banner%202025/thang_7/thang7_2/PC.jpg',
-    href: '/zagg-month',
+      'https://macone.vn/wp-content/uploads/2025/07/Cover-Slide-show-backto-school-022.jpg',
+    href: '/hp?id=47',
     alt: 'Zagg Month Sale',
   },
 ];

@@ -3,7 +3,10 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [new URL('https://shopdunk.com/**')],
+    remotePatterns: [
+      new URL('https://shopdunk.com/**'),
+      new URL('https://cdn2.fptshop.com.vn/**'),
+    ],
   },
   async rewrites() {
     return [

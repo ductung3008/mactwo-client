@@ -1,9 +1,11 @@
 'use client';
 
+import { OrdersModal } from '@/components/ui';
 import { Button } from '@/components/ui/button';
-
 import { User } from '@/types/user';
 import { ColumnDef } from '@tanstack/react-table';
+import { ShoppingCart } from 'lucide-react';
+import { useState } from 'react';
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -12,11 +14,7 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: 'fullName',
-<<<<<<< HEAD
-    header: 'Name',
-=======
     header: 'Tên',
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
   },
   {
     accessorKey: 'email',
@@ -24,21 +22,6 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: 'gender',
-<<<<<<< HEAD
-    header: 'Gender',
-  },
-  {
-    accessorKey: 'dateOfBirth',
-    header: 'Date of Birth',
-  },
-  {
-    accessorKey: 'active',
-    header: 'Active',
-  },
-  {
-    accessorKey: 'roleName',
-    header: 'Role',
-=======
     header: 'Giới tính',
   },
   {
@@ -52,7 +35,6 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: 'roleName',
     header: 'Vai trò',
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
   },
   // {
   //   accessorKey: 'createdDate',
@@ -64,22 +46,29 @@ export const columns: ColumnDef<User>[] = [
   // },
   {
     accessorKey: 'action',
-<<<<<<< HEAD
-    header: 'Action',
-    cell: ({ row }) => {
-      const customer = row.original;
-      return (
-        <div className='flex items-center gap-2'>
-          <Button>View</Button>
-=======
     header: 'Thao tác',
-    cell: () => {
-      // cell: ({ row }) => {
-      // const customer = row.original;
+    cell: ({ row }) => {
+      const user = row.original;
+      const [ordersModalOpen, setOrdersModalOpen] = useState(false);
+
       return (
         <div className='flex items-center gap-2'>
-          <Button>Xem</Button>
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
+          <Button
+            variant='outline'
+            size='sm'
+            onClick={() => setOrdersModalOpen(true)}
+            className='flex items-center gap-2 border-emerald-300 text-emerald-600 transition-all duration-200 hover:border-emerald-400 hover:bg-emerald-50'
+          >
+            <ShoppingCart className='h-4 w-4' />
+            Xem đơn hàng
+          </Button>
+
+          <OrdersModal
+            isOpen={ordersModalOpen}
+            onClose={() => setOrdersModalOpen(false)}
+            userId={user.id.toString()}
+            userName={user.fullName}
+          />
         </div>
       );
     },

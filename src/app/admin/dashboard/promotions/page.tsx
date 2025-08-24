@@ -1,24 +1,15 @@
-<<<<<<< HEAD
-=======
 /* eslint-disable */
 
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
 'use client';
 
 import { Button } from '@/components/ui/button';
 import { PromotionModal } from '@/components/ui/promotion-modal';
 import { DataTable } from '@/components/ui/table/data-table';
 import { promotionApi } from '@/lib/api';
-<<<<<<< HEAD
-import { Promotion } from '@/types/promotion';
-import { Filter } from 'lucide-react';
-import { useEffect, useState } from 'react';
-=======
 import { DataPaginatedResponse } from '@/types';
 import { Promotion } from '@/types/promotion';
 import { Gift, Plus } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
 import { columns } from './columns';
 
 const AdminPromotionsPage = () => {
@@ -32,36 +23,6 @@ const AdminPromotionsPage = () => {
   // Pagination state
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-<<<<<<< HEAD
-  const [paginationData, setPaginationData] = useState<any>(null);
-
-  const fetchPromotions = async (
-    page: number = currentPage,
-    size: number = pageSize
-  ) => {
-    try {
-      setIsLoading(true);
-      const response = await promotionApi.getPromotions({
-        page,
-        size,
-        sort: null,
-      });
-
-      if (response.success) {
-        setPromotions(response.data.content);
-        setPaginationData(response.data);
-      }
-    } catch (error) {
-      console.error('Error fetching promotions:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchPromotions();
-  }, []);
-=======
   const [paginationData, setPaginationData] = useState<
     DataPaginatedResponse<Promotion[]>
   >({} as DataPaginatedResponse<Promotion[]>);
@@ -91,8 +52,8 @@ const AdminPromotionsPage = () => {
 
   useEffect(() => {
     fetchPromotions();
+    console.log(1);
   }, [fetchPromotions]);
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
 
   // Pagination handlers
   const handlePageChange = (page: number) => {
@@ -148,18 +109,6 @@ const AdminPromotionsPage = () => {
             <div className='flex items-center gap-2'>
               <Button
                 variant='outline'
-<<<<<<< HEAD
-                onClick={() => handleEditPromotion(promotion)}
-              >
-                Sửa
-              </Button>
-              <Button
-                variant='outline'
-                onClick={() => handleDeletePromotion(promotion.id)}
-                className='text-red-600 hover:text-red-700'
-              >
-                Xóa
-=======
                 size='sm'
                 onClick={() => handleEditPromotion(promotion)}
                 className='hover:bg-blue-50 hover:text-blue-700'
@@ -173,7 +122,6 @@ const AdminPromotionsPage = () => {
                 className='text-red-600 hover:bg-red-50 hover:text-red-700'
               >
                 Delete
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
               </Button>
             </div>
           );
@@ -183,27 +131,6 @@ const AdminPromotionsPage = () => {
     return column;
   });
 
-<<<<<<< HEAD
-  return (
-    <div>
-      <div className='flex items-center justify-between bg-white p-4 shadow-md'>
-        <h1 className='text-2xl font-bold'>Khuyến mãi</h1>
-        <Button onClick={handleAddPromotion}>Thêm khuyến mãi</Button>
-      </div>
-      <div className='container mx-auto mt-4 bg-white p-4 shadow-sm'>
-        <Filter />
-      </div>
-      <div className='container mx-auto mt-4 bg-white p-4 shadow-sm'>
-        <DataTable
-          columns={columnsWithHandlers}
-          data={promotions}
-          isLoading={isLoading}
-          paginationType='server'
-          serverPagination={paginationData}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-        />
-=======
   // Calculate promotion stats
   const stats = useMemo(() => {
     const total = paginationData.totalElements || 0;
@@ -218,7 +145,6 @@ const AdminPromotionsPage = () => {
 
     return { total, active, upcoming, expired };
   }, [promotions, paginationData]);
-
   return (
     <div className='space-y-6'>
       {/* Modern Page Header */}
@@ -324,7 +250,6 @@ const AdminPromotionsPage = () => {
             onPageSizeChange={handlePageSizeChange}
           />
         </div>
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
       </div>
 
       <PromotionModal

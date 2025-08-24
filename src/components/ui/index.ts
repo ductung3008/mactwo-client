@@ -75,10 +75,8 @@ export {
 } from './dialog';
 
 export { CategoryModal } from './category-modal';
+export { OrdersModal } from './orders-modal';
 export { ProductModal } from './product-modal';
-<<<<<<< HEAD
-=======
 
 export { OrderList } from './order-list';
 export type { OrderListProps } from './order-list';
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e

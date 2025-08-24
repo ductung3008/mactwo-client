@@ -1,28 +1,15 @@
 'use client';
 
-<<<<<<< HEAD
-import { Button } from '@/components/ui/button';
-import { DataTable } from '@/components/ui/table/data-table';
-import { Gender, Role } from '@/constants';
-import { customerApi } from '@/lib/api/customer.api';
-import { User } from '@/types/user';
-import { Filter } from 'lucide-react';
-=======
 import { useToastNotification } from '@/components/ui';
-import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/table/data-table';
 import { customerApi } from '@/lib/api/customer.api';
 import { User } from '@/types/user';
-import { Plus, Users } from 'lucide-react';
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
+import { Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { columns } from './columns';
 
 const AdminUsersPage = () => {
-<<<<<<< HEAD
-=======
   const toast = useToastNotification();
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
   const [data, setData] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,40 +27,6 @@ const AdminUsersPage = () => {
     };
     fetchUsers();
   }, []);
-<<<<<<< HEAD
-  const sampleData = [
-    {
-      id: 1,
-      fullName: 'John Doe',
-      email: 'john.doe@example.com',
-      gender: Gender.Male,
-      dateOfBirth: '1990-01-01',
-      active: true,
-      roleName: Role.Admin,
-      createdDate: new Date(),
-      lastModifiedDate: new Date(),
-    },
-  ];
-
-  return (
-    <div>
-      <div className='flex items-center justify-between bg-white p-4 shadow-md'>
-        <h1 className='text-2xl font-bold'>Users</h1>
-        <Button>Add User</Button>
-      </div>
-      <div className='container mx-auto mt-4 bg-white p-4 shadow-sm'>
-        <Filter />
-      </div>
-      <div className='container mx-auto mt-4 bg-white p-4 shadow-sm'>
-        <DataTable
-          columns={columns}
-          data={data}
-          isLoading={loading}
-          paginationType='client'
-          clientPageSize={10}
-          pageSizeOptions={[5, 10, 20, 50]}
-        />
-=======
 
   useEffect(() => {
     if (error) {
@@ -100,10 +53,10 @@ const AdminUsersPage = () => {
               </p>
             </div>
           </div>
-          <Button className='bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl'>
+          {/* <Button className='bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl'>
             <Plus className='mr-2 h-4 w-4' />
             Thêm người dùng
-          </Button>
+          </Button> */}
         </div>
       </div>
 
@@ -133,7 +86,6 @@ const AdminUsersPage = () => {
             pageSizeOptions={[5, 10, 20, 50]}
           />
         </div>
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
       </div>
     </div>
   );

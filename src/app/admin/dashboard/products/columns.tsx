@@ -11,19 +11,13 @@ import Image from 'next/image';
 interface ProductColumnProps {
   onEdit: (product: Product) => void;
   onDeleteSuccess: () => void;
-<<<<<<< HEAD
-=======
   categories: Array<{ id: number; name: string }>;
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
 }
 
 export const createColumns = ({
   onEdit,
   onDeleteSuccess,
-<<<<<<< HEAD
-=======
   categories,
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
 }: ProductColumnProps): ColumnDef<Product>[] => [
   {
     accessorKey: 'productId',
@@ -34,11 +28,7 @@ export const createColumns = ({
   },
   {
     accessorKey: 'imageUrl',
-<<<<<<< HEAD
-    header: 'Image',
-=======
     header: 'Hình ảnh',
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
     cell: ({ row }) => {
       return (
         <Image
@@ -52,13 +42,6 @@ export const createColumns = ({
   },
   {
     accessorKey: 'name',
-<<<<<<< HEAD
-    header: 'Name',
-  },
-  {
-    accessorKey: 'categoryId',
-    header: 'Category',
-=======
     header: 'Tên sản phẩm',
   },
   {
@@ -69,7 +52,6 @@ export const createColumns = ({
       const category = categories.find(cat => cat.id === categoryId);
       return <div>{category?.name.trim()}</div>;
     },
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
   },
   // {
   //   accessorKey: 'description',
@@ -77,20 +59,11 @@ export const createColumns = ({
   // },
   {
     accessorKey: 'productVariants',
-<<<<<<< HEAD
-    header: 'Variants',
-=======
     header: 'Biến thể',
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
     cell: ({ row }) => {
       const variants = row.original.variants;
       return variants.map(variant => {
         return (
-<<<<<<< HEAD
-          <div className='flex flex-col gap-2'>
-            <div>{variant.color}</div>
-            <div>{variant.price}</div>
-=======
           <div key={variant.product_variant_id} className='flex flex-col gap-2'>
             <div>
               {variant.color} -{' '}
@@ -99,7 +72,6 @@ export const createColumns = ({
                 currency: 'VND',
               })}
             </div>
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
           </div>
         );
       });

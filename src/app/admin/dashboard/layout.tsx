@@ -9,15 +9,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const navigation = [
-<<<<<<< HEAD
-  { name: 'Dashboard', href: '/admin/dashboard', icon: '🏠' },
-  { name: 'Products', href: '/admin/dashboard/products', icon: '💻' },
-  { name: 'Categories', href: '/admin/dashboard/categories', icon: '🗂️' },
-  { name: 'Orders', href: '/admin/dashboard/orders', icon: '🧾' },
-  { name: 'Promotions', href: '/admin/dashboard/promotions', icon: '🎁' },
-  { name: 'Users', href: '/admin/dashboard/users', icon: '👤' },
-  { name: 'Reports', href: '/admin/dashboard/reports', icon: '📊' },
-=======
   { name: 'Tổng quan', href: '/admin/dashboard', icon: '📊' },
   { name: 'Sản phẩm', href: '/admin/dashboard/products', icon: '🛍️' },
   { name: 'Danh mục', href: '/admin/dashboard/categories', icon: '📋' },
@@ -25,7 +16,6 @@ const navigation = [
   { name: 'Khuyến mãi', href: '/admin/dashboard/promotions', icon: '🎯' },
   { name: 'Người dùng', href: '/admin/dashboard/users', icon: '👥' },
   { name: 'Báo cáo', href: '/admin/dashboard/reports', icon: '📈' },
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
 ];
 
 export default function AdminLayout({

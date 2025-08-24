@@ -1,6 +1,6 @@
 'use client';
 
-import { useToastNotification } from '@/components/ui';
+import { Skeleton, useToastNotification } from '@/components/ui';
 import { customerApi, productApi } from '@/lib/api';
 import { orderApi } from '@/lib/api/order.api';
 import { Order } from '@/types/order';
@@ -154,8 +154,6 @@ export default function AdminDashboard() {
         return 'bg-purple-100 text-purple-800 border border-purple-200';
       case 'Đã hủy':
         return 'bg-red-100 text-red-800 border border-red-200';
-      case 'Đang tải':
-        return 'bg-gray-100 text-gray-800 border border-gray-200';
       default:
         return 'bg-gray-100 text-gray-800 border border-gray-200';
     }
@@ -167,9 +165,10 @@ export default function AdminDashboard() {
         .fill(null)
         .map((_, index) => ({
           id: `#loading-${index}`,
-          customer: 'Đang tải...',
-          amount: '...',
-          status: 'Đang tải',
+          customer: null, // Sẽ render skeleton
+          amount: null, // Sẽ render skeleton
+          status: null, // Sẽ render skeleton
+          isLoading: true,
         }));
     }
 
@@ -178,6 +177,7 @@ export default function AdminDashboard() {
       customer: `Khách hàng ID: ${order.userId}`,
       amount: `${(order.totalAmount || 0).toLocaleString('vi-VN')} VND`,
       status: getOrderStatusLabel(order.status),
+      isLoading: false,
     }));
   }, [recentOrders, loading]);
 
@@ -316,16 +316,48 @@ export default function AdminDashboard() {
                   className='flex items-center justify-between rounded-lg bg-slate-50 p-4 transition-colors hover:bg-slate-100'
                 >
                   <div>
-                    <p className='font-semibold text-slate-900'>{order.id}</p>
-                    <p className='text-sm text-slate-600'>{order.customer}</p>
+                    {order.isLoading ? (
+                      <>
+                        <Skeleton height={20} width={120} className='mb-2' />
+                        <Skeleton height={16} width={150} />
+                      </>
+                    ) : (
+                      <>
+                        <p className='font-semibold text-slate-900'>
+                          {order.id}
+                        </p>
+                        <p className='text-sm text-slate-600'>
+                          {order.customer}
+                        </p>
+                      </>
+                    )}
                   </div>
                   <div className='text-right'>
-                    <p className='font-bold text-slate-900'>{order.amount}</p>
-                    <span
-                      className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${getStatusColor(order.status)}`}
-                    >
-                      {order.status}
-                    </span>
+                    {order.isLoading ? (
+                      <>
+                        <Skeleton
+                          height={20}
+                          width={100}
+                          className='mb-2 ml-auto'
+                        />
+                        <Skeleton
+                          height={24}
+                          width={80}
+                          className='ml-auto rounded-full'
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <p className='font-bold text-slate-900'>
+                          {order.amount}
+                        </p>
+                        <span
+                          className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${getStatusColor(order.status || '')}`}
+                        >
+                          {order.status}
+                        </span>
+                      </>
+                    )}
                   </div>
                 </div>
               ))}

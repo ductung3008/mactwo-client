@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-const AdminReportsPage = () => {
-  return <div>AdminReportsPage</div>;
-=======
 import { BarChart } from 'lucide-react';
 
 const AdminReportsPage = () => {
@@ -70,7 +66,6 @@ const AdminReportsPage = () => {
       </div>
     </div>
   );
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
 };
 
 export default AdminReportsPage;

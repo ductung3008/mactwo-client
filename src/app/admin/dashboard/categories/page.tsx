@@ -1,29 +1,17 @@
 'use client';
 
-<<<<<<< HEAD
-import { CategoryModal } from '@/components/ui';
-=======
 import { CategoryModal, useToastNotification } from '@/components/ui';
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/table/data-table';
 import { categoryApi } from '@/lib/api';
 import { Category, FlatCategory } from '@/types/category';
 import { flattenCategories } from '@/utils';
-<<<<<<< HEAD
-import { Filter, Plus } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
-import { createColumns } from './columns';
-
-const AdminCategoriesPage = () => {
-=======
 import { FolderTree, Plus } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { createColumns } from './columns';
 
 const AdminCategoriesPage = () => {
   const toast = useToastNotification();
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
   const [data, setData] = useState<FlatCategory[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(false);
@@ -33,11 +21,7 @@ const AdminCategoriesPage = () => {
     null
   );
 
-<<<<<<< HEAD
-  const fetchCategories = async () => {
-=======
   const fetchCategories = useCallback(async () => {
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
     setLoading(true);
     try {
       const response = await categoryApi.getCategories();
@@ -46,10 +30,6 @@ const AdminCategoriesPage = () => {
         setCategories(response.data);
         // Flatten categories before setting to data
         const flattenedCategories = flattenCategories(response.data);
-<<<<<<< HEAD
-        console.log(flattenedCategories);
-=======
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
         setData(flattenedCategories);
       } else {
         setError(response.message || 'Failed to fetch categories');
@@ -59,19 +39,11 @@ const AdminCategoriesPage = () => {
       setError('Failed to fetch categories');
     }
     setLoading(false);
-<<<<<<< HEAD
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-=======
   }, []);
 
   useEffect(() => {
     fetchCategories();
   }, [fetchCategories]);
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
 
   const handleOpenCreateModal = () => {
     setSelectedCategory(null);
@@ -110,32 +82,6 @@ const AdminCategoriesPage = () => {
     [fetchCategories]
   );
 
-<<<<<<< HEAD
-  return (
-    <div>
-      <div className='flex items-center justify-between bg-white p-4 shadow-md'>
-        <h1 className='text-2xl font-bold'>Danh mục</h1>
-        <Button
-          onClick={handleOpenCreateModal}
-          className='flex items-center gap-2'
-        >
-          <Plus className='h-4 w-4' />
-          Thêm danh mục
-        </Button>
-      </div>
-      <div className='container mx-auto mt-4 bg-white p-4 shadow-sm'>
-        <Filter />
-      </div>
-      <div className='container mx-auto mt-4 bg-white p-4 shadow-sm'>
-        <DataTable
-          columns={columns}
-          data={data}
-          isLoading={loading}
-          paginationType='client'
-          clientPageSize={8}
-          pageSizeOptions={[5, 8, 10, 15]}
-        />
-=======
   useEffect(() => {
     if (error) {
       toast.error(error);
@@ -257,7 +203,6 @@ const AdminCategoriesPage = () => {
             pageSizeOptions={[5, 8, 10, 15]}
           />
         </div>
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
       </div>
 
       <CategoryModal

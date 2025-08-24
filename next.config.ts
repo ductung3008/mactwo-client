@@ -3,7 +3,18 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [new URL('https://shopdunk.com/**')],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'shopdunk.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn2.fptshop.com.vn',
+        pathname: '/**',
+      },
+    ],
   },
   async rewrites() {
     return [
@@ -19,15 +30,16 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  async redirects() {
-    return [
-      {
-        source: '/admin/:path*',
-        destination: 'https://admin.mactwo.click/:path*',
-        permanent: true,
-      },
-    ];
-  },
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: '/admin/:path*',
+  //       destination: '/admin/:path*',
+  //       // destination: 'https://admin.mactwo.click/:path*',
+  //       permanent: true,
+  //     },
+  //   ];
+  // },
 };
 
 const withNextIntl = createNextIntlPlugin();

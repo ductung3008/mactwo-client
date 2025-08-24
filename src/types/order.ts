@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-export interface Order {
-  orderId: string;
-  userId: string;
-  addressId: number;
-  promotionId: string;
-  orderDate: Date;
-  status: string;
-  totalAmount: number;
-=======
 export interface OrderAddress {
   id: number;
   shippingAddress: string;
@@ -63,5 +53,4 @@ export interface CreateOrderRequest {
   addressId: number;
   promotionId: number | null;
   orderItems: CreateOrderItem[];
->>>>>>> 441881f107cef54cfbb1d185479bb70faa22622e
 }

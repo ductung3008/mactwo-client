@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
+import { Role } from '@/constants';
 import { authApi } from '@/lib/api';
 import { RegisterFormData } from '@/schemas/auth.schema';
 import {
@@ -163,5 +164,21 @@ export function useAuth() {
     logout: handleLogout,
     changePassword: handleChangePassword,
     updateProfile: handleUpdateProfile,
+  };
+}
+
+export function useAdminAuth() {
+  const { user, logout, isAuthenticated, isLoading } = useAuthStore();
+
+  const isAdmin = isAuthenticated && user?.roleName === Role.Admin;
+  const canAccessAdmin = isAuthenticated && isAdmin;
+
+  return {
+    user,
+    logout,
+    isAuthenticated,
+    loading: isLoading,
+    isAdmin,
+    canAccessAdmin,
   };
 }

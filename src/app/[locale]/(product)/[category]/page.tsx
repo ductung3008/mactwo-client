@@ -4,6 +4,7 @@ import { Link } from '@/i18n/navigation';
 import { categoryApi } from '@/lib/api/categories.api';
 import { productApi } from '@/lib/api/products.api';
 import DOMPurify from 'dompurify';
+import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
 import './style.css';
@@ -19,6 +20,72 @@ const ProductItem = dynamic(() =>
     default: mod.ProductItem,
   }))
 );
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await searchParams;
+
+  if (!id) {
+    return {
+      title: 'Danh mục sản phẩm - MacTwo',
+      description: 'Khám phá các danh mục sản phẩm Apple chính hãng tại MacTwo',
+    };
+  }
+
+  try {
+    const categoryResponse = await categoryApi.getCategoryById(id);
+    const category = categoryResponse.data;
+
+    if (!category) {
+      return {
+        title: 'Danh mục không tồn tại - MacTwo',
+        description: 'Danh mục sản phẩm bạn đang tìm kiếm không tồn tại',
+      };
+    }
+
+    const title = `${category.categoryName} | MacTwo`;
+    const description = `Khám phá bộ sưu tập ${category.categoryName} chính hãng với giá tốt nhất tại MacTwo. Bảo hành đầy đủ, giao hàng toàn quốc.`;
+
+    return {
+      title,
+      description,
+      keywords: `${category.categoryName}, Apple, MacTwo, chính hãng, giá tốt, bảo hành`,
+      openGraph: {
+        title,
+        description,
+        type: 'website',
+        url: `https://mactwo.click/${slugify(category.categoryName)}?id=${id}`,
+        siteName: 'MacTwo',
+        images: [
+          {
+            url: 'https://mactwo.click/mactwo-logo.png',
+            width: 1200,
+            height: 630,
+            alt: `${category.categoryName} tại MacTwo`,
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: ['https://mactwo.click/mactwo-logo.png'],
+      },
+      alternates: {
+        canonical: `https://mactwo.click/${slugify(category.categoryName)}?id=${id}`,
+      },
+    };
+  } catch (error) {
+    console.error('Error generating metadata:', error);
+    return {
+      title: 'Lỗi tải danh mục - MacTwo',
+      description: 'Có lỗi xảy ra khi tải thông tin danh mục sản phẩm',
+    };
+  }
+}
 
 export default async function CategoryPage({
   searchParams,

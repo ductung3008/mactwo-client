@@ -42,7 +42,12 @@ const CartBox = () => {
         <p className='mb-6 text-gray-500'>
           Hãy thêm sản phẩm vào giỏ hàng để tiếp tục mua sắm
         </p>
-        <button className='rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700'>
+        <button
+          className='rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700'
+          onClick={() => {
+            window.location.href = '/';
+          }}
+        >
           Tiếp tục mua sắm
         </button>
       </div>
@@ -152,9 +157,19 @@ const CartBox = () => {
                     />
                   </svg>
                 </button>
-                <span className='w-12 rounded-md border border-gray-200 bg-white px-3 py-1 text-center text-lg font-semibold'>
-                  {item.quantity}
-                </span>
+                <input
+                  type='number'
+                  value={item.quantity}
+                  min='1'
+                  className='w-12 [appearance:textfield] rounded-md border border-gray-200 bg-white px-3 py-1 text-center text-lg font-semibold [&::-webkit-inner-spin-button]:appearance-none'
+                  onChange={e =>
+                    updateQuantity(
+                      item.product.id,
+                      item.variant.product_variant_id!,
+                      parseInt(e.target.value)
+                    )
+                  }
+                />
                 <button
                   onClick={() =>
                     updateQuantity(

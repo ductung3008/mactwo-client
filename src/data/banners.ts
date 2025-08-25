@@ -19,7 +19,7 @@ export const mainBanners: BannerItem[] = [
     id: '3',
     image:
       'https://shopdunk.com/images/uploaded/banner/Banner%202025/Thang_8/banner%20MBsr-T8_PC.png',
-    href: '/macbook-air-m4',
+    href: '/mac?id=19',
     alt: 'Deadline for MacBook Pro',
   },
   {
@@ -50,9 +50,9 @@ export const secondaryBanners: BannerItem[] = [
   {
     id: '1',
     image:
-      'https://shopdunk.com/images/uploaded/505114840_1042406548032124_8953562798685265215_n-Copy-1.jpg',
-    href: '/news-vip-customer',
-    alt: 'VIP Customer News',
+      'https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/H1_1440x242_81fee0aa74.png',
+    href: '/search?keyword=aspire',
+    alt: 'Aspire',
   },
   {
     id: '2',

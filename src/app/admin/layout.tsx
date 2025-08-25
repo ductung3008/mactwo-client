@@ -1,9 +1,9 @@
 'use client';
 
 import { Loading, ToastProvider } from '@/components/ui';
-import { useAuth } from '@/hooks';
+import { useAdminAuth } from '@/hooks';
 import { NextIntlClientProvider } from 'next-intl';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 type Messages = Record<string, unknown> | null;
@@ -43,23 +43,19 @@ export default function AdminLayout({
 }
 
 function AdminLayoutContent({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, user, loading } = useAuth();
-
+  const { canAccessAdmin, loading, logout } = useAdminAuth();
   const router = useRouter();
-  const pathname = usePathname();
 
   useEffect(() => {
-    if (!loading) {
-      // if (!isAuthenticated || user?.role !== Role.Admin) {
-      if (!isAuthenticated) {
-        router.push('/admin/login');
-      }
+    if (!loading && !canAccessAdmin) {
+      logout();
+      router.push('/admin/login');
     }
+  }, [loading, canAccessAdmin, router, logout]);
 
-    // if (!loading && isAuthenticated && user?.role === Role.Admin) {
-    // if (!loading && isAuthenticated) {
-    //   router.push('/admin/dashboard');
-    // }
-  }, [loading, isAuthenticated, user, pathname, router]);
+  if (loading) {
+    return <Loading />;
+  }
+
   return <ToastProvider>{children}</ToastProvider>;
 }

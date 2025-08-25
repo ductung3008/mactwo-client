@@ -7,8 +7,8 @@ import ProductImageGallery from '@/components/ui/product-image-gallery';
 import { Product, productApi } from '@/lib/api/products.api';
 import { ProductVariant, productVariantApi } from '@/lib/api/variants.api';
 import { useCartStore } from '@/stores/cart.store';
-import { useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { notFound, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export default function ProductDetailPage() {
   const toast = useToastNotification();
@@ -23,13 +23,14 @@ export default function ProductDetailPage() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
 
+  if (!id) {
+    notFound();
+  }
+
   const fetchData = useCallback(async () => {
     try {
-      const product = await productApi.getProductById(id || '');
-
-      const productVariants = await productVariantApi.getProductVariantById(
-        id || ''
-      );
+      const product = await productApi.getProductById(id);
+      const productVariants = await productVariantApi.getProductVariantById(id);
 
       setProduct(product.data);
       setProductVariants(productVariants.data);
@@ -99,22 +100,72 @@ export default function ProductDetailPage() {
     variant => variant.storage !== null && variant.storage !== undefined
   );
 
-  const productImages = [...(productVariant[0]?.imageUrls ?? [])];
+  const uniqueStorages = [...new Set(variantsWithStorage.map(v => v.storage))];
+
+  const currentVariant = useMemo(() => {
+    return (
+      productVariant.find(
+        v =>
+          v.color?.toLowerCase() === selectedColor.toLowerCase() &&
+          (variantsWithStorage.length > 0
+            ? v.storage === selectedStorage
+            : true)
+      ) || productVariant[0]
+    );
+  }, [
+    productVariant,
+    selectedColor,
+    selectedStorage,
+    variantsWithStorage.length,
+  ]);
+
+  const productImages = useMemo(() => {
+    return [
+      ...(currentVariant?.imageUrls ?? productVariant[0]?.imageUrls ?? []),
+    ];
+  }, [currentVariant, productVariant]);
 
   const locale = 'vi-VN';
   const currency = 'VND';
 
-  const formattedOldPrice = productVariant[0]?.price?.toLocaleString(locale, {
+  const formattedOldPrice = currentVariant?.price?.toLocaleString(locale, {
     style: 'currency',
     currency,
   });
+
   const newPrices =
-    (productVariant[0]?.price ?? 0) *
-    ((100 - (productVariant[0]?.percentagePercent ?? 0)) / 100);
+    (currentVariant?.price ?? 0) *
+    ((100 - (currentVariant?.percentagePercent ?? 0)) / 100);
+
   const formattedNewPrice = newPrices.toLocaleString(locale, {
     style: 'currency',
     currency,
   });
+
+  const handleColorChange = (colorName: string) => {
+    setSelectedColor(colorName);
+
+    const colorVariants = productVariant.filter(
+      v => v.color?.toLowerCase() === colorName.toLowerCase()
+    );
+
+    if (colorVariants.length > 0) {
+      const availableStoragesForColor = colorVariants
+        .filter(v => v.storage !== null && v.storage !== undefined)
+        .map(v => v.storage);
+
+      if (
+        availableStoragesForColor.length > 0 &&
+        !availableStoragesForColor.includes(selectedStorage)
+      ) {
+        setSelectedStorage(availableStoragesForColor[0]);
+      }
+    }
+  };
+
+  const handleStorageChange = (storage: string) => {
+    setSelectedStorage(storage);
+  };
 
   const handleBuyNow = () => {
     handleAddToCart();
@@ -127,13 +178,10 @@ export default function ProductDetailPage() {
       return;
     }
 
-    const selectedVariant = productVariant.find(
-      v =>
-        v.color?.toLowerCase() === selectedColor.toLowerCase() &&
-        (variantsWithStorage.length > 0 ? v.storage === selectedStorage : true)
-    );
+    const selectedVariant = currentVariant;
 
     if (!selectedVariant) {
+      toast.error('Lỗi', 'Vui lòng chọn phiên bản sản phẩm.');
       return;
     }
 
@@ -249,32 +297,52 @@ export default function ProductDetailPage() {
                   <span className='text-3xl font-bold text-emerald-600'>
                     {formattedNewPrice}
                   </span>
-                  <span className='text-xl text-slate-400 line-through'>
-                    {formattedOldPrice}
-                  </span>
+                  {currentVariant?.percentagePercent &&
+                    currentVariant.percentagePercent > 0 && (
+                      <span className='text-xl text-slate-400 line-through'>
+                        {formattedOldPrice}
+                      </span>
+                    )}
                 </div>
                 <p className='text-sm text-slate-500'>(Đã bao gồm VAT)</p>
+                {currentVariant?.percentagePercent &&
+                  currentVariant.percentagePercent > 0 && (
+                    <p className='text-sm font-medium text-red-600'>
+                      Tiết kiệm {currentVariant.percentagePercent}%
+                    </p>
+                  )}
               </div>
 
-              {variantsWithStorage.length > 0 && (
+              {uniqueStorages.length > 0 && (
                 <div className='mt-4 mb-2'>
                   <h3 className='mb-2 text-lg font-semibold text-slate-800'>
                     Dung lượng
                   </h3>
                   <div className='flex flex-wrap gap-3'>
-                    {variantsWithStorage.map(variant => (
-                      <button
-                        key={variant.id}
-                        onClick={() => setSelectedStorage(variant.storage)}
-                        className={`cursor-pointer rounded-xl border-2 px-4 py-2 text-center font-medium whitespace-nowrap transition-all duration-200 ${
-                          selectedStorage === variant.storage
-                            ? 'scale-105 border-blue-500 bg-blue-50 text-blue-700 shadow-md'
-                            : 'border-slate-300 text-slate-700 hover:border-slate-400 hover:shadow-sm'
-                        }`}
-                      >
-                        {variant.storage}
-                      </button>
-                    ))}
+                    {uniqueStorages.map(storage => {
+                      const isAvailable = productVariant.some(
+                        v =>
+                          v.storage === storage &&
+                          v.color?.toLowerCase() === selectedColor.toLowerCase()
+                      );
+
+                      return (
+                        <button
+                          key={storage}
+                          onClick={() => handleStorageChange(storage)}
+                          disabled={!isAvailable}
+                          className={`cursor-pointer rounded-xl border-2 px-4 py-2 text-center font-medium whitespace-nowrap transition-all duration-200 ${
+                            selectedStorage === storage
+                              ? 'scale-105 border-blue-500 bg-blue-50 text-blue-700 shadow-md'
+                              : isAvailable
+                                ? 'border-slate-300 text-slate-700 hover:border-slate-400 hover:shadow-sm'
+                                : 'cursor-not-allowed border-slate-200 text-slate-400'
+                          }`}
+                        >
+                          {storage}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -288,7 +356,7 @@ export default function ProductDetailPage() {
                     {availableColors.map(color => (
                       <button
                         key={color.value}
-                        onClick={() => setSelectedColor(color.name)}
+                        onClick={() => handleColorChange(color.name)}
                         className={`h-12 w-12 rounded-full ${color.bg} cursor-pointer border-3 transition-all duration-200 hover:scale-110 ${
                           selectedColor === color.name
                             ? 'scale-110 border-slate-800 shadow-lg'
@@ -298,6 +366,11 @@ export default function ProductDetailPage() {
                       />
                     ))}
                   </div>
+                  <p className='mt-2 text-sm text-slate-600'>
+                    Đã chọn:{' '}
+                    <span className='font-medium'>{selectedColor}</span>
+                    {selectedStorage && <>, {selectedStorage}</>}
+                  </p>
                 </div>
               )}
             </div>

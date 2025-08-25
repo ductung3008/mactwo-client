@@ -3,10 +3,11 @@
 import { useToastNotification } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Role } from '@/constants';
 import { useAuth } from '@/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
@@ -14,8 +15,8 @@ import z from 'zod';
 export default function AdminLogin() {
   const toast = useToastNotification();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const { login, loading, error, setError, isAuthenticated } = useAuth();
+  const { login, loading, error, setError, isAuthenticated, user, getProfile } =
+    useAuth();
 
   const loginSchema = z.object({
     emailOrPhone: z
@@ -46,11 +47,19 @@ export default function AdminLogin() {
     },
   });
 
+  const pathname = usePathname();
+
   useEffect(() => {
-    if (isAuthenticated) {
-      router.push('/admin/dashboard');
+    if (isAuthenticated && user) {
+      if (user.roleName === Role.Admin) {
+        if (pathname !== '/admin/dashboard') {
+          router.replace('/admin/dashboard');
+        }
+      } else {
+        setError('Bạn không có quyền truy cập vào trang quản trị');
+      }
     }
-  }, [isAuthenticated, router, searchParams]);
+  }, [isAuthenticated, user, pathname, router, setError]);
 
   const onSubmit = async (data: LoginFormData) => {
     try {
@@ -58,20 +67,20 @@ export default function AdminLogin() {
       const success = await login({ emailOrPhone, password });
 
       if (success) {
-        toast.success('Đăng nhập thành công', 'Chào mừng bạn trở lại!');
-        router.push('/admin/dashboard');
+        await getProfile();
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Đăng nhập thất bại');
+      console.error(err);
+      setError('Đăng nhập thất bại');
     }
   };
 
   useEffect(() => {
     if (error) {
-      toast.error('Lỗi', 'Đăng nhập không thành công');
+      toast.error(error);
       setError(null);
     }
-  }, [error, toast, setError]);
+  }, [error, setError, toast]);
 
   return (
     <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-4'>

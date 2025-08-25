@@ -13,9 +13,9 @@ const navigation = [
   { name: 'Sản phẩm', href: '/admin/dashboard/products', icon: '🛍️' },
   { name: 'Danh mục', href: '/admin/dashboard/categories', icon: '📋' },
   { name: 'Đơn hàng', href: '/admin/dashboard/orders', icon: '📦' },
-  { name: 'Khuyến mãi', href: '/admin/dashboard/promotions', icon: '🎯' },
+  // { name: 'Khuyến mãi', href: '/admin/dashboard/promotions', icon: '🎯' },
   { name: 'Người dùng', href: '/admin/dashboard/users', icon: '👥' },
-  { name: 'Báo cáo', href: '/admin/dashboard/reports', icon: '📈' },
+  // { name: 'Báo cáo', href: '/admin/dashboard/reports', icon: '📈' },
 ];
 
 export default function AdminLayout({

@@ -203,13 +203,13 @@ export default function AdminDashboard() {
       icon: '📦',
       color: 'from-purple-500 to-violet-600',
     },
-    {
-      title: 'Xem báo cáo',
-      description: 'Kiểm tra doanh số và phân tích',
-      href: '/admin/dashboard/reports',
-      icon: '📈',
-      color: 'from-orange-500 to-red-600',
-    },
+    // {
+    //   title: 'Xem báo cáo',
+    //   description: 'Kiểm tra doanh số và phân tích',
+    //   href: '/admin/dashboard/reports',
+    //   icon: '📈',
+    //   color: 'from-orange-500 to-red-600',
+    // },
   ];
 
   if (error) {
